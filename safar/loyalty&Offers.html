@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loyalty & Offers</title>
+  <link rel="stylesheet" href="src/css/output.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-[#fcfdd9] text-[#012B09] min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="">
+    <div
+      class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex justify-between items-center px-5 py-3 md:mt-2 shadow-md md:rounded-md">
+      <div class="flex items-center space-x-2">
+        <a href="#" class="flex flex-row gap-3">
+          <a href="index.html"><img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" /></a>
+        </a>
+      </div>
+      <!-- Centered Navigation -->
+      <nav class="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+        <div class="flex space-x-8 font-medium">
+          <a href="subscription.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Subscription</a>
+          <a href="services.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Services</a>
+          <a href="customerSupport.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Support</a>
+        </div>
+      </nav>
+      <div class="space-x-2 font-semibold" id="navbarUser">
+        <!-- Default: Login/Register buttons (shown when not logged in) -->
+        <div id="authButtons" class="space-x-2">
+          <button
+            class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/login.html">LOG IN</a>
+          </button>
+          <button
+            class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/signup.html">SIGN UP</a>
+          </button>
+        </div>
+
+        <!-- Profile section (shown when logged in) -->
+        <div id="profileSection" class="space-x-2 hidden">
+          <div class="flex items-center space-x-3">
+            <span id="userWelcome" class="text-sm text-gray-700">Welcome, User!</span>
+            <div class="relative">
+              <button id="profileButton"
+                class="bg-green-100 px-4 py-2 text-sm rounded-md hover:bg-green-200 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300 flex items-center space-x-2">
+                <span id="userName">Profile</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <!-- Dropdown menu -->
+              <div id="profileDropdown"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden border border-gray-200">
+                <a href="./dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                <a href="./settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <hr class="my-1">
+                <button id="logoutButton"
+                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="flex flex-1 flex-col lg:flex-row">
+
+    <!-- Sidebar -->
+    <aside class="bg-[#efefef] w-full lg:w-64 p-4 space-y-4 min-h-screen">
+      <h2 class="text-2xl font-bold text-black bg-[#a5cd99] rounded-lg px-3 py-2 text-center shadow-sm">
+        Dashboard
+      </h2>
+      <nav class="space-y-3 pt-4 text-black font-medium">
+        <a href="rideRoute.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (6) 1.png" class="w-6 h-6" />
+          <span>Book a Ride</span>
+        </a>
+        <a href="payment&Trans.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (2) 1.png" class="w-6 h-6" />
+          <span>Payment & Transactions</span>
+        </a>
+
+        <a href="loyalty&Offers.html"
+          class="flex items-center space-x-3 bg-[#c7e3b6] hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (7) 1.png" class="w-6 h-6" />
+          <span>Loyalty & Offers</span>
+        </a>
+        <a href="Scheduling.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (5) 1.png" class="w-6 h-6" />
+          <span>Scheduling</span>
+        </a>
+        <a href="Safety&Reports.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (3) 1.png" class="w-6 h-6" />
+          <span>Safety & Reports</span>
+        </a>
+        <a href="settings.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/Setitingsphoto.png" class="w-6 h-6" />
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Loyalty & Offers Section -->
+    <main class="flex-1 max-w-6xl mx-auto p-6 mt-6 space-y-10">
+      <section class="bg-white rounded-xl shadow-lg p-6 space-y-8">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold text-[#012B09]">Loyalty & Offers</h2>
+          <p class="text-sm text-[#1f3b08] mt-2 italic">Earn rewards and save more on every ride.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- Loyalty Points Card -->
+          <div class="border rounded-xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+            <div>
+              <h3 class="text-xl font-semibold mb-2 text-[#203924]">Your Loyalty Points</h3>
+              <p class="text-sm text-gray-600 mb-4">Keep riding to earn points and unlock exclusive rewards.</p>
+              <div class="bg-[#d1f2c3] rounded-full h-4 w-full overflow-hidden">
+                <div class="bg-[#a5cd99] h-4 rounded-full" style="width: 65%;"></div>
+              </div>
+              <p class="text-sm text-[#203924] mt-2 font-semibold">650 / 1000 points</p>
+            </div>
+            <button class="mt-6 bg-[#012B09] text-white py-2 rounded-md hover:bg-[#203924] transition">Redeem
+              Points</button>
+          </div>
+
+          <!-- Current Offers Card -->
+          <div class="border rounded-xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+            <div>
+              <h3 class="text-xl font-semibold mb-2 text-[#203924]">Special Offers</h3>
+              <ul class="list-disc list-inside text-gray-700 space-y-2 text-sm">
+                <li>🎉 Get 20% off on your next 5 rides</li>
+                <li>🚗 Free upgrade to premium rides on weekends</li>
+                <li>💸 Earn double points during holiday season</li>
+              </ul>
+            </div>
+            <button
+              class="mt-6 bg-[#a5cd99] text-[#012B09] py-2 rounded-md hover:bg-[#94BB86] transition font-semibold">View
+              All Offers</button>
+          </div>
+
+          <!-- Referral Program Card -->
+          <div class="border rounded-xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+            <div>
+              <h3 class="text-xl font-semibold mb-2 text-[#203924]">Refer & Earn</h3>
+              <p class="text-sm text-gray-600 mb-4">Invite friends and get ₹100 credit for each successful referral.</p>
+              <div class="bg-[#d1f2c3] rounded-full h-4 w-full overflow-hidden mb-2">
+                <div class="bg-[#a5cd99] h-4 rounded-full" style="width: 40%;"></div>
+              </div>
+              <p class="text-sm text-[#203924] font-semibold">4 / 10 friends referred</p>
+            </div>
+            <button class="mt-6 bg-[#012B09] text-white py-2 rounded-md hover:bg-[#203924] transition">Invite
+              Friends</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works Section -->
+      <div class="bg-white border-t pt-8 mt-10 text-center rounded-xl px-6 pb-16 shadow-lg relative">
+        <h3 class="text-2xl font-bold text-[#012B09]">How It Works</h3>
+        <p class="text-sm text-[#1f3b08] max-w-2xl mx-auto">Earning and using your loyalty points is easy. The more you
+          ride, the more rewards you unlock. Here's a quick guide:</p>
+
+        <!-- Cards Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 relative -top-4">
+
+          <div class="p-4 border rounded-xl shadow-sm bg-[#f8fff4] hover:shadow-md transition">
+            <img src="./Images/Ride.png" alt="Ride" class="w-12 h-12 mx-auto mb-3" />
+            <h4 class="font-semibold text-lg text-[#203924]">Ride & Earn</h4>
+            <p class="text-sm text-gray-600 mt-1">Each completed ride earns you points automatically.</p>
+          </div>
+
+          <div class="p-4 border rounded-xl shadow-sm bg-[#f8fff4] hover:shadow-md transition">
+            <img src="./Images/RedeemAwards.png" alt="Redeem" class="w-12 h-12 mx-auto mb-3" />
+            <h4 class="font-semibold text-lg text-[#203924]">Redeem Rewards</h4>
+            <p class="text-sm text-gray-600 mt-1">Use your points to get discounts, upgrades, or freebies.</p>
+          </div>
+
+          <div class="p-4 border rounded-xl shadow-sm bg-[#f8fff4] hover:shadow-md transition">
+            <img src="./Images/LevelUp.png" alt="Level Up" class="w-12 h-12 mx-auto mb-3" />
+            <h4 class="font-semibold text-lg text-[#203924]">Level Up</h4>
+            <p class="text-sm text-gray-600 mt-1">Unlock premium benefits as you earn more points over time.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-10 mb-0">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+      <div class="flex flex-col gap-7">
+        <a href="index.html"><img src="./img/Safar-logo.png" alt="" class="w-28"></a>
+        <div class="flex space-x-3 mt-4">
+          <img src="./img/appstores/Playstore.png" class="w-32 transition-transform hover:scale-110 duration-300"
+            alt="Google Play" />
+          <img src="./img/appstores/App Store.png" class="w-32 transition-transform hover:scale-110 duration-300"
+            alt="App Store" />
+        </div>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Navigate</h4>
+        <ul class="space-y-1 text-sm">
+          <li><a href="index.html" class="hover:text-green-600">Home</a></li>
+          <li><a href="subscription.html" class="hover:text-green-600">Subscription</a></li>
+          <li><a href="services.html" class="hover:text-green-600">Services</a></li>
+          <li><a href="customerSupport.html" class="hover:text-green-600">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Legal</h4>
+        <ul class="space-y-1 text-sm">
+          <li><a href="src/termsNcondition.html" class="hover:text-green-600">Terms & Conditions</a></li>
+          <li><a href="src/privacy.html" class="hover:text-green-600">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Socials</h4>
+        <div class="flex space-x-3 text-sm">
+          <img src="./img/social-medias/facebook-icon.png" alt="Facebook"
+            class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+          <img src="./img/social-medias/ig-icon.png" alt="Instagram"
+            class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+          <img src="./img/social-medias/x-icon.png" alt="X"
+            class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+        </div>
+      </div>
+    </div>
+    <div class="text-center text-xs text-gray-500 mt-8">© 2025 Safar. All rights reserved.</div>
+  </footer>
+  <script src="./src/js/navbar.js"></script>
+</body>
+
+</html>

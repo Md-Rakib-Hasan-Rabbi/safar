@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Ride Management</title>
+  <link rel="stylesheet" href="src/css/output.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- Navbar -->
+  <header class="">
+    <div
+      class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex justify-between items-center px-5 py-3 md:mt-2 shadow-md md:rounded-md">
+      <div class="flex items-center space-x-2">
+        <a href="index.html" class="flex flex-row gap-3">
+          <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+        </a>
+      </div>
+
+      <!-- Centered Navigation -->
+      <nav class="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+        <div class="flex space-x-8 font-medium">
+          <a href="subscription.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Subscription</a>
+          <a href="services.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Services</a>
+          <a href="customerSupport.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Support</a>
+        </div>
+      </nav>
+      <div class="space-x-2 font-semibold" id="navbarUser">
+        <!-- Default: Login/Register buttons (shown when not logged in) -->
+        <div id="authButtons" class="space-x-2">
+          <button
+            class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/login.html">LOG IN</a>
+          </button>
+          <button
+            class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/signup.html">SIGN UP</a>
+          </button>
+        </div>
+
+        <!-- Profile section (shown when logged in) -->
+        <div id="profileSection" class="space-x-2 hidden">
+          <div class="flex items-center space-x-3">
+            <span id="userWelcome" class="text-sm text-gray-700">Welcome, User!</span>
+            <div class="relative">
+              <button id="profileButton"
+                class="bg-green-100 px-4 py-2 text-sm rounded-md hover:bg-green-200 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300 flex items-center space-x-2">
+                <span id="userName">Profile</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <!-- Dropdown menu -->
+              <div id="profileDropdown"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-[9999] hidden border border-gray-200">
+                <a href="./dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                <a href="./settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <hr class="my-1">
+                <button id="logoutButton"
+                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#efefef] p-4 space-y-4">
+      <h2 class="text-2xl font-bold bg-[#a5cd99] rounded-lg px-3 py-2 text-center shadow-sm">Dashboard</h2>
+      <nav class="space-y-3 pt-4 font-medium text-black">
+        <a href="rideManagement.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow"><img
+            src="./Images/pngegg (6) 1.png" class="w-6 h-6" /><span>Ride Management</span></a>
+        <a href="payment&Trans.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow"><img
+            src="./Images/pngegg (2) 1.png" class="w-6 h-6" /><span>Payment & Transactions</span></a>
+        <a href="customerSupport.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow"><img
+            src="./Images/pngegg (4) 1.png" class="w-6 h-6" /><span>Customer Support</span></a>
+        <a href="loyalty&Offers.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow"><img
+            src="./Images/pngegg (7) 1.png" class="w-6 h-6" /><span>Loyalty & Offers</span></a>
+        <a href="Scheduling.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow"><img
+            src="./Images/pngegg (5) 1.png" class="w-6 h-6" /><span>Scheduling</span></a>
+        <a href="Safety&Reports.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow"><img
+            src="./Images/pngegg (3) 1.png" class="w-6 h-6" /><span>Safety & Reports</span></a>
+        <a href="settings.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow"><img
+            src="./Images/Setitingsphoto.png" class="w-6 h-6" /><span>Settings</span></a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      <div class="bg-white shadow-xl rounded-xl flex overflow-hidden h-[600px]">
+
+        <!-- Left Column -->
+        <div class="w-1/2 p-6">
+          <h2 class="text-2xl font-semibold mb-6">Select a Ride</h2>
+
+          <!-- Locations -->
+          <div class="mb-6 space-y-4">
+            <div class="flex items-start space-x-2 text-sm text-black">
+              <div class="w-5 h-5 rounded-full bg-black mt-1"></div>
+              <span>UIU, Madani Avenue, Dhaka</span>
+            </div>
+            <div class="flex items-start space-x-2 text-sm text-black">
+              <div class="w-5 h-5 rounded-full bg-black mt-1"></div>
+              <span>Block H, Bashundhara, Dhaka</span>
+            </div>
+          </div>
+
+          <!-- Payment Info -->
+          <div class="bg-white border px-4 py-3 rounded-lg flex justify-between items-center mb-6 shadow-sm">
+            <span class="text-sm">23********863</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+
+          <!-- Ride Options -->
+          <div class="space-y-3">
+            <div class="flex justify-between items-center border rounded-lg px-4 py-3">
+              <div class="flex items-center space-x-3">
+                <img src="https://img.icons8.com/ios-filled/24/car--v1.png" />
+                <div>
+                  <div class="font-semibold text-sm">Economy</div>
+                  <div class="text-xs text-gray-500">5.23pm → 3.23pm</div>
+                </div>
+              </div>
+              <div class="text-sm font-semibold">$18</div>
+            </div>
+
+            <div class="flex justify-between items-center border rounded-lg px-4 py-3">
+              <div class="flex items-center space-x-3">
+                <img src="https://img.icons8.com/ios-filled/24/car--v1.png" />
+                <div>
+                  <div class="font-semibold text-sm">Standard</div>
+                  <div class="text-xs text-gray-500">3.21pm → 5.21pm</div>
+                </div>
+              </div>
+              <div class="text-sm font-semibold">$22</div>
+            </div>
+
+            <div class="flex justify-between items-center border rounded-lg px-4 py-3">
+              <div class="flex items-center space-x-3">
+                <img src="https://img.icons8.com/ios-filled/24/van.png" />
+                <div>
+                  <div class="font-semibold text-sm">XL</div>
+                  <div class="text-xs text-gray-500">3.20pm → 5.20pm</div>
+                </div>
+              </div>
+              <div class="text-sm font-semibold">$32</div>
+            </div>
+          </div>
+
+          <!-- Request Button -->
+          <button
+            class="w-full mt-6 bg-[#1E441E] text-white py-2 rounded-lg font-semibold shadow hover:bg-green-800">Request
+            Ride</button>
+          <p class="text-xs text-gray-400 mt-3">Safe route suggested<br>Estimated fare - $18</p>
+        </div>
+
+        <!-- Right Column (Reserved for Map or Preview) -->
+        <div class="w-1/2 h-full bg-gray-200 flex items-center justify-center text-gray-500">
+          <p class="text-sm">Live Map / Ride Route Preview Here</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-10">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+      <div class="flex flex-col gap-7">
+        <a href="index.html"><img src="./img/Safar-logo.png" alt="Safar Logo" class="w-28"></a>
+        <div class="flex space-x-3 mt-4">
+          <img src="./img/appstores/Playstore.png" class="w-32 hover:scale-110 transition-transform" />
+          <img src="./img/appstores/App Store.png" class="w-32 hover:scale-110 transition-transform" />
+        </div>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Navigate</h4>
+        <ul class="space-y-1">
+          <li><a href="index.html" class="hover:text-green-600">Home</a></li>
+          <li><a href="subscription.html" class="hover:text-green-600">Subscription</a></li>
+          <li><a href="services.html" class="hover:text-green-600">Services</a></li>
+          <li><a href="customerSupport.html" class="hover:text-green-600">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Legal</h4>
+        <ul class="space-y-1">
+          <li><a href="src/termsNcondition.html" class="hover:text-green-600">Terms & Conditions</a></li>
+          <li><a href="src/privacy.html" class="hover:text-green-600">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Socials</h4>
+        <div class="flex space-x-3">
+          <img src="./img/social-medias/facebook-icon.png" class="w-8 h-8 hover:scale-110" />
+          <img src="./img/social-medias/ig-icon.png" class="w-8 h-8 hover:scale-110" />
+          <img src="./img/social-medias/x-icon.png" class="w-8 h-8 hover:scale-110" />
+        </div>
+      </div>
+    </div>
+    <div class="text-center text-xs text-gray-500 mt-8">© 2025 Safar. All rights reserved.</div>
+  </footer>
+
+  <script src="./src/js/navbar.js"></script>
+</body>
+
+</html>

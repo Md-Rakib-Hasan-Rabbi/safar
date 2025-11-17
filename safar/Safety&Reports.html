@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safety & Reports</title>
+  <link rel="stylesheet" href="src/css/output.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+  </style>
+</head>
+
+<body class="bg-[#fcfdd9] text-[#012B09] min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="">
+    <div
+      class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex justify-between items-center px-5 py-3 md:mt-2 shadow-md md:rounded-md">
+      <div class="flex items-center space-x-2">
+        <a href="#" class="flex flex-row gap-3">
+          <a href="index.html"><img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" /></a>
+        </a>
+      </div>
+      <!-- Centered Navigation -->
+      <nav class="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+        <div class="flex space-x-8 font-medium">
+          <a href="subscription.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Subscription</a>
+          <a href="services.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Services</a>
+          <a href="customerSupport.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Support</a>
+        </div>
+      </nav>
+      <div class="space-x-2 font-semibold" id="navbarUser">
+        <!-- Default: Login/Register buttons (shown when not logged in) -->
+        <div id="authButtons" class="space-x-2">
+          <button
+            class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/login.html">LOG IN</a>
+          </button>
+          <button
+            class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/signup.html">SIGN UP</a>
+          </button>
+        </div>
+
+        <!-- Profile section (shown when logged in) -->
+        <div id="profileSection" class="space-x-2 hidden">
+          <div class="flex items-center space-x-3">
+            <span id="userWelcome" class="text-sm text-gray-700">Welcome, User!</span>
+            <div class="relative">
+              <button id="profileButton"
+                class="bg-green-100 px-4 py-2 text-sm rounded-md hover:bg-green-200 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300 flex items-center space-x-2">
+                <span id="userName">Profile</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <!-- Dropdown menu -->
+              <div id="profileDropdown"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden border border-gray-200">
+                <a href="./dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                <a href="./settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <hr class="my-1">
+                <button id="logoutButton"
+                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="flex flex-1 flex-col lg:flex-row">
+
+    <!-- Sidebar -->
+    <aside class="bg-[#efefef] w-full lg:w-64 p-4 space-y-4 min-h-screen">
+      <h2 class="text-2xl font-bold text-black bg-[#a5cd99] rounded-lg px-3 py-2 text-center shadow-sm">
+        Dashboard
+      </h2>
+      <nav class="space-y-3 pt-4 text-black font-medium">
+        <a href="rideRoute.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (6) 1.png" class="w-6 h-6" />
+          <span>Book a Ride</span>
+        </a>
+        <a href="payment&Trans.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (2) 1.png" class="w-6 h-6" />
+          <span>Payment & Transactions</span>
+        </a>
+
+        <a href="loyalty&Offers.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (7) 1.png" class="w-6 h-6" />
+          <span>Loyalty & Offers</span>
+        </a>
+        <a href="Scheduling.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (5) 1.png" class="w-6 h-6" />
+          <span>Scheduling</span>
+        </a>
+        <a href="Safety&Reports.html"
+          class="flex items-center space-x-3 bg-[#c7e3b6] hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (3) 1.png" class="w-6 h-6" />
+          <span>Safety & Reports</span>
+        </a>
+        <a href="settings.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/Setitingsphoto.png" class="w-6 h-6" />
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Safety & Reports Content -->
+    <main class="flex-1 max-w-7xl mx-auto p-6">
+      <section class="bg-white rounded-xl shadow-lg p-8 space-y-6">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold text-[#012B09]">Safety & Reports</h2>
+          <p class="text-[#1f3b08] text-sm mt-2">View safety tips, incident reports, and more to ensure your ride
+            experience stays secure.</p>
+        </div>
+
+        <!-- Safety Tips Toggle -->
+        <div class="bg-[#f8fff4] p-6 rounded-xl shadow-md">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Rider Safety Tips</h3>
+            <button onclick="toggleTips()"
+              class="bg-[#012B09] text-white text-sm px-4 py-2 rounded-md hover:bg-[#203924] transition">Toggle
+              Tips</button>
+          </div>
+          <ul id="safetyTips" class="list-disc list-inside space-y-2 text-sm">
+            <li>Always verify vehicle details before boarding.</li>
+            <li>Share your trip with friends or family.</li>
+            <li>Use the in-app emergency button if needed.</li>
+            <li>Rate and review your driver after each ride.</li>
+            <li>Don’t share personal information with the driver.</li>
+            <li>Avoid riding alone late at night if possible.</li>
+            <li>Ensure your phone is charged before starting the ride.</li>
+          </ul>
+        </div>
+
+        <!-- Report Filter and List -->
+        <div class="mt-10 space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h3 class="text-xl font-semibold">Incident Reports</h3>
+            <select id="reportFilter" onchange="filterReports()" class="border rounded-md px-3 py-2 text-sm">
+              <option value="all">All</option>
+              <option value="driver">Driver-related</option>
+              <option value="vehicle">Vehicle-related</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div id="reportList" class="grid md:grid-cols-2 gap-6">
+            <!-- Existing Reports + New Reports with animation -->
+            <div class="report-card bg-[#f8fff4] p-5 rounded-lg shadow space-y-2 animate-fade-in" data-type="driver">
+              <h4 class="font-semibold text-[#203924]">Driver Overspeeding</h4>
+              <p class="text-sm text-gray-700">Reported on: May 28, 2025</p>
+              <p class="text-sm">Driver exceeded speed limits near Banani area.</p>
+            </div>
+            <div class="report-card bg-[#f8fff4] p-5 rounded-lg shadow space-y-2 animate-fade-in" data-type="vehicle">
+              <h4 class="font-semibold text-[#203924]">Brake Failure in CNG</h4>
+              <p class="text-sm text-gray-700">Reported on: May 25, 2025</p>
+              <p class="text-sm">The CNG had mechanical issues mid-ride.</p>
+            </div>
+            <div class="report-card bg-[#f8fff4] p-5 rounded-lg shadow space-y-2 animate-fade-in" data-type="other">
+              <h4 class="font-semibold text-[#203924]">Incorrect Route Taken</h4>
+              <p class="text-sm text-gray-700">Reported on: May 23, 2025</p>
+              <p class="text-sm">Driver deviated from selected route without informing.</p>
+            </div>
+            <div class="report-card bg-[#f8fff4] p-5 rounded-lg shadow space-y-2 animate-fade-in" data-type="driver">
+              <h4 class="font-semibold text-[#203924]">Driver Ignored Red Light</h4>
+              <p class="text-sm text-gray-700">Reported on: May 21, 2025</p>
+              <p class="text-sm">Driver failed to stop at a red signal near Gulshan 2.</p>
+            </div>
+            <div class="report-card bg-[#f8fff4] p-5 rounded-lg shadow space-y-2 animate-fade-in" data-type="vehicle">
+              <h4 class="font-semibold text-[#203924]">AC Not Functioning</h4>
+              <p class="text-sm text-gray-700">Reported on: May 19, 2025</p>
+              <p class="text-sm">Air conditioner was broken in summer heat, very uncomfortable ride.</p>
+            </div>
+            <div class="report-card bg-[#f8fff4] p-5 rounded-lg shadow space-y-2 animate-fade-in" data-type="other">
+              <h4 class="font-semibold text-[#203924]">Driver Made Unscheduled Stop</h4>
+              <p class="text-sm text-gray-700">Reported on: May 17, 2025</p>
+              <p class="text-sm">Driver stopped for personal errands without notifying passenger.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-10 mb-0">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+      <div class="flex flex-col gap-7">
+        <a href="index.html"><img src="./img/Safar-logo.png" alt="" class="w-28"></a>
+        <div class="flex space-x-3 mt-4">
+          <img src="./img/appstores/Playstore.png" class="w-32 transition-transform hover:scale-110 duration-300"
+            alt="Google Play" />
+          <img src="./img/appstores/App Store.png" class="w-32 transition-transform hover:scale-110 duration-300"
+            alt="App Store" />
+        </div>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Navigate</h4>
+        <ul class="space-y-1 text-sm">
+          <li><a href="index.html" class="hover:text-green-600">Home</a></li>
+          <li><a href="subscription.html" class="hover:text-green-600">Subscription</a></li>
+          <li><a href="services.html" class="hover:text-green-600">Services</a></li>
+          <li><a href="customerSupport.html" class="hover:text-green-600">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Legal</h4>
+        <ul class="space-y-1 text-sm">
+          <li><a href="src/termsNcondition.html" class="hover:text-green-600">Terms & Conditions</a></li>
+          <li><a href="src/privacy.html" class="hover:text-green-600">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Socials</h4>
+        <div class="flex space-x-3 text-sm">
+          <img src="./img/social-medias/facebook-icon.png" alt="Facebook"
+            class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+          <img src="./img/social-medias/ig-icon.png" alt="Instagram"
+            class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+          <img src="./img/social-medias/x-icon.png" alt="X"
+            class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+        </div>
+      </div>
+    </div>
+    <div class="text-center text-xs text-gray-500 mt-8">© 2025 Safar. All rights reserved.</div>
+  </footer>
+
+  <script>
+    function toggleTips() {
+      const tips = document.getElementById("safetyTips");
+      tips.classList.toggle("hidden");
+    }
+
+    function filterReports() {
+      const filter = document.getElementById("reportFilter").value;
+      const reports = document.querySelectorAll(".report-card");
+      reports.forEach(card => {
+        const type = card.getAttribute("data-type");
+        card.style.display = (filter === "all" || type === filter) ? "block" : "none";
+      });
+    }
+  </script>
+
+  <script src="./src/js/navbar.js"></script>
+</body>
+
+</html>

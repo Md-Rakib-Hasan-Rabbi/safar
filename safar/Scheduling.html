@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scheduling</title>
+  <link rel="stylesheet" href="src/css/output.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-[#fcfdd9] text-[#012B09] min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="">
+    <div
+      class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex justify-between items-center px-5 py-3 md:mt-2 shadow-md md:rounded-md">
+      <div class="flex items-center space-x-2">
+        <a href="#" class="flex flex-row gap-3">
+          <a href="index.html"><img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" /></a>
+        </a>
+      </div>
+      <!-- Centered Navigation -->
+      <nav class="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+        <div class="flex space-x-8 font-medium">
+          <a href="subscription.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Subscription</a>
+          <a href="services.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Services</a>
+          <a href="customerSupport.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Support</a>
+        </div>
+      </nav>
+      <div class="space-x-2 font-semibold" id="navbarUser">
+        <!-- Default: Login/Register buttons (shown when not logged in) -->
+        <div id="authButtons" class="space-x-2">
+          <button
+            class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/login.html">LOG IN</a>
+          </button>
+          <button
+            class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/signup.html">SIGN UP</a>
+          </button>
+        </div>
+
+        <!-- Profile section (shown when logged in) -->
+        <div id="profileSection" class="space-x-2 hidden">
+          <div class="flex items-center space-x-3">
+            <span id="userWelcome" class="text-sm text-gray-700">Welcome, User!</span>
+            <div class="relative">
+              <button id="profileButton"
+                class="bg-green-100 px-4 py-2 text-sm rounded-md hover:bg-green-200 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300 flex items-center space-x-2">
+                <span id="userName">Profile</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <!-- Dropdown menu -->
+              <div id="profileDropdown"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden border border-gray-200">
+                <a href="./dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                <a href="./settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <hr class="my-1">
+                <button id="logoutButton"
+                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="flex flex-1 flex-col lg:flex-row">
+
+    <!-- Sidebar -->
+    <aside class="bg-[#efefef] w-full lg:w-64 p-4 space-y-4 min-h-screen">
+      <h2 class="text-2xl font-bold text-black bg-[#a5cd99] rounded-lg px-3 py-2 text-center shadow-sm">
+        Dashboard
+      </h2>
+      <nav class="space-y-3 pt-4 text-black font-medium">
+        <a href="rideRoute.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (6) 1.png" class="w-6 h-6" />
+          <span>Book a Ride</span>
+        </a>
+        <a href="payment&Trans.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (2) 1.png" class="w-6 h-6" />
+          <span>Payment & Transactions</span>
+        </a>
+
+        <a href="loyalty&Offers.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (7) 1.png" class="w-6 h-6" />
+          <span>Loyalty & Offers</span>
+        </a>
+        <a href="Scheduling.html"
+          class="flex items-center space-x-3 bg-[#c7e3b6] hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (5) 1.png" class="w-6 h-6" />
+          <span>Scheduling</span>
+        </a>
+        <a href="Safety&Reports.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (3) 1.png" class="w-6 h-6" />
+          <span>Safety & Reports</span>
+        </a>
+        <a href="settings.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/Setitingsphoto.png" class="w-6 h-6" />
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Scheduling Content -->
+    <main class="flex-1 max-w-7xl mx-auto p-6">
+      <section class="bg-white rounded-xl shadow-lg p-8 space-y-6">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold text-[#012B09]">Schedule Your Ride</h2>
+          <p class="text-[#1f3b08] text-sm mt-2">Choose your date and time to reserve your ride in advance.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 mt-6">
+          <div>
+            <label class="block text-sm font-medium mb-2">Select Date</label>
+            <input type="date" class="w-full border px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-[#a5cd99]" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Select Time</label>
+            <input type="time" class="w-full border px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-[#a5cd99]" />
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <label class="block text-sm font-medium mb-2">Pickup Location</label>
+            <input type="text" placeholder="Enter pickup location"
+              class="w-full border px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-[#a5cd99]" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Drop Location</label>
+            <input type="text" placeholder="Enter drop location"
+              class="w-full border px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-[#a5cd99]" />
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <button class="bg-[#012B09] text-white px-6 py-3 rounded-md hover:bg-[#203924] transition">Confirm
+            Ride</button>
+        </div>
+
+        <!-- Live Vehicle Availability (Dynamic Status) -->
+        <div class="bg-[#f8fff4] p-6 rounded-xl shadow-md mt-10">
+          <h3 class="text-xl font-semibold text-[#203924] mb-6">Live Vehicle Availability</h3>
+          <p class="text-sm text-gray-600 mb-6 max-w-xl">
+            Check which vehicles are currently available for the selected time slot. Availability is updated in
+            real-time.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+            <!-- Bike -->
+            <div class="bg-white p-5 rounded-lg border shadow-sm flex flex-col items-center">
+              <img src="./Images/Bike.png" alt="Bike Icon" class="w-10 h-8 mb-3" />
+              <p class="font-semibold text-lg mb-2">Bike</p>
+              <div class="flex items-center space-x-3">
+                <span class="status-dot w-4 h-4 rounded-full animate-pulse" id="bike-status-dot" title="Status"></span>
+                <span class="status-text font-medium text-sm" id="bike-status-text">Loading...</span>
+              </div>
+            </div>
+
+            <!-- Car -->
+            <div class="bg-white p-5 rounded-lg border shadow-sm flex flex-col items-center">
+              <img src="./Images/Car.png" alt="Car Icon" class="w-13 h-6 mb-3" />
+              <p class="font-semibold text-lg mb-2">Car</p>
+              <div class="flex items-center space-x-3">
+                <span class="status-dot w-4 h-4 rounded-full" id="car-status-dot" title="Status"></span>
+                <span class="status-text font-medium text-sm" id="car-status-text">Loading...</span>
+              </div>
+            </div>
+
+            <!-- CNG -->
+            <div class="bg-white p-5 rounded-lg border shadow-sm flex flex-col items-center">
+              <img src="./Images/CNG.png" alt="CNG Icon" class="w-10 h-9 mb-3" />
+              <p class="font-semibold text-lg mb-2">CNG</p>
+              <div class="flex items-center space-x-3">
+                <span class="status-dot w-4 h-4 rounded-full animate-pulse" id="cng-status-dot" title="Status"></span>
+                <span class="status-text font-medium text-sm" id="cng-status-text">Loading...</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-10 mb-0">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+      <div class="flex flex-col gap-7">
+        <a href="index.html"><img src="./img/Safar-logo.png" alt="" class="w-28"></a>
+        <div class="flex space-x-3 mt-4">
+          <img src="./img/appstores/Playstore.png" class="w-32 transition-transform hover:scale-110 duration-300"
+            alt="Google Play" />
+          <img src="./img/appstores/App Store.png" class="w-32 transition-transform hover:scale-110 duration-300"
+            alt="App Store" />
+        </div>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Navigate</h4>
+        <ul class="space-y-1 text-sm">
+          <li><a href="index.html" class="hover:text-green-600">Home</a></li>
+          <li><a href="subscription.html" class="hover:text-green-600">Subscription</a></li>
+          <li><a href="services.html" class="hover:text-green-600">Services</a></li>
+          <li><a href="customerSupport.html" class="hover:text-green-600">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Legal</h4>
+        <ul class="space-y-1 text-sm">
+          <li><a href="src/termsNcondition.html" class="hover:text-green-600">Terms & Conditions</a></li>
+          <li><a href="src/privacy.html" class="hover:text-green-600">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Socials</h4>
+        <div class="flex space-x-3 text-sm">
+          <img src="./img/social-medias/facebook-icon.png" alt="Facebook"
+            class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+          <img src="./img/social-medias/ig-icon.png" alt="Instagram"
+            class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+          <img src="./img/social-medias/x-icon.png" alt="X"
+            class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+        </div>
+      </div>
+    </div>
+    <div class="text-center text-xs text-gray-500 mt-8">© 2025 Safar. All rights reserved.</div>
+  </footer>
+
+
+  <script>
+    const statuses = [
+      { text: "Available", color: "bg-green-500", pulse: true },
+      { text: "Limited", color: "bg-yellow-400", pulse: false },
+      { text: "Not Available", color: "bg-red-500", pulse: false }
+    ];
+
+    // Function to update status element
+    function updateStatus(dotId, textId, status) {
+      const dot = document.getElementById(dotId);
+      const text = document.getElementById(textId);
+
+      dot.className = `status-dot w-4 h-4 rounded-full ${status.color} ${status.pulse ? "animate-pulse" : ""}`;
+      text.textContent = status.text;
+      text.className = `status-text font-medium text-sm ${status.color === "bg-green-500"
+        ? "text-green-700"
+        : status.color === "bg-yellow-400"
+          ? "text-yellow-700"
+          : "text-red-700"
+        }`;
+    }
+
+    // Cycle through statuses for each vehicle independently
+    const bikeStatusCycle = [0, 1, 0, 2]; // indices of statuses array for bike
+    const carStatusCycle = [1, 0, 2, 1];
+    const cngStatusCycle = [0, 2, 1, 0];
+
+    let bikeIndex = 0;
+    let carIndex = 0;
+    let cngIndex = 0;
+
+    function cycleStatuses() {
+      updateStatus("bike-status-dot", "bike-status-text", statuses[bikeStatusCycle[bikeIndex]]);
+      updateStatus("car-status-dot", "car-status-text", statuses[carStatusCycle[carIndex]]);
+      updateStatus("cng-status-dot", "cng-status-text", statuses[cngStatusCycle[cngIndex]]);
+
+      bikeIndex = (bikeIndex + 1) % bikeStatusCycle.length;
+      carIndex = (carIndex + 1) % carStatusCycle.length;
+      cngIndex = (cngIndex + 1) % cngStatusCycle.length;
+    }
+
+    // Initial call
+    cycleStatuses();
+
+    // Repeat every 5 seconds
+    setInterval(cycleStatuses, 5000);
+  </script>
+  <script src="./src/js/navbar.js"></script>
+</body>
+
+</html>

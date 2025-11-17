@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Send Parcel | Safar</title>
+    <link rel="stylesheet" href="src/css/output.css">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="./src/css/custom-animation.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <style>
+        #routeMap {
+            width: 100%;
+            height: 450px;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .leaflet-control-geocoder {
+            min-width: 250px;
+            border-radius: 0.5rem;
+        }
+
+        .marker-label {
+            background: #fff;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .parcel-option {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        }
+
+        .parcel-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .parcel-option.selected {
+            border-color: #047857 !important;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.3);
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="">
+        <div
+            class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex justify-between items-center px-5 py-3 md:mt-2 shadow-md md:rounded-md">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex flex-row gap-3">
+                    <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+                </a>
+            </div>
+            <!-- Centered Navigation -->
+            <nav class="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+                <div class="flex space-x-8 font-medium">
+                    <a href="subscription.html"
+                        class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Subscription</a>
+                    <a href="services.html"
+                        class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Services</a>
+                    <a href="customerSupport.html"
+                        class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Support</a>
+                </div>
+            </nav>
+            <div class="space-x-2 font-semibold" id="navbarUser">
+                <!-- Default: Login/Register buttons (shown when not logged in) -->
+                <div id="authButtons" class="space-x-2">
+                    <button
+                        class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+                        <a href="./src/login.html">LOG IN</a>
+                    </button>
+                    <button
+                        class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+                        <a href="./src/signup.html">SIGN UP</a>
+                    </button>
+                </div>
+
+                <!-- Profile section (shown when logged in) -->
+                <div id="profileSection" class="space-x-2 hidden">
+                    <div class="flex items-center space-x-3">
+                        <span id="userWelcome" class="text-sm text-gray-700">Welcome, User!</span>
+                        <div class="relative">
+                            <button id="profileButton"
+                                class="bg-green-100 px-4 py-2 text-sm rounded-md hover:bg-green-200 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300 flex items-center space-x-2">
+                                <span id="userName">Profile</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <!-- Dropdown menu -->
+                            <div id="profileDropdown"
+                                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-[9999] hidden border border-gray-200">
+                                <a href="./dashboard.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                                <a href="./settings.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <hr class="my-1">
+                                <button id="logoutButton"
+                                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-full md:max-w-6xl mx-auto p-6" data-aos="fade-up">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Send a Parcel</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Send your parcels safely and quickly. Select pickup and delivery locations,
+                choose parcel size, and we'll handle the rest with our trusted delivery partners.
+            </p>
+        </div>
+
+        <!-- Instructions -->
+        <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl p-6 mb-8 border border-orange-100"
+            data-aos="fade-up" data-aos-delay="100">
+            <div class="flex items-center justify-center space-x-6 text-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-4 h-4 bg-orange-600 rounded-full"></div>
+                    <span class="font-semibold text-orange-700">Click for Pickup</span>
+                </div>
+                <div class="hidden md:block w-px h-6 bg-gray-300"></div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-4 h-4 bg-red-600 rounded-full"></div>
+                    <span class="font-semibold text-red-700">Click for Delivery</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8" data-aos="fade-up" data-aos-delay="200">
+            <!-- Locate Me Button -->
+            <div class="flex justify-end mb-4">
+                <button id="locateBtn"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-all duration-300 flex items-center space-x-2 shadow-md hover:shadow-lg transform hover:scale-105">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z">
+                        </path>
+                    </svg>
+                    <span>Locate Me</span>
+                </button>
+            </div>
+            <div id="routeMap"></div>
+        </div>
+
+        <!-- Location Info -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8" data-aos="fade-up" data-aos-delay="300">
+            <div class="bg-orange-50 rounded-xl p-6 border border-orange-200">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-3 h-3 bg-orange-600 rounded-full"></div>
+                    <span class="font-semibold text-orange-800">Pickup Location</span>
+                </div>
+                <span id="startCoords" class="text-sm text-gray-700 block">Click on the map to select pickup
+                    point</span>
+            </div>
+            <div class="bg-red-50 rounded-xl p-6 border border-red-200">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-3 h-3 bg-red-600 rounded-full"></div>
+                    <span class="font-semibold text-red-800">Delivery Location</span>
+                </div>
+                <span id="destCoords" class="text-sm text-gray-700 block">Click on the map to select delivery
+                    point</span>
+            </div>
+        </div>
+
+        <!-- Parcel Details Form -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8" data-aos="fade-up" data-aos-delay="350">
+            <h3 class="text-2xl font-bold text-center text-gray-900 mb-6">Parcel Information</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Sender Details -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-4">Sender Information</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Sender Name</label>
+                            <input type="text" id="senderName"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                placeholder="Enter sender name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Sender Phone</label>
+                            <input type="tel" id="senderPhone"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                placeholder="Enter phone number">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Receiver Details -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-4">Receiver Information</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Receiver Name</label>
+                            <input type="text" id="receiverName"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                placeholder="Enter receiver name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Receiver Phone</label>
+                            <input type="tel" id="receiverPhone"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                placeholder="Enter phone number">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parcel Description -->
+            <div class="mt-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Parcel Description</label>
+                <textarea id="parcelDescription" rows="3"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Describe your parcel (e.g., documents, clothes, electronics)"></textarea>
+            </div>
+        </div>
+
+        <!-- Parcel Size Selection -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8" data-aos="fade-up" data-aos-delay="400">
+            <h3 class="text-2xl font-bold text-center text-gray-900 mb-6">Select Parcel Size</h3>
+            <div id="parcelOptions" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="parcel-option cursor-pointer p-6 border-2 border-gray-200 rounded-xl text-center hover:border-green-600 transition-all duration-300"
+                    data-type="Small" data-weight="0-2kg">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">Small</h4>
+                    <p class="text-sm text-gray-600">Up to 2kg</p>
+                    <p class="text-xs text-green-600 font-medium mt-2">৳40 base + ৳15/km</p>
+                </div>
+                <div class="parcel-option cursor-pointer p-6 border-2 border-gray-200 rounded-xl text-center hover:border-green-600 transition-all duration-300"
+                    data-type="Medium" data-weight="2-10kg">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">Medium</h4>
+                    <p class="text-sm text-gray-600">2kg - 10kg</p>
+                    <p class="text-xs text-green-600 font-medium mt-2">৳80 base + ৳25/km</p>
+                </div>
+                <div class="parcel-option cursor-pointer p-6 border-2 border-gray-200 rounded-xl text-center hover:border-green-600 transition-all duration-300"
+                    data-type="Large" data-weight="10-25kg">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-orange-100 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">Large</h4>
+                    <p class="text-sm text-gray-600">10kg - 25kg</p>
+                    <p class="text-xs text-green-600 font-medium mt-2">৳120 base + ৳35/km</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Button -->
+        <div class="text-center" data-aos="fade-up" data-aos-delay="500">
+            <button id="confirmBtn"
+                class="text-white bg-gradient-to-r from-green-600 to-green-700 px-12 py-4 rounded-xl font-semibold text-lg hover:from-green-700 hover:to-green-800 transform hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                disabled>
+                <span class="flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                    <span>Confirm & Send Parcel</span>
+                </span>
+            </button>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+    <script>
+        const map = L.map("routeMap").setView([23.8103, 90.4125], 12);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: "© OpenStreetMap",
+        }).addTo(map);
+
+        L.Control.geocoder().addTo(map);
+
+        let startMarker = null, destMarker = null;
+        let points = [];
+        let selectedParcelSize = null;
+        let routingControl = null;
+        let routeDistance = 0;
+        let estimatedFare = 0;
+
+        // Function to get address from coordinates
+        function getAddressFromCoords(lat, lng, callback) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
+                .then(response => response.json())
+                .then(data => {
+                    let displayName = data.display_name || `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+
+                    // Try to get a shorter, more readable address
+                    if (data.address) {
+                        const address = data.address;
+                        let shortAddress = '';
+
+                        if (address.house_number && address.road) {
+                            shortAddress = `${address.house_number} ${address.road}`;
+                        } else if (address.road) {
+                            shortAddress = address.road;
+                        } else if (address.suburb) {
+                            shortAddress = address.suburb;
+                        } else if (address.neighbourhood) {
+                            shortAddress = address.neighbourhood;
+                        }
+
+                        if (shortAddress && (address.city || address.town)) {
+                            shortAddress += `, ${address.city || address.town}`;
+                        } else if (!shortAddress && (address.city || address.town)) {
+                            shortAddress = address.city || address.town;
+                        }
+
+                        if (shortAddress) {
+                            displayName = shortAddress;
+                        }
+                    }
+
+                    callback(displayName);
+                })
+                .catch(error => {
+                    console.error('Error getting address:', error);
+                    callback(`${lat.toFixed(5)}, ${lng.toFixed(5)}`);
+                });
+        }
+
+        // Function to update or create route
+        function updateRoute() {
+            if (points[0] && points[1]) {
+                // Remove existing route if any
+                if (routingControl) {
+                    map.removeControl(routingControl);
+                }
+
+                // Create new route
+                routingControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(points[0].lat, points[0].lng),
+                        L.latLng(points[1].lat, points[1].lng)
+                    ],
+                    router: L.Routing.osrmv1({
+                        serviceUrl: 'https://router.project-osrm.org/route/v1',
+                        profile: 'driving'
+                    }),
+                    routeWhileDragging: false,
+                    addWaypoints: false,
+                    draggableWaypoints: false,
+                    createMarker: function () { return null; }, // Don't create default markers
+                    lineOptions: {
+                        styles: [
+                            { color: '#F97316', weight: 6, opacity: 0.8 },
+                            { color: '#DC2626', weight: 4, opacity: 1 }
+                        ]
+                    },
+                    show: false, // Hide the instruction panel
+                    collapsible: true
+                }).addTo(map);
+
+                // Listen for route found event to get distance
+                routingControl.on('routesfound', function (e) {
+                    const routes = e.routes;
+                    if (routes && routes.length > 0) {
+                        const route = routes[0];
+                        routeDistance = route.summary.totalDistance / 1000; // Convert to km
+                        console.log('Route distance:', routeDistance, 'km');
+                        updateFareDisplay();
+                        checkConfirmButton();
+                    }
+                });
+
+                // Hide the routing instructions panel
+                const routingContainer = routingControl.getContainer();
+                if (routingContainer) {
+                    routingContainer.style.display = 'none';
+                }
+
+                // Fit map to show the route
+                setTimeout(() => {
+                    if (routingControl && routingControl._router && routingControl._routes && routingControl._routes.length > 0) {
+                        const route = routingControl._routes[0];
+                        if (route && route.coordinates) {
+                            const group = new L.featureGroup([startMarker, destMarker]);
+                            map.fitBounds(group.getBounds().pad(0.1));
+                        }
+                    }
+                }, 1000);
+            } else if (routingControl) {
+                // Remove route if we don't have both points
+                map.removeControl(routingControl);
+                routingControl = null;
+            }
+        }
+
+        // Function to calculate and update fare display
+        function updateFareDisplay() {
+            if (routeDistance > 0) {
+                // Update parcel option cards with calculated fare
+                const parcelOptions = document.querySelectorAll('.parcel-option');
+
+                parcelOptions.forEach(option => {
+                    const parcelType = option.dataset.type;
+                    let baseFare = 0;
+                    let perKmRate = 0;
+
+                    // Set rates based on parcel size
+                    switch (parcelType) {
+                        case 'Small':
+                            baseFare = 40;
+                            perKmRate = 15;
+                            break;
+                        case 'Medium':
+                            baseFare = 80;
+                            perKmRate = 25;
+                            break;
+                        case 'Large':
+                            baseFare = 120;
+                            perKmRate = 35;
+                            break;
+                    }
+
+                    const totalFare = baseFare + (routeDistance * perKmRate);
+
+                    // Update the fare display in the parcel card
+                    const fareElement = option.querySelector('.text-xs.text-green-600');
+                    if (fareElement) {
+                        fareElement.innerHTML = `<span class="font-bold">৳${Math.round(totalFare)}</span> • ${routeDistance.toFixed(1)} km`;
+                    }
+
+                    // Update estimated fare for selected parcel size
+                    if (option.classList.contains('selected')) {
+                        estimatedFare = Math.round(totalFare);
+                    }
+                });
+
+                // Update the selected parcel size fare if one is selected
+                if (selectedParcelSize) {
+                    const selectedOption = document.querySelector(`[data-type="${selectedParcelSize}"]`);
+                    if (selectedOption) {
+                        let baseFare = 0;
+                        let perKmRate = 0;
+
+                        switch (selectedParcelSize) {
+                            case 'Small':
+                                baseFare = 40;
+                                perKmRate = 15;
+                                break;
+                            case 'Medium':
+                                baseFare = 80;
+                                perKmRate = 25;
+                                break;
+                            case 'Large':
+                                baseFare = 120;
+                                perKmRate = 35;
+                                break;
+                        }
+
+                        estimatedFare = Math.round(baseFare + (routeDistance * perKmRate));
+                    }
+                }
+            }
+        }
+
+        // Locate Me functionality
+        document.getElementById('locateBtn').addEventListener('click', function () {
+            const button = this;
+            const originalText = button.innerHTML;
+
+            // Show loading state
+            button.innerHTML = `
+        <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        <span>Locating...</span>
+      `;
+            button.disabled = true;
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const userLocation = L.latLng(lat, lng);
+
+                        // Remove existing start marker if any
+                        if (startMarker) {
+                            map.removeLayer(startMarker);
+                        }
+
+                        // Add new start marker at user's location
+                        startMarker = L.marker(userLocation, {
+                            draggable: true,
+                            icon: L.icon({
+                                iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
+                                iconSize: [32, 32],
+                                iconAnchor: [16, 32],
+                            })
+                        })
+                            .addTo(map)
+                            .bindTooltip("Pickup Location", { permanent: true, direction: "top", className: "marker-label" })
+                            .openTooltip();
+
+                        points[0] = userLocation;
+
+                        // Get address for current location
+                        getAddressFromCoords(lat, lng, function (address) {
+                            document.getElementById("startCoords").textContent = address;
+                        });
+
+                        // Center map on user's location
+                        map.setView(userLocation, 15);
+
+                        // Add drag event
+                        startMarker.on("dragend", function (ev) {
+                            points[0] = ev.target.getLatLng();
+                            getAddressFromCoords(points[0].lat, points[0].lng, function (address) {
+                                document.getElementById("startCoords").textContent = address;
+                            });
+                            updateRoute();
+                            checkConfirmButton();
+                        });
+
+                        // Add click event to remove marker
+                        startMarker.on("click", function () {
+                            map.removeLayer(startMarker);
+                            startMarker = null;
+                            points[0] = null;
+                            document.getElementById("startCoords").textContent = "Click on the map to select pickup point";
+                            updateRoute();
+                            checkConfirmButton();
+                        });
+
+                        updateRoute();
+                        checkConfirmButton();
+
+                        // Reset button
+                        button.innerHTML = `
+              <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Located!</span>
+            `;
+                        button.disabled = false;
+
+                        // Reset button text after 2 seconds
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                        }, 2000);
+                    },
+                    function (error) {
+                        let errorMessage = "Unable to get location";
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage = "Location access denied";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage = "Location unavailable";
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage = "Location request timeout";
+                                break;
+                        }
+
+                        alert(errorMessage + ". Please select pickup point manually on the map.");
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 60000
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser. Please select pickup point manually.");
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        });
+
+        map.on("click", function (e) {
+            if (!startMarker) {
+                startMarker = L.marker(e.latlng, {
+                    draggable: true,
+                    icon: L.icon({
+                        iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32],
+                    })
+                })
+                    .addTo(map)
+                    .bindTooltip("Pickup Point", { permanent: true, direction: "top", className: "marker-label" })
+                    .openTooltip();
+
+                points[0] = e.latlng;
+
+                getAddressFromCoords(e.latlng.lat, e.latlng.lng, function (address) {
+                    document.getElementById("startCoords").textContent = address;
+                });
+
+                startMarker.on("dragend", function (ev) {
+                    points[0] = ev.target.getLatLng();
+                    getAddressFromCoords(points[0].lat, points[0].lng, function (address) {
+                        document.getElementById("startCoords").textContent = address;
+                    });
+                    updateRoute();
+                    checkConfirmButton();
+                });
+
+                startMarker.on("click", function () {
+                    map.removeLayer(startMarker);
+                    startMarker = null;
+                    points[0] = null;
+                    document.getElementById("startCoords").textContent = "Click on the map to select pickup point";
+                    updateRoute();
+                    checkConfirmButton();
+                });
+
+                updateRoute();
+                checkConfirmButton();
+
+            } else if (!destMarker) {
+                destMarker = L.marker(e.latlng, {
+                    draggable: true,
+                    icon: L.icon({
+                        iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32],
+                    }),
+                }).addTo(map)
+                    .bindTooltip("Delivery Point", { permanent: true, direction: "top", className: "marker-label" })
+                    .openTooltip();
+
+                points[1] = e.latlng;
+
+                getAddressFromCoords(e.latlng.lat, e.latlng.lng, function (address) {
+                    document.getElementById("destCoords").textContent = address;
+                });
+
+                destMarker.on("dragend", function (ev) {
+                    points[1] = ev.target.getLatLng();
+                    getAddressFromCoords(points[1].lat, points[1].lng, function (address) {
+                        document.getElementById("destCoords").textContent = address;
+                    });
+                    updateRoute();
+                    checkConfirmButton();
+                });
+
+                destMarker.on("click", function () {
+                    map.removeLayer(destMarker);
+                    destMarker = null;
+                    points[1] = null;
+                    document.getElementById("destCoords").textContent = "Click on the map to select delivery point";
+                    updateRoute();
+                    checkConfirmButton();
+                });
+
+                updateRoute();
+                checkConfirmButton();
+            }
+        });
+
+        function validateForm() {
+            const senderName = document.getElementById('senderName').value.trim();
+            const senderPhone = document.getElementById('senderPhone').value.trim();
+            const receiverName = document.getElementById('receiverName').value.trim();
+            const receiverPhone = document.getElementById('receiverPhone').value.trim();
+            const parcelDescription = document.getElementById('parcelDescription').value.trim();
+
+            return senderName && senderPhone && receiverName && receiverPhone && parcelDescription;
+        }
+
+        function checkConfirmButton() {
+            const confirmBtn = document.getElementById("confirmBtn");
+            const formValid = validateForm();
+
+            if (points[0] && points[1] && selectedParcelSize && formValid && routeDistance > 0) {
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = `
+          <span class="flex items-center justify-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+            <span>Confirm & Send Parcel</span>
+          </span>
+        `;
+            } else {
+                confirmBtn.disabled = true;
+                let missingItems = [];
+                if (!points[0] || !points[1]) missingItems.push('locations');
+                if (!selectedParcelSize) missingItems.push('parcel size');
+                if (!formValid) missingItems.push('form details');
+
+                confirmBtn.innerHTML = `
+          <span class="flex items-center justify-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+            <span>Select ${missingItems.join(', ')}</span>
+          </span>
+        `;
+            }
+        }
+
+        // Form validation
+        ['senderName', 'senderPhone', 'receiverName', 'receiverPhone', 'parcelDescription'].forEach(id => {
+            document.getElementById(id).addEventListener('input', checkConfirmButton);
+        });
+
+        document.querySelectorAll(".parcel-option").forEach((option) => {
+            option.addEventListener("click", () => {
+                document.querySelectorAll(".parcel-option").forEach((el) => el.classList.remove("selected"));
+                option.classList.add("selected");
+                selectedParcelSize = option.dataset.type;
+                updateFareDisplay();
+                checkConfirmButton();
+            });
+        });
+
+        document.getElementById("confirmBtn").onclick = function () {
+            if (points.length === 2 && selectedParcelSize && validateForm() && routeDistance > 0) {
+                // Store parcel data for payment page
+                const parcelData = {
+                    pickup: {
+                        lat: points[0].lat,
+                        lng: points[0].lng,
+                        address: document.getElementById("startCoords").textContent
+                    },
+                    delivery: {
+                        lat: points[1].lat,
+                        lng: points[1].lng,
+                        address: document.getElementById("destCoords").textContent
+                    },
+                    sender: {
+                        name: document.getElementById('senderName').value.trim(),
+                        phone: document.getElementById('senderPhone').value.trim()
+                    },
+                    receiver: {
+                        name: document.getElementById('receiverName').value.trim(),
+                        phone: document.getElementById('receiverPhone').value.trim()
+                    },
+                    parcelDetails: {
+                        size: selectedParcelSize,
+                        weight: document.querySelector(`[data-type="${selectedParcelSize}"]`).dataset.weight,
+                        description: document.getElementById('parcelDescription').value.trim()
+                    },
+                    service: 'parcel',
+                    distance: routeDistance.toFixed(1),
+                    fare: estimatedFare,
+                    timestamp: Date.now()
+                };
+
+                // Save to localStorage
+                localStorage.setItem('safar_payment_data', JSON.stringify(parcelData));
+
+                // Redirect to payment page
+                window.location.href = 'payment.html';
+            } else {
+                alert("Please complete all fields and select pickup/delivery locations.");
+            }
+        };
+
+        // Initialize button state
+        checkConfirmButton();
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+            <div class="flex flex-col gap-7">
+                <a href="index.html"><img src="./img/Safar-logo.png" alt="" class="w-28"></a>
+                <div class="flex space-x-3 mt-4">
+                    <img src="./img/appstores/Playstore.png"
+                        class="w-30 transition-transform hover:scale-110 duration-300" alt="Google Play" />
+                    <img src="./img/appstores/App Store.png"
+                        class="w-30 transition-transform hover:scale-110 duration-300" alt="App Store" />
+                </div>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-2">Navigate</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="index.html" class="hover:text-green-600">Home</a></li>
+                    <li><a href="subscription.html" class="hover:text-green-600">Subscription</a></li>
+                    <li><a href="services.html" class="hover:text-green-600">Services</a></li>
+                    <li><a href="customerSupport.html" class="hover:text-green-600">Support</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-2">Legal</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="./src/termsNcondition.html" class="hover:text-green-600">Terms & Conditions</a></li>
+                    <li><a href="./src/privacy.html" class="hover:text-green-600">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-2">Socials</h4>
+                <div class="flex space-x-3 text-sm">
+                    <img src="./img/social-medias/facebook-icon.png" alt="Facebook"
+                        class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+                    <img src="./img/social-medias/ig-icon.png" alt="Instagram"
+                        class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+                    <img src="./img/social-medias/x-icon.png" alt="X"
+                        class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+                </div>
+            </div>
+        </div>
+        <div class="text-center text-xs text-gray-500 mt-8">© 2025 Safar. All rights reserved.</div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="./src/js/navbar.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+    </script>
+</body>
+
+</html>

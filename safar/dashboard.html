@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <link rel="stylesheet" href="src/css/output.css">
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+    }
+
+    #liveMap {
+      width: 100%;
+      height: 350px;
+      min-height: 300px;
+      border-radius: 0.5rem;
+      display: none;
+    }
+
+    .leaflet-control-geocoder {
+      min-width: 200px;
+    }
+
+    .recenter-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1001;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    #mapPlaceholder {
+      cursor: pointer;
+    }
+
+    /* Toggle switch styles for admin settings */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+    }
+
+    input:checked+.slider {
+      background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(26px);
+    }
+
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    .admin-nav-item.active {
+      background-color: #d1f2c3 !important;
+    }
+  </style>
+</head>
+
+<body class="bg-white">
+  <!-- Navbar -->
+  <header class="">
+    <div
+      class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex justify-between items-center px-5 py-3 md:mt-2 shadow-md md:rounded-md">
+      <div class="flex items-center space-x-2">
+        <a href="index.html" class="flex flex-row gap-3">
+          <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+        </a>
+      </div>
+
+      <!-- Centered Navigation -->
+      <nav class="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+        <div class="flex space-x-8 font-medium">
+          <a href="subscription.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Subscription</a>
+          <a href="services.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Services</a>
+          <a href="customerSupport.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Support</a>
+        </div>
+      </nav>
+
+      <div class="space-x-2 font-semibold" id="navbarUser">
+        <!-- Default: Login/Register buttons (shown when not logged in) -->
+        <div id="authButtons" class="space-x-2">
+          <button
+            class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/login.html">LOG IN</a>
+          </button>
+          <button
+            class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/signup.html">SIGN UP</a>
+          </button>
+        </div>
+
+        <!-- Profile section (shown when logged in) -->
+        <div id="profileSection" class="space-x-2 hidden">
+          <div class="flex items-center space-x-3">
+            <span id="userWelcome" class="text-sm text-gray-700">Welcome, User!</span>
+            <div class="relative">
+              <button id="profileButton"
+                class="bg-green-100 px-4 py-2 text-sm rounded-md hover:bg-green-200 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300 flex items-center space-x-2">
+                <span id="userName">Profile</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <!-- Dropdown menu -->
+              <div id="profileDropdown"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-[9999] hidden border border-gray-200">
+                <a href="./dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                <a href="./settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <hr class="my-1">
+                <button id="logoutButton"
+                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-col lg:flex-row min-h-screen">
+    <!-- Dynamic Sidebar -->
+    <aside class="bg-[#efefef] w-full lg:w-64 p-4 space-y-4 min-h-screen">
+      <h2 id="dashboardTitle" class="text-2xl font-bold bg-[#a5cd99] rounded-lg px-3 py-2 text-center shadow-sm">
+        Dashboard</h2>
+
+      <!-- User Dashboard (Rider/Driver) -->
+      <nav id="userDashboard" class="space-y-3 pt-4 font-medium text-black hidden">
+        <a href="rideRoute.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow">
+          <img src="./Images/pngegg (6) 1.png" class="w-6 h-6" alt="Book Ride Icon" />
+          <span>Book a Ride</span>
+        </a>
+        <a href="payment&Trans.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow">
+          <img src="./Images/pngegg (2) 1.png" class="w-6 h-6" alt="Payment Icon" />
+          <span>Payment & Transactions</span>
+        </a>
+        <a href="loyalty&Offers.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow">
+          <img src="./Images/pngegg (7) 1.png" class="w-6 h-6" alt="Loyalty Icon" />
+          <span>Loyalty & Offers</span>
+        </a>
+        <a href="Scheduling.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow">
+          <img src="./Images/pngegg (5) 1.png" class="w-6 h-6" alt="Scheduling Icon" />
+          <span>Scheduling</span>
+        </a>
+        <a href="Safety&Reports.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow">
+          <img src="./Images/pngegg (3) 1.png" class="w-6 h-6" alt="Reports Icon" />
+          <span>Safety & Reports</span>
+        </a>
+        <a href="settings.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow">
+          <img src="./Images/Setitingsphoto.png" class="w-6 h-6" alt="Settings Icon" />
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <!-- Admin Dashboard -->
+      <nav id="adminDashboard" class="space-y-3 pt-4 font-medium text-black hidden">
+        <a href="#userManagement" onclick="showAdminSection('userManagement')"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow admin-nav-item">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
+            </path>
+          </svg>
+          <span>User Management</span>
+        </a>
+        <a href="#rideAnalytics" onclick="showAdminSection('rideAnalytics')"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow admin-nav-item">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+            </path>
+          </svg>
+          <span>Ride Analytics</span>
+        </a>
+        <a href="#vehicleManagement" onclick="showAdminSection('vehicleManagement')"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow admin-nav-item">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+            </path>
+          </svg>
+          <span>Vehicle Management</span>
+        </a>
+        <a href="#paymentOverview" onclick="showAdminSection('paymentOverview')"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow admin-nav-item">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+            </path>
+          </svg>
+          <span>Payment Overview</span>
+        </a>
+        <a href="#systemSettings" onclick="showAdminSection('systemSettings')"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow admin-nav-item">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+            </path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+            </path>
+          </svg>
+          <span>System Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Dynamic Main Content -->
+    <main id="dashboardContent" class="flex-1 p-4 space-y-4">
+      <!-- User Dashboard Content (Rider/Driver) -->
+      <div id="userContent" class="hidden">
+        <!-- Personal Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="bg-[#fcfdd9] rounded-lg shadow-md p-4">
+            <h3 class="text-md font-semibold text-[#1f3b08]">My Rides Today</h3>
+            <div class="flex items-center justify-between mt-2">
+              <p id="userRidesCount" class="text-3xl font-bold">3</p>
+              <img src="./Images/pngegg (6) 1.png" alt="My Rides" class="w-10 h-10" />
+            </div>
+          </div>
+          <div class="bg-[#fcfdd9] rounded-lg shadow-md p-4">
+            <h3 class="text-md font-semibold text-[#1f3b08]">Total Spent</h3>
+            <div class="flex items-center justify-between mt-2">
+              <p id="userSpentAmount" class="text-3xl font-bold">৳420</p>
+              <img src="./Images/pngegg (2) 1.png" alt="Total Spent" class="w-11 h-11" />
+            </div>
+          </div>
+          <div class="bg-[#fcfdd9] rounded-lg shadow-md p-4">
+            <h3 class="text-md font-semibold text-[#1f3b08]">Loyalty Points</h3>
+            <div class="flex items-center justify-between mt-2">
+              <p id="userLoyaltyPoints" class="text-3xl font-bold">1,240</p>
+              <img src="./Images/pngegg (7) 1.png" alt="Loyalty Points" class="w-10 h-10" />
+            </div>
+          </div>
+          <div class="bg-[#fcfdd9] rounded-lg shadow-md p-4">
+            <h3 class="text-md font-semibold text-[#1f3b08]">Safety Score</h3>
+            <div class="flex items-center justify-between mt-2">
+              <p id="userSafetyScore" class="text-3xl font-bold">98%</p>
+              <img src="./Images/pngegg (3) 1.png" alt="Safety Score" class="w-10 h-10" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-[#fcfdd9] rounded-lg shadow-md p-4">
+          <h3 class="text-lg font-semibold text-black mb-4">Recent Activity</h3>
+          <div class="space-y-3" id="userRecentActivity">
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium">Ride to Dhanmondi completed</p>
+                  <p class="text-sm text-gray-500">2 hours ago</p>
+                </div>
+              </div>
+              <span class="text-green-600 font-semibold">৳150</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium">Ride scheduled for tomorrow</p>
+                  <p class="text-sm text-gray-500">1 day from now</p>
+                </div>
+              </div>
+              <span class="text-blue-600 font-semibold">৸200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Dashboard Content -->
+      <div id="adminContent" class="hidden">
+        <!-- System Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="bg-[#fcfdd9] rounded-lg shadow-md p-4">
+            <h3 class="text-md font-semibold text-[#1f3b08]">Total Users</h3>
+            <div class="flex items-center justify-between mt-2">
+              <p class="text-3xl font-bold">9,234</p>
+              <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
+                </path>
+              </svg>
+            </div>
+          </div>
+          <div class="bg-[#fcfdd9] rounded-lg shadow-md p-4">
+            <h3 class="text-md font-semibold text-[#1f3b08]">Total Rides Today</h3>
+            <div class="flex items-center justify-between mt-2">
+              <p class="text-3xl font-bold">1,847</p>
+              <img src="./Images/pngegg (6) 1.png" alt="Total Rides" class="w-10 h-10" />
+            </div>
+          </div>
+          <div class="bg-[#fcfdd9] rounded-lg shadow-md p-4">
+            <h3 class="text-md font-semibold text-[#1f3b08]">Revenue Today</h3>
+            <div class="flex items-center justify-between mt-2">
+              <p class="text-3xl font-bold">৳2.4L</p>
+              <img src="./Images/pngegg (2) 1.png" alt="Revenue" class="w-11 h-11" />
+            </div>
+          </div>
+          <div class="bg-[#fcfdd9] rounded-lg shadow-md p-4">
+            <h3 class="text-md font-semibold text-[#1f3b08]">Active Drivers</h3>
+            <div class="flex items-center justify-between mt-2">
+              <p class="text-3xl font-bold">487</p>
+              <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Sections -->
+        <div id="adminSections">
+          <!-- User Management Section -->
+          <div id="userManagement" class="admin-section">
+            <div class="bg-[#fcfdd9] rounded-lg shadow-md p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-black">User Management</h3>
+                <button class="bg-[#012B09] text-white px-4 py-2 rounded-md hover:bg-[#203924]">Add User</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-[#94BB86] text-left">
+                      <th class="p-3">ID</th>
+                      <th class="p-3">Name</th>
+                      <th class="p-3">Email</th>
+                      <th class="p-3">Phone</th>
+                      <th class="p-3">Type</th>
+                      <th class="p-3">Status</th>
+                      <th class="p-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200">
+                    <tr class="bg-white">
+                      <td class="p-3">1</td>
+                      <td class="p-3">Rakib Hasan</td>
+                      <td class="p-3">mrabbi2230953@bscse.uiu.ac.bd</td>
+                      <td class="p-3">01631457128</td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Rider</span></td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span></td>
+                      <td class="p-3">
+                        <button class="text-blue-600 hover:text-blue-800 mr-2">Edit</button>
+                        <button class="text-red-600 hover:text-red-800">Block</button>
+                      </td>
+                    </tr>
+                    <tr class="bg-white">
+                      <td class="p-3">2</td>
+                      <td class="p-3">Mominul</td>
+                      <td class="p-3">mominul@gmail.com</td>
+                      <td class="p-3">01560056059</td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Driver</span></td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span></td>
+                      <td class="p-3">
+                        <button class="text-blue-600 hover:text-blue-800 mr-2">Edit</button>
+                        <button class="text-red-600 hover:text-red-800">Block</button>
+                      </td>
+                    </tr>
+                    <tr class="bg-white">
+                      <td class="p-3">4</td>
+                      <td class="p-3">Sajid</td>
+                      <td class="p-3">sajiud@gmail.com</td>
+                      <td class="p-3">01651456278</td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Driver</span></td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span></td>
+                      <td class="p-3">
+                        <button class="text-blue-600 hover:text-blue-800 mr-2">Edit</button>
+                        <button class="text-red-600 hover:text-red-800">Block</button>
+                      </td>
+                    </tr>
+                    <tr class="bg-white">
+                      <td class="p-3">6</td>
+                      <td class="p-3">Sanjida</td>
+                      <td class="p-3">sanjida@gmail.com</td>
+                      <td class="p-3">01657654988</td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">Admin</span></td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span></td>
+                      <td class="p-3">
+                        <button class="text-blue-600 hover:text-blue-800 mr-2">Edit</button>
+                        <button class="text-gray-400 cursor-not-allowed">Block</button>
+                      </td>
+                    </tr>
+                    <tr class="bg-white">
+                      <td class="p-3">9</td>
+                      <td class="p-3">Talha</td>
+                      <td class="p-3">talha@gmail.com</td>
+                      <td class="p-3">01976498734</td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Driver</span></td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span></td>
+                      <td class="p-3">
+                        <button class="text-blue-600 hover:text-blue-800 mr-2">Edit</button>
+                        <button class="text-red-600 hover:text-red-800">Block</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ride Analytics Section -->
+          <div id="rideAnalytics" class="admin-section hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-[#fcfdd9] rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-black mb-4">Ride Statistics</h3>
+                <div class="space-y-4">
+                  <div class="flex justify-between">
+                    <span>Total Rides This Month:</span>
+                    <span class="font-semibold">45,678</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Completed Rides:</span>
+                    <span class="font-semibold text-green-600">42,341 (92.7%)</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Cancelled Rides:</span>
+                    <span class="font-semibold text-red-600">2,104 (4.6%)</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Ongoing Rides:</span>
+                    <span class="font-semibold text-blue-600">1,233 (2.7%)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-[#fcfdd9] rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-black mb-4">Revenue Analytics</h3>
+                <div class="space-y-4">
+                  <div class="flex justify-between">
+                    <span>Total Revenue:</span>
+                    <span class="font-semibold">৳68,42,150</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Average Ride Value:</span>
+                    <span class="font-semibold">৳150</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Commission Earned:</span>
+                    <span class="font-semibold text-green-600">৳6,84,215</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Growth vs Last Month:</span>
+                    <span class="font-semibold text-green-600">+23.4%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vehicle Management Section -->
+          <div id="vehicleManagement" class="admin-section hidden">
+            <div class="bg-[#fcfdd9] rounded-lg shadow-md p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-black">Vehicle Management</h3>
+                <button class="bg-[#012B09] text-white px-4 py-2 rounded-md hover:bg-[#203924]">Add Vehicle</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-[#94BB86] text-left">
+                      <th class="p-3">Vehicle ID</th>
+                      <th class="p-3">Type</th>
+                      <th class="p-3">Model</th>
+                      <th class="p-3">Capacity</th>
+                      <th class="p-3">Driver</th>
+                      <th class="p-3">Status</th>
+                      <th class="p-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200">
+                    <tr class="bg-white">
+                      <td class="p-3">1</td>
+                      <td class="p-3">Car</td>
+                      <td class="p-3">Toyota Axio</td>
+                      <td class="p-3">4</td>
+                      <td class="p-3">Sajid</td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span></td>
+                      <td class="p-3">
+                        <button class="text-blue-600 hover:text-blue-800 mr-2">Edit</button>
+                        <button class="text-red-600 hover:text-red-800">Remove</button>
+                      </td>
+                    </tr>
+                    <tr class="bg-white">
+                      <td class="p-3">2</td>
+                      <td class="p-3">Bike</td>
+                      <td class="p-3">Yamaha FZS</td>
+                      <td class="p-3">2</td>
+                      <td class="p-3">Mominul</td>
+                      <td class="p-3"><span
+                          class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span></td>
+                      <td class="p-3">
+                        <button class="text-blue-600 hover:text-blue-800 mr-2">Edit</button>
+                        <button class="text-red-600 hover:text-red-800">Remove</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Overview Section -->
+          <div id="paymentOverview" class="admin-section hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div class="bg-[#fcfdd9] rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-black mb-4">Payment Methods</h3>
+                <div class="space-y-3">
+                  <div class="flex justify-between">
+                    <span>Cash:</span>
+                    <span class="font-semibold">45%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Credit Card:</span>
+                    <span class="font-semibold">35%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Mobile Banking:</span>
+                    <span class="font-semibold">20%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-[#fcfdd9] rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-black mb-4">Transaction Status</h3>
+                <div class="space-y-3">
+                  <div class="flex justify-between">
+                    <span>Successful:</span>
+                    <span class="font-semibold text-green-600">98.2%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Failed:</span>
+                    <span class="font-semibold text-red-600">1.5%</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Pending:</span>
+                    <span class="font-semibold text-yellow-600">0.3%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-[#fcfdd9] rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-black mb-4">Daily Revenue</h3>
+                <div class="space-y-3">
+                  <div class="flex justify-between">
+                    <span>Today:</span>
+                    <span class="font-semibold">৳2,40,000</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Yesterday:</span>
+                    <span class="font-semibold">৳1,95,000</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Change:</span>
+                    <span class="font-semibold text-green-600">+23.1%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- System Settings Section -->
+          <div id="systemSettings" class="admin-section hidden">
+            <div class="bg-[#fcfdd9] rounded-lg shadow-md p-6">
+              <h3 class="text-xl font-semibold text-black mb-6">System Settings</h3>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                  <h4 class="font-semibold">General Settings</h4>
+                  <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                      <span>Maintenance Mode</span>
+                      <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <span>New User Registration</span>
+                      <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <span>Email Notifications</span>
+                      <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="space-y-4">
+                  <h4 class="font-semibold">Ride Settings</h4>
+                  <div class="space-y-3">
+                    <div>
+                      <label class="block text-sm font-medium mb-1">Base Fare (৳)</label>
+                      <input type="number" value="50" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium mb-1">Per KM Rate (৳)</label>
+                      <input type="number" value="15" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium mb-1">Commission Rate (%)</label>
+                      <input type="number" value="10" class="w-full p-2 border rounded-md">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6">
+                <button class="bg-[#012B09] text-white px-6 py-2 rounded-md hover:bg-[#203924]">Save Settings</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-10">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+      <div class="flex flex-col gap-7">
+        <a href="index.html"><img src="./img/Safar-logo.png" alt="Safar Logo" class="w-28" /></a>
+        <div class="flex space-x-3 mt-4">
+          <img src="./img/appstores/Playstore.png" class="w-32 hover:scale-110 transition-transform"
+            alt="Google Play" />
+          <img src="./img/appstores/App Store.png" class="w-32 hover:scale-110 transition-transform" alt="App Store" />
+        </div>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Navigate</h4>
+        <ul class="space-y-1">
+          <li><a href="index.html" class="hover:text-green-600">Home</a></li>
+          <li><a href="subscription.html" class="hover:text-green-600">Subscription</a></li>
+          <li><a href="services.html" class="hover:text-green-600">Services</a></li>
+          <li><a href="customerSupport.html" class="hover:text-green-600">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Legal</h4>
+        <ul class="space-y-1">
+          <li><a href="src/termsNcondition.html" class="hover:text-green-600">Terms & Conditions</a></li>
+          <li><a href="src/privacy.html" class="hover:text-green-600">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Socials</h4>
+        <div class="flex space-x-3">
+          <img src="./img/social-medias/facebook-icon.png" alt="Facebook" class="w-8 h-8 hover:scale-110" />
+          <img src="./img/social-medias/ig-icon.png" alt="Instagram" class="w-8 h-8 hover:scale-110" />
+          <img src="./img/social-medias/x-icon.png" alt="X" class="w-8 h-8 hover:scale-110" />
+        </div>
+      </div>
+    </div>
+    <div class="text-center text-xs text-gray-500 mt-8">© 2025 Safar. All rights reserved.</div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <script src="./src/js/navbar.js"></script>
+
+  <!-- Dashboard Role Management Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Wait for navbar.js to load and initialize
+      setTimeout(() => {
+        initializeDashboard();
+      }, 100);
+    });
+
+    function initializeDashboard() {
+      // Check if user is logged in using navbar.js function
+      if (!isLoggedIn()) {
+        showAuthenticationPopup();
+        return;
+      }
+
+      // Get user data and setup dashboard
+      const userData = getCurrentUser();
+      if (userData) {
+        setupDashboard(userData);
+      } else {
+        showAuthenticationPopup();
+      }
+    }
+
+    function showAuthenticationPopup() {
+      // Create authentication popup
+      const popup = document.createElement('div');
+      popup.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[10000]';
+      popup.innerHTML = `
+        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full mx-4">
+          <div class="text-center">
+            <div class="mb-4">
+              <svg class="mx-auto h-12 w-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Access Restricted</h3>
+            <p class="text-gray-600 mb-6">You need to login or create an account to access the dashboard.</p>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <a href="src/login.html" class="bg-[#012B09] text-white px-6 py-2 rounded-md hover:bg-[#203924] transition flex-1 text-center">
+                Login
+              </a>
+              <a href="src/signup.html" class="bg-gray-100 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-200 transition flex-1 text-center">
+                Sign Up
+              </a>
+            </div>
+            <button onclick="goHome()" class="mt-4 text-sm text-gray-500 hover:text-gray-700 underline">
+              Go back to homepage
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(popup);
+      document.body.style.overflow = 'hidden';
+
+      // Global function for going home
+      window.goHome = function () {
+        window.location.href = 'index.html';
+      };
+
+      // Prevent page scrolling
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+        }
+      });
+    }
+
+    function setupDashboard(userData) {
+      const userType = userData.userType || userData.UserType;
+      const dashboardTitle = document.getElementById('dashboardTitle');
+      const userDashboard = document.getElementById('userDashboard');
+      const adminDashboard = document.getElementById('adminDashboard');
+      const userContent = document.getElementById('userContent');
+      const adminContent = document.getElementById('adminContent');
+
+      // Update dashboard title and show appropriate content
+      if (userType === 'Admin') {
+        dashboardTitle.textContent = 'Admin Dashboard';
+        adminDashboard.classList.remove('hidden');
+        adminContent.classList.remove('hidden');
+        userDashboard.classList.add('hidden');
+        userContent.classList.add('hidden');
+
+        // Show default admin section and load admin data
+        showAdminSection('userManagement');
+        loadAdminData();
+      } else {
+        const displayName = userData.name || 'User';
+        dashboardTitle.textContent = `${displayName}'s Dashboard`;
+        userDashboard.classList.remove('hidden');
+        userContent.classList.remove('hidden');
+        adminDashboard.classList.add('hidden');
+        adminContent.classList.add('hidden');
+
+        // Update user-specific content
+        updateUserStats(userData);
+      }
+    }
+
+    function updateUserStats(userData) {
+      const userType = userData.userType || userData.UserType;
+
+      // Update stats based on user type
+      if (userType === 'Driver') {
+        // Driver-specific stats
+        document.getElementById('userRidesCount').textContent = '12';
+        document.getElementById('userSpentAmount').textContent = '৳2,400';
+        document.getElementById('userLoyaltyPoints').textContent = '3,200';
+        document.getElementById('userSafetyScore').textContent = '96%';
+
+        // Update labels for driver context
+        document.querySelector('#userContent .grid div:nth-child(1) h3').textContent = 'Rides Completed Today';
+        document.querySelector('#userContent .grid div:nth-child(2) h3').textContent = 'Total Earned';
+        document.querySelector('#userContent .grid div:nth-child(3) h3').textContent = 'Driver Points';
+        document.querySelector('#userContent .grid div:nth-child(4) h3').textContent = 'Driver Rating';
+      } else {
+        // Rider-specific stats (default)
+        document.getElementById('userRidesCount').textContent = '3';
+        document.getElementById('userSpentAmount').textContent = '৳420';
+        document.getElementById('userLoyaltyPoints').textContent = '1,240';
+        document.getElementById('userSafetyScore').textContent = '98%';
+
+        // Ensure rider labels are correct
+        document.querySelector('#userContent .grid div:nth-child(1) h3').textContent = 'My Rides Today';
+        document.querySelector('#userContent .grid div:nth-child(2) h3').textContent = 'Total Spent';
+        document.querySelector('#userContent .grid div:nth-child(3) h3').textContent = 'Loyalty Points';
+        document.querySelector('#userContent .grid div:nth-child(4) h3').textContent = 'Safety Score';
+      }
+    }
+
+    function loadAdminData() {
+      // Load real-time admin statistics
+      // In a real application, this would fetch data from the backend
+      console.log('Loading admin dashboard data...');
+
+      // Update admin stats with more realistic data
+      updateAdminStats();
+    }
+
+    function updateAdminStats() {
+      // Update system statistics for admin
+      const statsElements = document.querySelectorAll('#adminContent .grid p');
+
+      // Simulate dynamic data loading
+      if (statsElements.length >= 4) {
+        // Update with more realistic numbers
+        const now = new Date();
+        const hours = now.getHours();
+
+        // Total Users (simulated growth)
+        statsElements[0].textContent = '9,234';
+
+        // Total Rides Today (varies by time of day)
+        const baseRides = 1200;
+        const ridesMultiplier = Math.max(0.5, (hours / 24) * 1.5);
+        const todayRides = Math.floor(baseRides * ridesMultiplier);
+        statsElements[1].textContent = todayRides.toLocaleString();
+
+        // Revenue Today (based on rides)
+        const avgFare = 150;
+        const revenue = (todayRides * avgFare) / 1000;
+        statsElements[2].textContent = `৳${revenue.toFixed(1)}K`;
+
+        // Active Drivers (percentage of total drivers)
+        const totalDrivers = 650;
+        const activeDrivers = Math.floor(totalDrivers * 0.75);
+        statsElements[3].textContent = activeDrivers.toString();
+      }
+    }
+
+    // Admin section management
+    function showAdminSection(sectionId) {
+      // Hide all admin sections
+      const allSections = document.querySelectorAll('.admin-section');
+      allSections.forEach(section => section.classList.add('hidden'));
+
+      // Remove active class from all nav items
+      const allNavItems = document.querySelectorAll('.admin-nav-item');
+      allNavItems.forEach(item => item.classList.remove('active'));
+
+      // Show selected section
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.classList.remove('hidden');
+      }
+
+      // Add active class to clicked nav item
+      const activeNavItem = document.querySelector(`[onclick="showAdminSection('${sectionId}')"]`);
+      if (activeNavItem) {
+        activeNavItem.classList.add('active');
+      }
+
+      // Load section-specific data
+      loadSectionData(sectionId);
+    }
+
+    function loadSectionData(sectionId) {
+      switch (sectionId) {
+        case 'userManagement':
+          loadUserManagementData();
+          break;
+        case 'rideAnalytics':
+          loadRideAnalyticsData();
+          break;
+        case 'vehicleManagement':
+          loadVehicleManagementData();
+          break;
+        case 'paymentOverview':
+          loadPaymentOverviewData();
+          break;
+        case 'systemSettings':
+          loadSystemSettingsData();
+          break;
+      }
+    }
+
+    function loadUserManagementData() {
+      console.log('Loading user management data...');
+      // In a real app, this would fetch from the database
+      // For now, we're using static data that matches the database schema
+    }
+
+    function loadRideAnalyticsData() {
+      console.log('Loading ride analytics data...');
+      // Update analytics with more realistic data
+      const now = new Date();
+      const currentMonth = now.getMonth() + 1;
+
+      // Update the ride statistics
+      const rideStatsElement = document.querySelector('#rideAnalytics');
+      if (rideStatsElement) {
+        // Dynamic updates could go here
+        console.log('Ride analytics updated for current month:', currentMonth);
+      }
+    }
+
+    function loadVehicleManagementData() {
+      console.log('Loading vehicle management data...');
+      // Load vehicle data - in real app would fetch from database
+    }
+
+    function loadPaymentOverviewData() {
+      console.log('Loading payment overview data...');
+      // Load payment statistics
+    }
+
+    function loadSystemSettingsData() {
+      console.log('Loading system settings...');
+      // Load current system configuration
+    }
+
+    // Make showAdminSection globally available
+    window.showAdminSection = showAdminSection;
+
+    // Refresh admin data every 30 seconds for real-time updates
+    setInterval(() => {
+      const userData = getCurrentUser();
+      if (userData && (userData.userType === 'Admin' || userData.UserType === 'Admin')) {
+        updateAdminStats();
+      }
+    }, 30000);
+  </script>
+
+  <!-- Map functionality for ride booking -->
+  <script>
+    let map, userMarker, defaultCenter = [23.8103, 90.4125], defaultZoom = 12;
+
+    // Initialize map functionality only if map elements exist
+    document.addEventListener('DOMContentLoaded', function () {
+      const mapPlaceholder = document.getElementById("mapPlaceholder");
+      const recenterBtn = document.getElementById("recenterBtn");
+
+      if (mapPlaceholder) {
+        mapPlaceholder.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.getElementById("liveMap").style.display = "block";
+          document.getElementById("mapPlaceholder").style.display = "none";
+          document.getElementById("recenterBtn").style.display = "block";
+
+          if (!map) {
+            map = L.map("liveMap").setView(defaultCenter, defaultZoom);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+              maxZoom: 19,
+              attribution: "© OpenStreetMap",
+            }).addTo(map);
+
+            L.Control.geocoder({ defaultMarkGeocode: false })
+              .on("markgeocode", function (e) {
+                map.setView(e.geocode.center, 16);
+                if (userMarker) userMarker.setLatLng(e.geocode.center);
+                else userMarker = L.marker(e.geocode.center).addTo(map);
+              })
+              .addTo(map);
+
+            map.locate({ setView: true, maxZoom: 16 });
+            map.on("locationfound", function (e) {
+              if (userMarker) userMarker.setLatLng(e.latlng);
+              else userMarker = L.marker(e.latlng).addTo(map);
+              defaultCenter = [e.latitude, e.longitude];
+            });
+          }
+        });
+      }
+
+      if (recenterBtn) {
+        recenterBtn.addEventListener("click", function () {
+          if (map) map.setView(defaultCenter, defaultZoom);
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

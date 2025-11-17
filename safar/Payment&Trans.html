@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment & Transactions</title>
+  <link rel="stylesheet" href="src/css/output.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- Navbar -->
+  <header class="">
+    <div
+      class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex justify-between items-center px-5 py-3 md:mt-2 shadow-md md:rounded-md">
+      <div class="flex items-center space-x-2">
+        <a href="#" class="flex flex-row gap-3">
+          <a href="index.html"><img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" /></a>
+        </a>
+      </div>
+      <!-- Centered Navigation -->
+      <nav class="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+        <div class="flex space-x-8 font-medium">
+          <a href="subscription.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Subscription</a>
+          <a href="services.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Services</a>
+          <a href="customerSupport.html"
+            class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Support</a>
+        </div>
+      </nav>
+      <div class="space-x-2 font-semibold" id="navbarUser">
+        <!-- Default: Login/Register buttons (shown when not logged in) -->
+        <div id="authButtons" class="space-x-2">
+          <button
+            class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/login.html">LOG IN</a>
+          </button>
+          <button
+            class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+            <a href="./src/signup.html">SIGN UP</a>
+          </button>
+        </div>
+
+        <!-- Profile section (shown when logged in) -->
+        <div id="profileSection" class="space-x-2 hidden">
+          <div class="flex items-center space-x-3">
+            <span id="userWelcome" class="text-sm text-gray-700">Welcome, User!</span>
+            <div class="relative">
+              <button id="profileButton"
+                class="bg-green-100 px-4 py-2 text-sm rounded-md hover:bg-green-200 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300 flex items-center space-x-2">
+                <span id="userName">Profile</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <!-- Dropdown menu -->
+              <div id="profileDropdown"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden border border-gray-200">
+                <a href="./dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                <a href="./settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <hr class="my-1">
+                <button id="logoutButton"
+                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <div class="flex flex-col lg:flex-row min-h-screen">
+    <!-- Sidebar -->
+    <aside class="bg-[#efefef] w-full lg:w-64 p-4 space-y-4 min-h-screen">
+      <h2 class="text-2xl font-bold text-black bg-[#a5cd99] rounded-lg px-3 py-2 text-center shadow-sm">
+        Dashboard
+      </h2>
+      <nav class="space-y-3 pt-4 text-black font-medium">
+        <a href="rideRoute.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (6) 1.png" class="w-6 h-6" />
+          <span>Book a Ride</span>
+        </a>
+        <a href="payment&Trans.html"
+          class="flex items-center space-x-3 bg-[#c7e3b6] hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (2) 1.png" class="w-6 h-6" />
+          <span>Payment & Transactions</span>
+        </a>
+
+        <a href="loyalty&Offers.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (7) 1.png" class="w-6 h-6" />
+          <span>Loyalty & Offers</span>
+        </a>
+        <a href="Scheduling.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (5) 1.png" class="w-6 h-6" />
+          <span>Scheduling</span>
+        </a>
+        <a href="Safety&Reports.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/pngegg (3) 1.png" class="w-6 h-6" />
+          <span>Safety & Reports</span>
+        </a>
+        <a href="settings.html"
+          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
+          <img src="./Images/Setitingsphoto.png" class="w-6 h-6" />
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 space-y-6">
+      <!-- Payment Summary -->
+      <div class="bg-[#fcfadf] p-4 shadow-md rounded-md">
+        <h3 class="text-xl font-bold mb-3">Payment Summary</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span>Current Wallet Balance</span>
+            <span id="walletBalance" class="bg-pink-300 px-2 rounded-md">505.34</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Total Spent This Month</span>
+            <span class="bg-pink-300 px-2 rounded-md">374.89</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Payment Success Rate</span>
+            <span>92.5%</span>
+          </div>
+        </div>
+        <div class="flex gap-4 mt-4">
+          <button onclick="addMoney()" class="bg-sky-400 px-4 py-2 rounded-md">Add Money To Wallet</button>
+          <button class="bg-sky-400 px-4 py-2 rounded-md">View Statement</button>
+        </div>
+      </div>
+
+      <!-- Transaction History -->
+      <div class="bg-[#fcfadf] p-4 shadow-md rounded-md">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-xl font-bold">Transaction History</h3>
+          <input type="text" placeholder="Search" onkeyup="searchTransactions(this.value)"
+            class="px-3 py-1 rounded-md border" />
+        </div>
+
+        <!-- Transaction Table Header -->
+        <div class="grid grid-cols-4 font-semibold px-4 py-2 rounded-md" style="background-color:#94BB86;">
+          <div>Date</div>
+          <div>Transaction ID</div>
+          <div>Amount</div>
+          <div>Payment Method</div>
+        </div>
+
+        <!-- Transaction Items -->
+        <div id="transactions" class="space-y-2 mt-2">
+          <div class="grid grid-cols-4 px-4 py-2 rounded-md transaction" style="background-color:#94BB86;">
+            <div>23/04/2025</div>
+            <div>TXN#6789</div>
+            <div>203.89</div>
+            <div>Cash</div>
+          </div>
+          <div class="grid grid-cols-4 px-4 py-2 rounded-md transaction" style="background-color:#94BB86;">
+            <div>18/04/2025</div>
+            <div>TXN#6788</div>
+            <div>86.00</div>
+            <div>Safar Wallet</div>
+          </div>
+          <div class="grid grid-cols-4 px-4 py-2 rounded-md transaction" style="background-color:#94BB86;">
+            <div>05/04/2025</div>
+            <div>TXN#6785</div>
+            <div>85.00</div>
+            <div>Bkash</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Methods -->
+      <div class="bg-[#fcfadf] p-4 shadow-md rounded-md mt-6">
+        <h3 class="text-xl font-bold mb-3">Payment Method</h3>
+        <div class="space-y-2" id="methodList">
+          <div class="flex items-center gap-3">
+            <input type="radio" name="payment-method" onclick="selectMethod('#11bck23')" />
+            <img src="./Images/bkash.png" alt="Bkash" class="h-6" />
+            <span>#11bck23</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <input type="radio" name="payment-method" onclick="selectMethod('#jk998ksbd90')" />
+            <img src="./Images/visa.png" alt="Visa" class="h-6" />
+            <span>#jk998ksbd90</span>
+          </div>
+        </div>
+        <div class="flex justify-center mt-4">
+          <button onclick="addMethod()" class="bg-sky-400 px-4 py-2 rounded-md">Add Method</button>
+        </div>
+      </div>
+
+
+      <!-- Discounts & Offers -->
+      <div class="bg-[#fcfadf] p-4 shadow-md rounded-md">
+        <h3 class="text-xl font-bold mb-3">Discounts & Offers</h3>
+        <div class="p-4 rounded-md flex justify-between items-center" style="background-color:#94BB86;">
+          <div>
+            <p class="font-semibold text-lg">BKASH20</p>
+            <p class="text-sm">Use Bkash to get 20% discount on payment over BDT 199</p>
+          </div>
+          <button onclick="useDiscount()" class="bg-sky-400 px-4 py-2 rounded-md">Use</button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="bg-gray-100 py-10 mb-0">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+          <div class="flex flex-col gap-7">
+            <a href="index.html"><img src="./img/Safar-logo.png" alt="" class="w-28"></a>
+            <div class="flex space-x-3 mt-4">
+              <img src="./img/appstores/Playstore.png" class="w-32 transition-transform hover:scale-110 duration-300"
+                alt="Google Play" />
+              <img src="./img/appstores/App Store.png" class="w-32 transition-transform hover:scale-110 duration-300"
+                alt="App Store" />
+            </div>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold mb-2">Navigate</h4>
+            <ul class="space-y-1 text-sm">
+              <li><a href="index.html" class="hover:text-green-600">Home</a></li>
+              <li><a href="subscription.html" class="hover:text-green-600">Subscription</a></li>
+              <li><a href="services.html" class="hover:text-green-600">Services</a></li>
+              <li><a href="customerSupport.html" class="hover:text-green-600">Support</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold mb-2">Legal</h4>
+            <ul class="space-y-1 text-sm">
+              <li><a href="src/termsNcondition.html" class="hover:text-green-600">Terms & Conditions</a></li>
+              <li><a href="src/privacy.html" class="hover:text-green-600">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold mb-2">Socials</h4>
+            <div class="flex space-x-3 text-sm">
+              <img src="./img/social-medias/facebook-icon.png" alt="Facebook"
+                class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+              <img src="./img/social-medias/ig-icon.png" alt="Instagram"
+                class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+              <img src="./img/social-medias/x-icon.png" alt="X"
+                class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+            </div>
+          </div>
+        </div>
+        <div class="text-center text-xs text-gray-500 mt-8">© 2025 Safar. All rights reserved.</div>
+      </footer>
+
+
+      <!-- JavaScript -->
+      <script>
+        function addMoney() {
+          const current = parseFloat(document.getElementById("walletBalance").textContent);
+          const amount = parseFloat(prompt("Enter amount to add:"));
+          if (!isNaN(amount)) {
+            const updated = (current + amount).toFixed(2);
+            document.getElementById("walletBalance").textContent = updated;
+          } else {
+            alert("Please enter a valid number.");
+          }
+        }
+
+        function searchTransactions(query) {
+          const transactions = document.querySelectorAll(".transaction");
+          transactions.forEach(txn => {
+            const text = txn.textContent.toLowerCase();
+            txn.style.display = text.includes(query.toLowerCase()) ? "grid" : "none";
+          });
+        }
+
+        function addMethod() {
+          const method = prompt("Enter payment method name:");
+          const id = prompt("Enter method ID:");
+          if (method && id) {
+            const newDiv = document.createElement("div");
+            newDiv.className = "flex items-center gap-3";
+            newDiv.innerHTML = `
+          <input type="radio" name="payment-method" onclick="selectMethod('${id}')" />
+          <img src="./Images/default-card.png" class="h-6" />
+          <span>${id}</span>
+        `;
+            document.getElementById("methodList").appendChild(newDiv);
+          }
+        }
+
+        function useDiscount() {
+          alert("Discount code BKASH20 applied successfully!");
+        }
+
+        function selectMethod(id) {
+          console.log("Selected method ID:", id);
+        }
+      </script>
+      <script src="./src/js/navbar.js"></script>
+</body>
+
+</html>

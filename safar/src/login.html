@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/output.css" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+  </style>
+  <link rel="stylesheet" href="./css/custom-animation.css" />
+  <title>Login | Safar</title>
+</head>
+
+<body class="bg-amber-50 text-gray-800 min-h-screen flex flex-col">
+  <div class="min-h-screen flex items-center justify-center">
+    <div class="bg-white p-10 rounded-2xl shadow-md w-full max-w-md text-center fade-in">
+      <!-- Logo -->
+      <div class="flex items-center mb-6 justify-center float">
+        <a href="../index.html"><img src="../img/Safar-logo-2.png" alt="Car Icon" class="h-10" /></a>
+        <h1 class="text-3xl font-bold text-green-800 mt-2">Safar</h1>
+      </div>
+
+      <!-- Login Form -->
+      <div class="slide-up">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Log in</h2>
+        <p class="text-gray-600 text-sm mb-6">
+          Enter your email and password to access your account.
+        </p>
+
+        <form class="space-y-3" id="login-form">
+          <div class="text-left">
+            <label class="sr-only" for="email">Email</label>
+            <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+              <img src="../img/sign-up-login/email.png" class="h-4" alt="" />
+              <input type="email" id="email" placeholder="Email"
+                class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+            </div>
+          </div>
+
+          <div class="text-left">
+            <label class="sr-only" for="password">Password</label>
+            <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+              <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
+              <input type="password" id="password" placeholder="Password"
+                class="w-full px-3 bg-transparent outline-none text-gray-900" required />
+              <img src="../img/sign-up-login/eye.png" id="togglePassword"
+                class="h-5 cursor-pointer hover:opacity-70 transition-opacity" alt="Toggle password visibility" />
+            </div>
+          </div>
+
+          <div class="text-right text-sm text-green-800">
+            <a href="#" class="link-hover">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold btn-login">
+            Log in
+          </button>
+        </form>
+
+        <p class="text-sm text-gray-700 mt-6">
+          Don't have an account?
+          <a href="./signup.html" class="text-green-800 font-semibold link-hover">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Password toggle functionality
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+
+    togglePassword.addEventListener('click', function () {
+      // Toggle the type attribute
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+
+      // Toggle the opacity to show visual feedback
+      this.style.opacity = type === 'text' ? '0.5' : '1';
+    });
+
+    // Login form submission
+    document.getElementById("login-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const response = await fetch("http://localhost:5000/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          console.error("Login failed:", data); // Add this line
+          alert(data.message || "Login failed!");
+          localStorage.clear(); // Clear localStorage on failed login
+          return;
+
+        }
+
+        localStorage.setItem("safarUser", JSON.stringify(data.user));
+        window.location.href = "../index.html";
+
+      } catch (error) {
+        console.error("Error logging in:", error);
+        alert("Server error. Try again later.");
+      }
+    });
+  </script>
+
+</body>
+
+</html>

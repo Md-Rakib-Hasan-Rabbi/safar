@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/css/output.css">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="./src/css/custom-animation.css">
+    <title>Subscription Plans | Safar</title>
+</head>
+
+<body class="bg-white text-gray-800 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="">
+        <div
+            class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex justify-between items-center px-5 py-3 md:mt-2 shadow-md md:rounded-md">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex flex-row gap-3">
+                    <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+                </a>
+            </div>
+
+            <!-- Centered Navigation -->
+            <nav class="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+                <div class="flex space-x-8 font-medium">
+                    <a href="subscription.html"
+                        class="text-sm font-semibold bg-amber-200 transition-transform hover:scale-105 px-3 py-2 rounded-md">Subscription</a>
+                    <a href="services.html"
+                        class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Services</a>
+                    <a href="customerSupport.html"
+                        class="text-sm hover:font-semibold transition-transform hover:scale-105 px-3 py-2 rounded-md hover:bg-amber-200">Support</a>
+                </div>
+            </nav>
+
+            <div class="space-x-2 font-semibold" id="navbarUser">
+                <!-- Default: Login/Register buttons (shown when not logged in) -->
+                <div id="authButtons" class="space-x-2">
+                    <button
+                        class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+                        <a href="./src/login.html">LOG IN</a>
+                    </button>
+                    <button
+                        class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
+                        <a href="./src/signup.html">SIGN UP</a>
+                    </button>
+                </div>
+
+                <!-- Profile section (shown when logged in) -->
+                <div id="profileSection" class="space-x-2 hidden">
+                    <div class="flex items-center space-x-3">
+                        <span id="userWelcome" class="text-sm text-gray-700">Welcome, User!</span>
+                        <div class="relative">
+                            <button id="profileButton"
+                                class="bg-green-100 px-4 py-2 text-sm rounded-md hover:bg-green-200 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300 flex items-center space-x-2">
+                                <span id="userName">Profile</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <!-- Dropdown menu -->
+                            <div id="profileDropdown"
+                                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden border border-gray-200">
+                                <a href="./dashboard.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                                <a href="./settings.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <hr class="my-1">
+                                <button id="logoutButton"
+                                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-full md:max-w-7xl mx-auto p-6" data-aos="fade-up">
+        <!-- Header Section -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4" data-aos="fade-up">Choose Your Plan</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                Select the perfect subscription plan that fits your travel needs.
+                Save more with our flexible monthly and yearly options.
+            </p>
+        </div>
+
+        <!-- Subscription Toggle with Savings Banner -->
+        <div class="flex flex-col items-center mb-16" data-aos="fade-up" data-aos-delay="200">
+            <div
+                class="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 shadow-lg">
+                💰 Save up to 17% with yearly plans!
+            </div>
+            <div class="bg-gray-100 rounded-xl p-1 flex">
+                <button id="monthlyBtn"
+                    class="px-6 py-2 rounded-lg font-medium transition-all duration-300 bg-white shadow-md text-gray-900">Monthly</button>
+                <button id="yearlyBtn"
+                    class="px-6 py-2 rounded-lg font-medium transition-all duration-300 text-gray-600 hover:text-gray-900">Yearly
+                    <span class="text-xs bg-green-600 text-white px-2 py-1 rounded-full ml-2">Save 17%</span></button>
+            </div>
+        </div>
+
+        <!-- Subscription Plans -->
+        <div class="grid md:grid-cols-3 gap-8 mb-24" data-aos="fade-up" data-aos-delay="300">
+
+            <!-- Basic Plan -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Basic</h3>
+                    <p class="text-gray-600 mb-4">Perfect for occasional riders</p>
+                    <div class="text-4xl font-bold text-gray-900 mb-2">
+                        <span id="basic-price">৳299</span>
+                        <span class="text-lg font-normal text-gray-600">/month</span>
+                    </div>
+                    <p class="text-sm text-green-600 font-medium min-h-[20px]" id="basic-savings"></p>
+                    <div id="basic-comparison" class="text-xs text-gray-500 mt-1 hidden">
+                        <span class="line-through">৳3,588/year</span> → <span
+                            class="text-green-600 font-semibold">৳2,990/year</span>
+                    </div>
+                </div>
+
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">Up to 10 rides per month</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">5% discount on all rides</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">Basic customer support</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">Standard booking priority</span>
+                    </li>
+                </ul>
+
+                <button
+                    class="w-full bg-gray-200 text-gray-900 py-3 rounded-xl font-semibold hover:bg-gray-300 transition-all duration-300 transform hover:scale-105">
+                    Choose Basic
+                </button>
+            </div>
+
+            <!-- Premium Plan (Popular) -->
+            <div
+                class="bg-gradient-to-br from-emerald-800 via-green-700 to-teal-800 rounded-2xl shadow-2xl p-8 text-white relative transform hover:scale-105 transition-all duration-300 border border-emerald-600/20">
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                    <div class="relative">
+                        <!-- Glow effect background -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-400 rounded-full blur-sm opacity-75 animate-pulse">
+                        </div>
+                        <!-- Main badge -->
+                        <span
+                            class="relative bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-400 text-gray-900 px-4 py-2 rounded-full text-xs font-extrabold shadow-2xl flex items-center justify-center border-2 border-yellow-300/50 backdrop-blur-sm whitespace-nowrap">
+                            <span
+                                class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent font-black tracking-wide">MOST
+                                POPULAR</span>
+                        </span>
+                        <!-- Sparkle effects -->
+                        <div class="absolute -top-1 -right-1 w-1.5 h-1.5 bg-yellow-300 rounded-full animate-ping"></div>
+                        <div
+                            class="absolute -bottom-1 -left-1 w-1 h-1 bg-amber-300 rounded-full animate-ping delay-300">
+                        </div>
+                        <div
+                            class="absolute top-0 -left-1 w-0.5 h-0.5 bg-yellow-400 rounded-full animate-ping delay-700">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Premium accent line -->
+                <div
+                    class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400 rounded-t-2xl">
+                </div>
+
+                <div class="text-center mb-6 mt-2">
+                    <h3 class="text-2xl font-bold mb-2 text-white">Premium</h3>
+                    <p class="text-emerald-100 mb-4">Best value for regular riders</p>
+                    <div class="text-4xl font-bold mb-2 text-white">
+                        <span id="premium-price">৳599</span>
+                        <span class="text-lg font-normal text-emerald-200">/month</span>
+                    </div>
+                    <p class="text-sm text-amber-300 font-semibold min-h-[20px]" id="premium-savings"></p>
+                    <div id="premium-comparison" class="text-xs text-emerald-200 mt-1 hidden">
+                        <span class="line-through">৳7,188/year</span> → <span
+                            class="text-amber-300 font-semibold">৳5,990/year</span>
+                    </div>
+                </div>
+
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="text-white font-medium">Unlimited rides</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="text-white font-medium">15% discount on all rides</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="text-white font-medium">Priority customer support</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="text-white font-medium">High priority booking</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="text-white font-medium">Free ride cancellation</span>
+                    </li>
+                </ul>
+
+                <button
+                    class="w-full bg-gradient-to-r from-white to-gray-50 text-emerald-800 py-4 rounded-xl font-bold hover:from-amber-50 hover:to-amber-100 hover:text-emerald-900 transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-white/20">
+                    <span class="flex items-center justify-center space-x-2">
+                        <span>Choose Premium</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+
+            <!-- VIP Plan -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">VIP</h3>
+                    <p class="text-gray-600 mb-4">Ultimate luxury experience</p>
+                    <div class="text-4xl font-bold text-gray-900 mb-2">
+                        <span id="vip-price">৳999</span>
+                        <span class="text-lg font-normal text-gray-600">/month</span>
+                    </div>
+                    <p class="text-sm text-green-600 font-medium min-h-[20px]" id="vip-savings"></p>
+                    <div id="vip-comparison" class="text-xs text-gray-500 mt-1 hidden">
+                        <span class="line-through">৳11,988/year</span> → <span
+                            class="text-green-600 font-semibold">৳9,990/year</span>
+                    </div>
+                </div>
+
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">Unlimited premium rides</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">25% discount on all rides</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">24/7 VIP support</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">Exclusive VIP vehicles</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">Instant booking guarantee</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span class="text-gray-700">Concierge service</span>
+                    </li>
+                </ul>
+
+                <button
+                    class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 py-3 rounded-xl font-semibold hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105">
+                    Choose VIP
+                </button>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="max-w-4xl mx-auto mt-16" data-aos="fade-up" data-aos-delay="400">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+                <p class="text-gray-600 text-lg">Everything you need to know about our subscription plans</p>
+            </div>
+
+            <div class="space-y-6">
+                <div
+                    class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <button
+                        class="faq-question w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Can I change my plan anytime?</h3>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-300 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <div class="pt-2 pb-2 border-t border-gray-100">
+                            <p class="text-gray-600 leading-relaxed">Yes, you can upgrade or downgrade your subscription
+                                plan at any time. Changes will be reflected in your next billing cycle. If you upgrade
+                                mid-cycle, you'll be charged the prorated difference immediately.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <button
+                        class="faq-question w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">What happens if I exceed my monthly ride limit?
+                        </h3>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-300 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <div class="pt-2 pb-2 border-t border-gray-100">
+                            <p class="text-gray-600 leading-relaxed">For Basic plan users, additional rides will be
+                                charged at standard rates. Premium and VIP plans have unlimited rides included, so you
+                                never have to worry about exceeding limits.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <button
+                        class="faq-question w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Do you offer refunds?</h3>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-300 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <div class="pt-2 pb-2 border-t border-gray-100">
+                            <p class="text-gray-600 leading-relaxed">We offer a 7-day money-back guarantee for new
+                                subscribers. After that, no refunds are provided, but you can cancel anytime to avoid
+                                future charges. Your subscription remains active until the end of the billing period.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <button
+                        class="faq-question w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Are there any hidden fees?</h3>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-300 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <div class="pt-2 pb-2 border-t border-gray-100">
+                            <p class="text-gray-600 leading-relaxed">No hidden fees! The subscription price includes all
+                                mentioned benefits. Additional charges only apply for services outside your plan's
+                                scope, such as premium vehicle upgrades or airport pickup fees.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <button
+                        class="faq-question w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">How do yearly savings work?</h3>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-300 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <div class="pt-2 pb-2 border-t border-gray-100">
+                            <p class="text-gray-600 leading-relaxed">When you choose a yearly plan, you pay for 10
+                                months and get 2 months free - that's a 17% savings! You'll be billed once annually and
+                                can still change or cancel your plan if needed.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <button
+                        class="faq-question w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Can I pause my subscription?</h3>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-300 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer px-6 pb-6 hidden">
+                        <div class="pt-2 pb-2 border-t border-gray-100">
+                            <p class="text-gray-600 leading-relaxed">Currently, we don't offer subscription pausing.
+                                However, you can cancel anytime and resubscribe when you're ready to start riding with
+                                us again. Your benefits will resume with your new subscription.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+            <div class="flex flex-col gap-7">
+                <a href="index.html"><img src="./img/Safar-logo.png" alt="" class="w-28"></a>
+                <div class="flex space-x-3 mt-4">
+                    <img src="./img/appstores/Playstore.png"
+                        class="w-30 transition-transform hover:scale-110 duration-300" alt="Google Play" />
+                    <img src="./img/appstores/App Store.png"
+                        class="w-30 transition-transform hover:scale-110 duration-300" alt="App Store" />
+                </div>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-2">Navigate</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="index.html" class="hover:text-green-600">Home</a></li>
+                    <li><a href="subscription.html" class="hover:text-green-600">Subscription</a></li>
+                    <li><a href="services.html" class="hover:text-green-600">Services</a></li>
+                    <li><a href="customerSupport.html" class="hover:text-green-600">Support</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-2">Legal</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="./src/termsNcondition.html" class="hover:text-green-600">Terms & Conditions</a></li>
+                    <li><a href="./src/privacy.html" class="hover:text-green-600">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-2">Socials</h4>
+                <div class="flex space-x-3 text-sm">
+                    <img src="./img/social-medias/facebook-icon.png" alt="Facebook"
+                        class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+                    <img src="./img/social-medias/ig-icon.png" alt="Instagram"
+                        class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+                    <img src="./img/social-medias/x-icon.png" alt="X"
+                        class="w-8 h-8 transition-transform hover:scale-110 duration-300" />
+                </div>
+            </div>
+        </div>
+        <div class="text-center text-xs text-gray-500 mt-8">© 2025 Safar. All rights reserved.</div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="./src/js/navbar.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+
+        // FAQ functionality with improved animations
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('.faq-icon');
+                const isOpen = !answer.classList.contains('hidden');
+
+                // Close all other FAQ items
+                document.querySelectorAll('.faq-answer').forEach(otherAnswer => {
+                    if (otherAnswer !== answer) {
+                        otherAnswer.classList.add('hidden');
+                        const otherIcon = otherAnswer.previousElementSibling.querySelector('.faq-icon');
+                        otherIcon.style.transform = 'rotate(0deg)';
+                    }
+                });
+
+                // Toggle current FAQ item
+                if (isOpen) {
+                    answer.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    answer.classList.remove('hidden');
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Subscription pricing logic
+        const monthlyBtn = document.getElementById('monthlyBtn');
+        const yearlyBtn = document.getElementById('yearlyBtn');
+
+        const monthlyPrices = {
+            basic: 299,
+            premium: 599,
+            vip: 999
+        };
+
+        const yearlyPrices = {
+            basic: 2990, // 10 months price for 12 months
+            premium: 5990, // 10 months price for 12 months
+            vip: 9990 // 10 months price for 12 months
+        };
+
+        function updatePricing(isYearly) {
+            const prices = isYearly ? yearlyPrices : monthlyPrices;
+            const period = isYearly ? '/year' : '/month';
+
+            document.getElementById('basic-price').textContent = `৳${prices.basic}`;
+            document.getElementById('premium-price').textContent = `৳${prices.premium}`;
+            document.getElementById('vip-price').textContent = `৳${prices.vip}`;
+
+            document.querySelectorAll('.text-lg.font-normal').forEach(el => {
+                el.textContent = period;
+            });
+
+            // Update savings text and comparison
+            const basicComparison = document.getElementById('basic-comparison');
+            const premiumComparison = document.getElementById('premium-comparison');
+            const vipComparison = document.getElementById('vip-comparison');
+
+            if (isYearly) {
+                // Calculate exact savings
+                const basicSavings = Math.round(((monthlyPrices.basic * 12 - yearlyPrices.basic) / (monthlyPrices.basic * 12)) * 100);
+                const premiumSavings = Math.round(((monthlyPrices.premium * 12 - yearlyPrices.premium) / (monthlyPrices.premium * 12)) * 100);
+                const vipSavings = Math.round(((monthlyPrices.vip * 12 - yearlyPrices.vip) / (monthlyPrices.vip * 12)) * 100);
+
+                document.getElementById('basic-savings').textContent = `Save ${basicSavings}% annually!`;
+                document.getElementById('premium-savings').textContent = `Save ${premiumSavings}% annually!`;
+                document.getElementById('vip-savings').textContent = `Save ${vipSavings}% annually!`;
+
+                // Show comparison
+                basicComparison.classList.remove('hidden');
+                premiumComparison.classList.remove('hidden');
+                vipComparison.classList.remove('hidden');
+            } else {
+                document.getElementById('basic-savings').textContent = '';
+                document.getElementById('premium-savings').textContent = '';
+                document.getElementById('vip-savings').textContent = '';
+
+                // Hide comparison
+                basicComparison.classList.add('hidden');
+                premiumComparison.classList.add('hidden');
+                vipComparison.classList.add('hidden');
+            }
+        }
+
+        monthlyBtn.addEventListener('click', () => {
+            monthlyBtn.classList.add('bg-white', 'shadow-md', 'text-gray-900');
+            monthlyBtn.classList.remove('text-gray-600');
+            yearlyBtn.classList.remove('bg-white', 'shadow-md', 'text-gray-900');
+            yearlyBtn.classList.add('text-gray-600');
+            updatePricing(false);
+        });
+
+        yearlyBtn.addEventListener('click', () => {
+            yearlyBtn.classList.add('bg-white', 'shadow-md', 'text-gray-900');
+            yearlyBtn.classList.remove('text-gray-600');
+            monthlyBtn.classList.remove('bg-white', 'shadow-md', 'text-gray-900');
+            monthlyBtn.classList.add('text-gray-600');
+            updatePricing(true);
+        });
+
+        // Initialize with monthly pricing
+        updatePricing(false);
+    </script>
+</body>
+
+</html>

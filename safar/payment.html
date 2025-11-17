@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment | Safar</title>
+    <link rel="stylesheet" href="src/css/output.css">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <style>
+        .payment-step {
+            opacity: 0.3;
+            transform: scale(0.95);
+            transition: all 0.5s ease;
+        }
+
+        .payment-step.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .progress-bar {
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .payment-method {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .payment-method:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-method.selected {
+            border-color: #047857 !important;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(4, 120, 87, 0.3);
+        }
+
+        .success-animation {
+            animation: successPulse 2s ease-in-out;
+        }
+
+        @keyframes successPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .checkmark {
+            animation: checkmarkDraw 1s ease-in-out;
+        }
+
+        @keyframes checkmarkDraw {
+            0% {
+                stroke-dasharray: 50;
+                stroke-dashoffset: 50;
+            }
+
+            100% {
+                stroke-dasharray: 50;
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="">
+        <div
+            class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex justify-between items-center px-5 py-3 md:mt-2 shadow-md md:rounded-md">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex flex-row gap-3">
+                    <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+                </a>
+            </div>
+            <div class="text-lg font-semibold text-gray-700">
+                Payment
+            </div>
+            <div class="w-8"></div> <!-- Spacer for centering -->
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-4xl mx-auto p-6 w-full">
+
+        <!-- Step 1: Ride Summary & Payment Method Selection -->
+        <div id="step1" class="payment-step active">
+            <!-- Progress Bar -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex items-center justify-between text-sm text-gray-600 mb-2">
+                    <span>Payment Progress</span>
+                    <span id="progressText">Step 1 of 3</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div id="progressBar" class="progress-bar bg-green-600 h-2 rounded-full" style="width: 33%"></div>
+                </div>
+            </div>
+
+            <!-- Ride Summary -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6" data-aos="fade-up">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Ride Summary</h2>
+
+                <div class="space-y-4">
+                    <!-- Route -->
+                    <div class="flex items-start space-x-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-3 h-3 bg-green-600 rounded-full"></div>
+                            <div class="w-px h-8 bg-gray-300"></div>
+                            <div class="w-3 h-3 bg-blue-600 rounded-full"></div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="mb-2">
+                                <p class="font-semibold text-gray-900">Pickup</p>
+                                <p id="pickupAddress" class="text-sm text-gray-600">Loading...</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Destination</p>
+                                <p id="destinationAddress" class="text-sm text-gray-600">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ride Details -->
+                    <div class="border-t pt-4">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Vehicle</p>
+                                <p id="vehicleType" class="font-semibold text-gray-900">-</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Distance</p>
+                                <p id="rideDistance" class="font-semibold text-gray-900">-</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Duration</p>
+                                <p class="font-semibold text-gray-900">~<span id="estimatedTime">15</span> min</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Total Fare</p>
+                                <p id="totalFare" class="font-bold text-xl text-green-600">৳0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-xl font-bold text-gray-900 mb-6">Select Payment Method</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Mobile Banking -->
+                    <div class="payment-method border-2 border-gray-200 rounded-lg p-4" data-method="bkash">
+                        <div class="flex items-center space-x-3">
+                            <img src="./img/payment-options/bkash.png" alt="bKash" class="h-8">
+                            <div>
+                                <p class="font-semibold text-gray-900">bKash</p>
+                                <p class="text-sm text-gray-600">Mobile Banking</p>
+                            </div>
+                            <div class="ml-auto">
+                                <div class="w-4 h-4 border-2 border-gray-300 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cash -->
+                    <div class="payment-method border-2 border-gray-200 rounded-lg p-4" data-method="cash">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Cash</p>
+                                <p class="text-sm text-gray-600">Pay to driver</p>
+                            </div>
+                            <div class="ml-auto">
+                                <div class="w-4 h-4 border-2 border-gray-300 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Credit Card -->
+                    <div class="payment-method border-2 border-gray-200 rounded-lg p-4" data-method="card">
+                        <div class="flex items-center space-x-3">
+                            <img src="./Images/Visa.png" alt="Card" class="h-8">
+                            <div>
+                                <p class="font-semibold text-gray-900">Credit/Debit Card</p>
+                                <p class="text-sm text-gray-600">Visa, Mastercard</p>
+                            </div>
+                            <div class="ml-auto">
+                                <div class="w-4 h-4 border-2 border-gray-300 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nagad -->
+                    <div class="payment-method border-2 border-gray-200 rounded-lg p-4" data-method="nagad">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                                <span class="text-orange-600 font-bold text-xs">N</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Nagad</p>
+                                <p class="text-sm text-gray-600">Mobile Banking</p>
+                            </div>
+                            <div class="ml-auto">
+                                <div class="w-4 h-4 border-2 border-gray-300 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Continue Button -->
+            <div class="text-center">
+                <button id="continueBtn"
+                    class="text-white bg-gradient-to-r from-green-600 to-green-700 px-12 py-4 rounded-xl font-semibold text-lg hover:from-green-700 hover:to-green-800 transform hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    disabled>
+                    Continue to Payment
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Processing Payment -->
+        <div id="step2" class="payment-step hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center" data-aos="fade-up">
+                <div class="mb-6">
+                    <div class="w-20 h-20 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-10 h-10 text-blue-600 spinner" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Processing Payment</h2>
+                    <p class="text-gray-600 mb-6">Please wait while we process your payment...</p>
+
+                    <!-- Processing Steps -->
+                    <div class="text-left max-w-md mx-auto space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="text-gray-700">Verifying payment method</span>
+                        </div>
+                        <div id="step2-2" class="flex items-center space-x-3 opacity-50">
+                            <div class="w-6 h-6 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                                <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+                            </div>
+                            <span class="text-gray-700">Processing transaction</span>
+                        </div>
+                        <div id="step2-3" class="flex items-center space-x-3 opacity-50">
+                            <div class="w-6 h-6 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                                <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+                            </div>
+                            <span class="text-gray-700">Confirming ride booking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Payment Confirmation -->
+        <div id="step3" class="payment-step hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center success-animation" data-aos="fade-up">
+                <div class="mb-6">
+                    <div class="w-24 h-24 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-12 h-12 text-green-600 checkmark" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-green-600 mb-2">Payment Successful!</h2>
+                    <p id="successMessage" class="text-gray-600 mb-6">Your booking has been confirmed successfully</p>
+
+                    <!-- Booking Details -->
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6 text-left">
+                        <h3 class="font-semibold text-gray-900 mb-4">Booking Details</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Booking ID:</span>
+                                <span id="bookingId" class="font-semibold">SAF-2025-001234</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Payment Method:</span>
+                                <span id="paymentMethodUsed" class="font-semibold">bKash</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Amount Paid:</span>
+                                <span id="amountPaid" class="font-semibold text-green-600">৳120</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Status:</span>
+                                <span class="font-semibold text-green-600">Confirmed</span>
+                            </div>
+                        </div>
+                    </div> <!-- Next Steps -->
+                    <div id="nextStepsSection" class="bg-blue-50 rounded-lg p-4 mb-6">
+                        <h4 class="font-semibold text-blue-900 mb-2">What's Next?</h4>
+                        <p id="nextStepsText" class="text-sm text-blue-700">
+                            We're now processing your request. You'll receive updates via notification.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="window.location.href='dashboard.html'"
+                        class="text-white bg-gradient-to-r from-green-600 to-green-700 px-8 py-3 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                        Go to Dashboard
+                    </button>
+                    <button id="bookAnotherBtn" onclick="window.location.href='index.html'"
+                        class="text-green-600 bg-white border-2 border-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 transform hover:scale-105 transition-all duration-300">
+                        Book Another Service
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+
+        let selectedPaymentMethod = null;
+        let rideData = null;
+
+        // Load ride data from localStorage
+        function loadRideData() {
+            const savedData = localStorage.getItem('safar_payment_data');
+            if (savedData) {
+                try {
+                    rideData = JSON.parse(savedData);
+
+                    // Check if it's a parcel service or ride service
+                    if (rideData.service === 'parcel') {
+                        // Handle parcel data
+                        document.getElementById('pickupAddress').textContent = rideData.pickup.address;
+                        document.getElementById('destinationAddress').textContent = rideData.delivery.address;
+                        document.getElementById('vehicleType').textContent = `${rideData.parcelDetails.size} Parcel (${rideData.parcelDetails.weight})`;
+                        document.getElementById('rideDistance').textContent = rideData.distance + ' km';
+                        document.getElementById('totalFare').textContent = '৳' + rideData.fare;
+
+                        // Update labels for parcel service
+                        document.querySelector('.bg-green-50 .font-semibold').textContent = 'Pickup Location';
+                        document.querySelector('.bg-blue-50 .font-semibold').textContent = 'Delivery Location';
+                        document.querySelector('h2').textContent = 'Parcel Summary';
+
+                        // Show parcel details
+                        const vehicleSection = document.querySelector('.grid.grid-cols-2.md\\:grid-cols-4.gap-4');
+                        vehicleSection.innerHTML = `
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Service</p>
+                                <p class="font-semibold text-gray-900">Parcel Delivery</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Size</p>
+                                <p class="font-semibold text-gray-900">${rideData.parcelDetails.size} (${rideData.parcelDetails.weight})</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Distance</p>
+                                <p class="font-semibold text-gray-900">${rideData.distance} km</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Total Fare</p>
+                                <p class="font-bold text-xl text-green-600">৳${rideData.fare}</p>
+                            </div>
+                        `;
+                    } else {
+                        // Handle ride data (existing logic)
+                        document.getElementById('pickupAddress').textContent = rideData.pickup.address;
+                        document.getElementById('destinationAddress').textContent = rideData.destination.address;
+                        document.getElementById('vehicleType').textContent = rideData.vehicle;
+                        document.getElementById('rideDistance').textContent = rideData.distance + ' km';
+                        document.getElementById('totalFare').textContent = '৳' + rideData.fare;
+                    }
+
+                    // Calculate estimated time (assuming 30 km/h average speed)
+                    const estimatedMinutes = Math.round((parseFloat(rideData.distance) / 30) * 60);
+                    document.getElementById('estimatedTime').textContent = estimatedMinutes;
+
+                } catch (error) {
+                    console.error('Error loading service data:', error);
+                    alert('Error loading service data. Redirecting to home...');
+                    window.location.href = 'index.html';
+                }
+            } else {
+                alert('No service data found. Please select your service first.');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function () {
+                // Remove selection from all methods
+                document.querySelectorAll('.payment-method').forEach(m => {
+                    m.classList.remove('selected');
+                    const circle = m.querySelector('.w-4.h-4');
+                    circle.className = 'w-4 h-4 border-2 border-gray-300 rounded-full';
+                });
+
+                // Select current method
+                this.classList.add('selected');
+                const circle = this.querySelector('.w-4.h-4');
+                circle.className = 'w-4 h-4 bg-green-600 border-2 border-green-600 rounded-full flex items-center justify-center';
+                circle.innerHTML = '<svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="2"/></svg>';
+
+                selectedPaymentMethod = this.dataset.method;
+
+                // Enable continue button
+                document.getElementById('continueBtn').disabled = false;
+            });
+        });
+
+        // Continue to payment processing
+        document.getElementById('continueBtn').addEventListener('click', function () {
+            if (selectedPaymentMethod) {
+                // Update progress
+                document.getElementById('progressText').textContent = 'Step 2 of 3';
+                document.getElementById('progressBar').style.width = '66%';
+
+                // Hide step 1, show step 2
+                document.getElementById('step1').classList.remove('active');
+                setTimeout(() => {
+                    document.getElementById('step1').classList.add('hidden');
+                    document.getElementById('step2').classList.remove('hidden');
+                    setTimeout(() => {
+                        document.getElementById('step2').classList.add('active');
+                    }, 100);
+                }, 500);
+
+                // Simulate payment processing
+                setTimeout(() => {
+                    // Update step 2-2
+                    document.getElementById('step2-2').classList.remove('opacity-50');
+                    const step2Circle = document.getElementById('step2-2').querySelector('.w-6.h-6');
+                    step2Circle.className = 'w-6 h-6 bg-green-500 rounded-full flex items-center justify-center';
+                    step2Circle.innerHTML = '<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                }, 2000);
+
+                setTimeout(() => {
+                    // Update step 2-3
+                    document.getElementById('step2-3').classList.remove('opacity-50');
+                    const step3Circle = document.getElementById('step2-3').querySelector('.w-6.h-6');
+                    step3Circle.className = 'w-6 h-6 bg-green-500 rounded-full flex items-center justify-center';
+                    step3Circle.innerHTML = '<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                }, 3500);
+
+                setTimeout(() => {
+                    // Move to step 3 (success)
+                    document.getElementById('progressText').textContent = 'Completed';
+                    document.getElementById('progressBar').style.width = '100%';
+
+                    document.getElementById('step2').classList.remove('active');
+                    setTimeout(() => {
+                        document.getElementById('step2').classList.add('hidden');
+                        document.getElementById('step3').classList.remove('hidden');
+                        setTimeout(() => {
+                            document.getElementById('step3').classList.add('active');
+
+                            // Update confirmation details
+                            const methodNames = {
+                                'bkash': 'bKash',
+                                'cash': 'Cash',
+                                'card': 'Credit Card',
+                                'nagad': 'Nagad'
+                            };
+
+                            document.getElementById('paymentMethodUsed').textContent = methodNames[selectedPaymentMethod];
+                            document.getElementById('amountPaid').textContent = '৳' + rideData.fare;
+
+                            // Generate booking ID
+                            const servicePrefix = rideData.service === 'parcel' ? 'PAR' : 'SAF';
+                            const bookingId = servicePrefix + '-' + new Date().getFullYear() + '-' +
+                                String(Date.now()).slice(-6);
+                            document.getElementById('bookingId').textContent = bookingId;
+
+                            // Update success message and next steps based on service type
+                            if (rideData.service === 'parcel') {
+                                document.getElementById('successMessage').textContent = 'Your parcel has been scheduled for delivery!';
+                                document.getElementById('nextStepsText').textContent =
+                                    "We're now assigning a delivery partner for your parcel. You and the receiver will receive notifications with tracking details and estimated delivery time.";
+                            } else {
+                                document.getElementById('successMessage').textContent = 'Your ride has been booked successfully!';
+                                document.getElementById('nextStepsText').textContent =
+                                    "We're now finding the best driver for your ride. You'll receive a notification once a driver accepts your request with their details and estimated arrival time.";
+                            }
+
+                            // Clear payment data from localStorage
+                            localStorage.removeItem('safar_payment_data');
+
+                        }, 100);
+                    }, 500);
+                }, 5000);
+            }
+        });
+
+        // Load ride data on page load
+        loadRideData();
+
+        // Back button functionality (optional)
+        function goBack() {
+            if (confirm('Are you sure you want to go back? Your payment progress will be lost.')) {
+                window.location.href = 'rideRoute.html';
+            }
+        }
+
+        // Add keyboard shortcut for back (Escape key)
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && document.getElementById('step1').classList.contains('active')) {
+                goBack();
+            }
+        });
+    </script>
+</body>
+
+</html>
