@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rider Dashboard | Safar</title>
+  <link rel="stylesheet" href="src/css/output.css" />
+  <style>
+    * {
+      transition: all 0.3s ease;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .card:hover {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-slate-100 text-gray-800 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-40 relative">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+        <span class="font-bold text-slate-900">Safar</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <button id="notificationBell" class="relative p-2 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg text-blue-600 font-semibold">
+          🔔
+          <span id="notifBadge" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" style="display:none;">3</span>
+        </button>
+        <button id="profileDropdown" class="relative">
+          <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md cursor-pointer hover:from-purple-500 hover:to-purple-700">
+            <span id="profileInitial">R</span>
+          </div>
+        </button>
+      </div>
+    </div>
+    <!-- Dropdown Menu -->
+    <div id="dropdownMenu" class="hidden absolute right-6 top-20 bg-white border border-slate-200 rounded-xl shadow-2xl w-80 z-50 overflow-hidden">
+      <!-- Profile Section -->
+      <div class="bg-gradient-to-r from-purple-600 to-blue-600 p-6 text-white">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-14 h-14 bg-white rounded-lg flex items-center justify-center text-2xl font-bold text-purple-600 shadow-md">
+            <span id="profileAvatarLarge">R</span>
+          </div>
+          <div class="flex-1">
+            <p id="userNameDropdown" class="font-bold text-lg">Rider Name</p>
+            <p id="userEmailDropdown" class="text-sm text-purple-100">rider@safar.com</p>
+          </div>
+        </div>
+        <div class="bg-white/20 rounded-lg px-3 py-2 text-sm font-semibold text-center">
+          ⭐ 4.9 Rating • 24 Rides
+        </div>
+      </div>
+
+      <!-- Menu Items -->
+      <nav class="py-2">
+        <a href="settings.html" class="flex items-center gap-3 px-5 py-3 hover:bg-purple-50 text-gray-700 font-medium transition-colors border-l-4 border-transparent hover:border-purple-600">
+          <span class="text-xl">⚙️</span>
+          <div>
+            <p class="font-semibold text-gray-900">Settings</p>
+            <p class="text-xs text-gray-500">Manage your account</p>
+          </div>
+        </a>
+        <a href="Safety&Reports.html" class="flex items-center gap-3 px-5 py-3 hover:bg-red-50 text-gray-700 font-medium transition-colors border-l-4 border-transparent hover:border-red-600">
+          <span class="text-xl">🚨</span>
+          <div>
+            <p class="font-semibold text-gray-900">Safety</p>
+            <p class="text-xs text-gray-500">Safety & Reports</p>
+          </div>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-5 py-3 hover:bg-blue-50 text-gray-700 font-medium transition-colors border-l-4 border-transparent hover:border-blue-600">
+          <span class="text-xl">💳</span>
+          <div>
+            <p class="font-semibold text-gray-900">Payments</p>
+            <p class="text-xs text-gray-500">Wallet & methods</p>
+          </div>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-5 py-3 hover:bg-amber-50 text-gray-700 font-medium transition-colors border-l-4 border-transparent hover:border-amber-600">
+          <span class="text-xl">💎</span>
+          <div>
+            <p class="font-semibold text-gray-900">Loyalty</p>
+            <p class="text-xs text-gray-500">Points & rewards</p>
+          </div>
+        </a>
+      </nav>
+
+      <!-- Divider -->
+      <div class="border-t border-slate-100"></div>
+
+      <!-- Logout Section -->
+      <div class="p-3">
+        <button id="logoutBtn" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-3 rounded-lg transition-all transform hover:scale-105 active:scale-95">
+          🚪 Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-6 py-12">
+    <!-- Welcome & CTA Section -->
+    <div class="mb-12">
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <h1 class="text-4xl font-bold text-gray-900 mb-2">Welcome back, <span id="greetingName" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">Rider</span>! 👋</h1>
+          <p class="text-gray-600 text-lg">Your next adventure is just one tap away</p>
+        </div>
+      </div>
+
+      <!-- PRIMARY CTA: Book a Ride Button -->
+      <button id="bookRideBtn" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-5 rounded-xl text-xl shadow-lg transform hover:scale-105 active:scale-95">
+        🚗 Book Your Ride Now
+      </button>
+    </div>
+
+    <!-- Smart Layout: Stats & Active Ride -->
+    <div class="grid lg:grid-cols-3 gap-6 mb-8">
+      <!-- Quick Stats Cards -->
+      <div class="grid grid-cols-2 gap-4 lg:col-span-1">
+        <div class="card text-center">
+          <p class="text-4xl font-bold text-purple-600 mb-1">24</p>
+          <p class="text-sm text-gray-600 font-medium">Total Rides</p>
+        </div>
+        <div class="card text-center">
+          <p class="text-4xl font-bold text-blue-600 mb-1">4.9</p>
+          <p class="text-sm text-gray-600 font-medium">Your Rating</p>
+        </div>
+        <div class="card text-center">
+          <p class="text-3xl font-bold text-green-600 mb-1">৳650</p>
+          <p class="text-sm text-gray-600 font-medium">Wallet</p>
+        </div>
+        <div class="card text-center">
+          <p class="text-3xl font-bold text-yellow-600 mb-1">1.2K</p>
+          <p class="text-sm text-gray-600 font-medium">Points</p>
+        </div>
+      </div>
+
+      <!-- Active Ride (if exists) -->
+      <div id="activeRideSection" class="lg:col-span-2 card border-l-4 border-green-500" style="display:none;">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Active Ride</h3>
+            <p class="text-sm text-gray-500">Trip #RIDE-2403-7821</p>
+          </div>
+          <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-bold">In Transit</span>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <p class="text-xs text-gray-600 font-semibold mb-1">PICKUP</p>
+            <p class="text-gray-900 font-bold">Gulshan 2</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-600 font-semibold mb-1">DESTINATION</p>
+            <p class="text-gray-900 font-bold">Banani Park</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-orange-600 font-bold">
+          <span>⏱️ ETA: 8 minutes</span>
+          <span class="text-gray-400">•</span>
+          <span>↔️ 2.3 km away</span>
+        </div>
+      </div>
+
+      <!-- No Active Ride State -->
+      <div id="noActiveRide" class="lg:col-span-2 card border-2 border-dashed border-gray-300 text-center py-12">
+        <p class="text-2xl mb-2">🚕</p>
+        <p class="text-gray-600 font-medium">No active ride right now</p>
+        <p class="text-sm text-gray-500 mt-1">Book a ride to get started</p>
+      </div>
+    </div>
+
+    <!-- Main Grid: Content & Sidebar -->
+    <div class="grid lg:grid-cols-3 gap-6">
+      <!-- Left Column: Main Content -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Upcoming Rides -->
+        <section class="card">
+          <h2 class="text-xl font-bold text-gray-900 mb-5 flex items-center gap-2">
+            <span class="text-2xl">📅</span> Upcoming Rides
+          </h2>
+          <div id="upcomingRides" class="space-y-4">
+            <div class="border-l-4 border-blue-500 bg-gradient-to-r from-blue-50 to-transparent p-4 rounded-r-lg hover:shadow-md">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-bold text-gray-900">Tomorrow at 9:00 AM</span>
+                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">Confirmed</span>
+              </div>
+              <p class="text-sm text-gray-700">📍 Home → Office (Gulshan)</p>
+              <p class="text-xs text-gray-500 mt-1">Standard Ride • Prebooked</p>
+            </div>
+            <div class="border-l-4 border-pink-500 bg-gradient-to-r from-pink-50 to-transparent p-4 rounded-r-lg hover:shadow-md">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-bold text-gray-900">Next Saturday 6:00 PM</span>
+                <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-bold">👩 Women-Only</span>
+              </div>
+              <p class="text-sm text-gray-700">📍 Gulshan → Hazrat Shahjalal Airport</p>
+              <p class="text-xs text-gray-500 mt-1">Airport Ride • Scheduled</p>
+            </div>
+          </div>
+          <button class="w-full mt-5 border-2 border-purple-600 text-purple-600 font-bold py-3 rounded-lg hover:bg-purple-50">
+            View All Rides
+          </button>
+        </section>
+
+        <!-- Recent Activity / Notifications -->
+        <section class="card">
+          <h2 class="text-xl font-bold text-gray-900 mb-5 flex items-center gap-2">
+            <span class="text-2xl">🔔</span> Recent Activity
+          </h2>
+          <div class="space-y-3 max-h-56 overflow-y-auto">
+            <div class="flex gap-3 p-3 bg-gradient-to-r from-yellow-50 to-transparent rounded-lg border-l-4 border-yellow-400">
+              <span class="text-xl">⭐</span>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 text-sm">Ahmed Khan rated you 5 stars</p>
+                <p class="text-xs text-gray-600">Great passenger! Professional behavior. 👍</p>
+              </div>
+            </div>
+            <div class="flex gap-3 p-3 bg-gradient-to-r from-green-50 to-transparent rounded-lg border-l-4 border-green-400">
+              <span class="text-xl">🎉</span>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 text-sm">New Promo: 20% off on pool rides</p>
+                <p class="text-xs text-gray-600">Valid until March 31, 2026</p>
+              </div>
+            </div>
+            <div class="flex gap-3 p-3 bg-gradient-to-r from-orange-50 to-transparent rounded-lg border-l-4 border-orange-400">
+              <span class="text-xl">⏰</span>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900 text-sm">Loyalty points expiring soon</p>
+                <p class="text-xs text-gray-600">500 points expiring in 7 days</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column: Sidebar Cards -->
+      <aside class="space-y-6">
+        <!-- Safety Card -->
+        <section class="card bg-gradient-to-br from-red-50 to-orange-50 border-l-4 border-red-500">
+          <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span class="text-2xl">🛡️</span> Your Safety
+          </h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-2 text-sm text-gray-700">
+              <span class="text-lg">✅</span> <span>Verified Profile</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm text-gray-700">
+              <span class="text-lg">👤</span> <span>Emergency Contacts</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm text-gray-700">
+              <span class="text-lg">🔒</span> <span>Ride Coverage Active</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm text-gray-700">
+              <span class="text-lg">📍</span> <span>Share Live Location</span>
+            </div>
+          </div>
+          <button class="w-full mt-4 bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-bold text-sm">
+            Share with Contacts
+          </button>
+        </section>
+
+        <!-- Women-Only Badge (if applicable) -->
+        <section id="womenOnlyCard" class="card bg-gradient-to-br from-pink-50 to-rose-50 border-l-4 border-pink-500" style="display:none;">
+          <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <span class="text-2xl">👩</span> Women-Only Rider
+          </h3>
+          <p class="text-sm text-gray-600 mb-3">You have selected the women-only ride preference</p>
+          <button class="w-full bg-pink-600 hover:bg-pink-700 text-white py-2 rounded-lg font-bold text-sm">
+            Manage Preference
+          </button>
+        </section>
+
+        <!-- Loyalty & Wallet Card -->
+        <section class="card bg-gradient-to-br from-amber-50 to-yellow-50 border-l-4 border-amber-500">
+          <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span class="text-2xl">💎</span> Loyalty & Wallet
+          </h3>
+          <div class="space-y-3 mb-4">
+            <div class="bg-white rounded-lg p-3">
+              <p class="text-xs text-gray-600 font-semibold mb-1">WALLET BALANCE</p>
+              <p class="text-2xl font-bold text-green-600">৳650</p>
+            </div>
+            <div class="bg-white rounded-lg p-3">
+              <p class="text-xs text-gray-600 font-semibold mb-1">LOYALTY POINTS</p>
+              <p class="text-2xl font-bold text-amber-600">1,240</p>
+              <p class="text-xs text-orange-600 mt-1">⚠️ 500 points expiring in 7 days</p>
+            </div>
+          </div>
+          <button class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg font-bold text-sm mb-2">
+            Add Cash
+          </button>
+          <button class="w-full border-2 border-amber-600 text-amber-700 hover:bg-amber-50 py-2 rounded-lg font-bold text-sm">
+            View Offers
+          </button>
+        </section>
+
+        <!-- Pool Ride Status -->
+        <section class="card border-l-4 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50">
+          <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span class="text-2xl">👥</span> Active Pool Ride
+          </h3>
+          <div class="bg-white rounded-lg p-3 mb-3">
+            <p class="text-xs text-gray-600 font-semibold mb-2">PASSENGERS ON THIS RIDE</p>
+            <div class="flex -space-x-2 mb-3">
+              <div class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-white">A</div>
+              <div class="w-8 h-8 bg-purple-400 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-white">S</div>
+              <div class="w-8 h-8 bg-pink-400 rounded-full flex items-center justify-center text-white text-xs font-bold border-2 border-white">+1</div>
+            </div>
+            <p class="text-sm font-bold text-green-700">💰 You're saving ৳75 today!</p>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-16">
+    <div class="max-w-7xl mx-auto px-6 py-10">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h4 class="font-bold text-gray-900 mb-3">Safety</h4>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block mb-2">Safety Center</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block mb-2">Emergency Contacts</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block">Report Issue</a>
+        </div>
+        <div>
+          <h4 class="font-bold text-gray-900 mb-3">Account</h4>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block mb-2">Wallet</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block mb-2">Payment Methods</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block">Ride History</a>
+        </div>
+        <div>
+          <h4 class="font-bold text-gray-900 mb-3">Support</h4>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block mb-2">Help Center</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block mb-2">Contact Us</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block">Feedback</a>
+        </div>
+        <div>
+          <h4 class="font-bold text-gray-900 mb-3">Legal</h4>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block mb-2">Terms</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block mb-2">Privacy</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-purple-600 block">Cookies</a>
+        </div>
+      </div>
+      <div class="border-t border-slate-200 pt-8 text-center text-sm text-gray-600">
+        <p>© 2026 Safar. All rights reserved. Safe Rides. Happy Travels. 🚗</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Get user data from localStorage
+    const safarUser = JSON.parse(localStorage.getItem('safarUser') || '{}');
+    
+    // Redirect if not logged in or not a rider
+    const userRole = safarUser.userType || safarUser.UserType;
+    if (!userRole || (userRole !== 'Rider' && userRole !== 'rider')) {
+      window.location.href = './src/login.html';
+    }
+
+    // Set user info in UI
+    const userName = safarUser.name || safarUser.Name || 'Rider';
+    const userEmail = safarUser.email || safarUser.Email || 'rider@safar.com';
+    const profileInitial = userName.charAt(0).toUpperCase();
+
+    document.getElementById('greetingName').textContent = userName.split(' ')[0];
+    document.getElementById('profileInitial').textContent = profileInitial;
+    document.getElementById('profileAvatarLarge').textContent = profileInitial;
+    document.getElementById('userNameDropdown').textContent = userName;
+    document.getElementById('userEmailDropdown').textContent = userEmail;
+
+    // Check for women-only preference
+    if (safarUser.womenOnly === true || safarUser.womenOnly === 'true') {
+      document.getElementById('womenOnlyCard').style.display = 'block';
+    }
+
+    // Profile dropdown toggle
+    document.getElementById('profileDropdown').addEventListener('click', function() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.classList.toggle('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('dropdownMenu');
+      const profileBtn = document.getElementById('profileDropdown');
+      if (!dropdown.contains(event.target) && !profileBtn.contains(event.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      localStorage.removeItem('safarUser');
+      window.location.href = './src/login.html';
+    });
+
+    // Book Ride button
+    document.getElementById('bookRideBtn').addEventListener('click', function() {
+      window.location.href = 'index.html#book-section';
+    });
+
+    // Notification bell
+    document.getElementById('notificationBell').addEventListener('click', function() {
+      alert('You have 3 new notifications:\n\n✅ Ahmed Khan rated you 5 stars\n🎉 New Promo: 20% off pool rides\n💰 Loyalty points expiring in 7 days');
+    });
+  </script>
+</body>
+</html>

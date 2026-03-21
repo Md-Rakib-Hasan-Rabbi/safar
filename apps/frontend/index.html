@@ -39,7 +39,7 @@
         <div id="authButtons" class="space-x-2">
           <button
             class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
-            <a href="./src/login.html">LOG IN</a>
+            <a href="./src/login.html?v=role-login-v2">LOG IN</a>
           </button>
           <button
             class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
@@ -113,6 +113,10 @@
             </div>
           </div>
         </div>
+        <div class="mb-4 w-[400px] flex items-center gap-3 bg-pink-50 p-3 rounded border border-pink-200">
+          <input type="checkbox" id="womenOnly" class="w-4 h-4 cursor-pointer" />
+          <label for="womenOnly" class="text-sm font-medium cursor-pointer">👩 Women-Only Ride (Female driver preferred)</label>
+        </div>
         <div class="flex space-x-2 mb-8 w-[400px]">
           <button id="searchBtn"
             class="bg-green-900 text-white px-4 py-2 rounded w-full hover:bg-green-800 transition-colors font-medium">Search
@@ -123,7 +127,7 @@
           <div
             class="bg-amber-50 rounded shadow p-4 text-center transform transition duration-500 hover:scale-105 hover:shadow-lg"
             data-aos="zoom-in">
-            <a href="rideRoute.html">
+            <a href="./index.html">
               <img src="./img/homepage/car 1.svg" alt="Ride" class="mx-auto mb-2 w-14" />
               <p>Book a Ride</p>
             </a>
@@ -139,14 +143,18 @@
           <div
             class="bg-amber-50 rounded shadow p-4 text-center transform transition duration-500 hover:scale-105 hover:shadow-lg"
             data-aos="zoom-in" data-aos-delay="200">
-            <img src="./img/homepage/book.svg" alt="Prebook" class="mx-auto mb-2 w-12" />
-            <p>Prebook</p>
+            <a href="prebook.html">
+              <img src="./img/homepage/book.svg" alt="Prebook" class="mx-auto mb-2 w-12" />
+              <p>Prebook</p>
+            </a>
           </div>
           <div
             class="bg-amber-50 rounded shadow p-4 text-center transform transition duration-500 hover:scale-105 hover:shadow-lg"
             data-aos="zoom-in" data-aos-delay="300">
-            <img src="./img/homepage/pool-ride.svg" alt="Pool" class="mx-auto mb-2 w-14" />
-            <p>Pool a Ride</p>
+            <a href="poolRide.html">
+              <img src="./img/homepage/pool-ride.svg" alt="Pool" class="mx-auto mb-2 w-14" />
+              <p>Pool a Ride</p>
+            </a>
           </div>
         </div>
       </div>
@@ -155,6 +163,61 @@
       </div>
     </div>
   </main>
+
+  <!-- Why Choose Safar - Safety & Security Section -->
+  <section class="py-16 bg-gradient-to-r from-green-50 to-blue-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-4" data-aos="fade-up">🔒 Why Choose <span class="text-green-700">Safar</span></h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto" data-aos="fade-up">Your safety and comfort are our top priorities. Here's what makes Safar the most trusted ride-sharing platform.</p>
+      
+      <div class="grid md:grid-cols-4 gap-6">
+        <div class="bg-white rounded-2xl shadow-lg p-6 text-center transform transition duration-300 hover:shadow-xl hover:scale-105" data-aos="zoom-in">
+          <div class="text-4xl mb-3">✅</div>
+          <h3 class="font-semibold text-lg mb-2">Verified Drivers Only</h3>
+          <p class="text-gray-600 text-sm">All drivers pass strict background checks and regular verification.</p>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-6 text-center transform transition duration-300 hover:shadow-xl hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
+          <div class="text-4xl mb-3">🗺️</div>
+          <h3 class="font-semibold text-lg mb-2">Real-Time Tracking</h3>
+          <p class="text-gray-600 text-sm">Live GPS tracking lets you share your route with emergency contacts.</p>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-6 text-center transform transition duration-300 hover:shadow-xl hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
+          <div class="text-4xl mb-3">👩</div>
+          <h3 class="font-semibold text-lg mb-2">Women-Only Rides</h3>
+          <p class="text-gray-600 text-sm">Option for female riders to request female drivers for enhanced safety.</p>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-6 text-center transform transition duration-300 hover:shadow-xl hover:scale-105" data-aos="zoom-in" data-aos-delay="300">
+          <div class="text-4xl mb-3">🚨</div>
+          <h3 class="font-semibold text-lg mb-2">Emergency SOS</h3>
+          <p class="text-gray-600 text-sm">One-tap emergency button to alert authorities and your contacts instantly.</p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 mt-8">
+        <div class="bg-white rounded-2xl shadow-lg p-6" data-aos="fade-right">
+          <h3 class="font-semibold text-lg mb-4 flex items-center gap-2"><span class="text-2xl">⭐</span> Driver Ratings & Reviews</h3>
+          <p class="text-gray-600 mb-4">Every driver has a public rating based on rider feedback. See driver ratings before booking to make informed decisions.</p>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <p class="text-sm text-gray-600">Average rating on platform: <span class="font-bold text-lg text-yellow-600">4.8/5.0</span></p>
+            <p class="text-xs text-gray-500 mt-1">Based on 50,000+ verified rider reviews</p>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-6" data-aos="fade-left">
+          <h3 class="font-semibold text-lg mb-4 flex items-center gap-2"><span class="text-2xl">🛡️</span> Insurance Coverage</h3>
+          <p class="text-gray-600 mb-4">Every ride is covered by comprehensive insurance. Your safety is protected from pickup to drop-off.</p>
+          <div class="space-y-2 text-sm">
+            <p>✓ Accident coverage up to 5 Lakhs</p>
+            <p>✓ Third-party liability protection</p>
+            <p>✓ Medical emergency assistance</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- How Safar Works  -->
   <section class="py-16 bg-gray-50 text-center">
@@ -201,24 +264,26 @@
     <h2 class="text-3xl font-bold m-7" data-aos="fade-up">Why Choose Us</h2>
     <div class="flex flex-row justify-between">
       <div class="flex flex-col gap-10 max-w-1/2" data-aos="fade-right">
-        <div class="grid grid-cols-2 md:grid-cols-2 gap-6 mb-6 text-xl">
-          <div>
-            <p class="font-semibold">🚘 Safe Rides</p>
+        <div class="grid grid-cols-2 md:grid-cols-2 gap-6 mb-6 text-lg">
+          <div class="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition">
+            <p class="font-semibold">✅ Verified Drivers</p>
+            <p class="text-xs text-gray-600 mt-1">Background checked & rated</p>
           </div>
-          <div>
-            <p class="font-semibold">👩 Women Only Option</p>
+          <div class="p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition">
+            <p class="font-semibold">👩 Women-Only Rides</p>
+            <p class="text-xs text-gray-600 mt-1">Female riders, female drivers</p>
           </div>
-          <div>
-            <p class="font-semibold">⏱️ Real Time Tracking</p>
+          <div class="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition">
+            <p class="font-semibold">🗺️ Live Tracking</p>
+            <p class="text-xs text-gray-600 mt-1">GPS + Share with contacts</p>
           </div>
-          <div>
-            <p class="font-semibold">📲 Bkash Integration</p>
+          <div class="p-4 bg-red-50 rounded-lg hover:bg-red-100 transition">
+            <p class="font-semibold">🚨 Emergency SOS</p>
+            <p class="text-xs text-gray-600 mt-1">One-tap emergency alert</p>
           </div>
         </div>
-        <div class="font-light text-lg mt-3 text-gray-500">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi numquam assumenda dolore. Beatae
-          exercitationem ab, quasi, eaque ducimus odio cum recusandae at magnam soluta consequatur. Deserunt delectus
-          aliquid molestiae incidunt?
+        <div class="font-light text-lg mt-3 text-gray-600">
+          Safar prioritizes your safety with verified drivers, real-time tracking, emergency SOS buttons, and women-only ride options. Every ride is insured up to 5 Lakhs, and our entire community is rated by verified riders. Trust Safar to get you there safe, every time.
         </div>
       </div>
       <div class="bg-amber-100 max-w-full md:max-w-7xl mx-auto p-8 rounded-xl shadow-lg" data-aos="fade-left">
@@ -596,7 +661,7 @@
           pickup: currentLocation,
           destination: {
             name: selectedDestination,
-            coordinates: null // Will be geocoded in RideRoute.html if not already available
+            coordinates: null // Will be geocoded if not already available
           },
           timestamp: Date.now()
         };
@@ -607,9 +672,9 @@
         searchBtn.innerHTML = 'Searching...';
         searchBtn.disabled = true;
 
-        // Redirect to RideRoute.html after a short delay
+        // Redirect to home after a short delay
         setTimeout(() => {
-          window.location.href = 'rideRoute.html';
+          window.location.href = './index.html';
         }, 500);
       });
 

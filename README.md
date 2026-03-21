@@ -2,7 +2,7 @@
 
 Safar is a full-stack ride-sharing web app with a Node.js + Express backend and a static frontend powered by Tailwind CSS.
 
-## Quick Start (for GitHub users)
+## Quick Start
 
 ### 1) Clone and install
 
@@ -15,58 +15,22 @@ npm --prefix ./apps/frontend install
 
 ### 2) Set up backend environment
 
-Create this file:
-
-`apps/backend/.env`
-
-Use this content:
+Create `apps/backend/.env`:
 
 ```env
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=safar
 PORT=5000
+DB_FILE=apps/backend/database/safar.sqlite
 ```
 
-### 3) Import database
-
-Import SQL dump from:
-
-`apps/backend/database/edU5Fsu.sql`
-
-You can import using MySQL Workbench or CLI.
-
-CLI example:
+### 3) Initialize database (SQLite)
 
 ```bash
-mysql -u root -p safar < apps/backend/database/edU5Fsu.sql
+npm run db:update
 ```
 
-If `safar` database does not exist yet:
+This creates and seeds `apps/backend/database/safar.sqlite`.
 
-```sql
-CREATE DATABASE safar;
-```
-
-### 4) Run the project
-
-If MySQL is already running:
-
-```bash
-npm run dev
-```
-
-If MySQL is not running:
-
-Terminal 1:
-
-```bash
-npm run db:start
-```
-
-Terminal 2:
+### 4) Run app
 
 ```bash
 npm run dev
@@ -82,53 +46,19 @@ npm run dev
 - `npm run dev` → Starts backend + frontend static server + Tailwind watcher (quiet mode)
 - `npm run dev:verbose` → Same as above with full logs
 - `npm run start` → Starts backend only
-- `npm run db:start` → Starts local MySQL server (Windows path configured)
+- `npm run db:setup` → Creates SQLite schema + seed data if missing
+- `npm run db:update` → Rebuilds SQLite database with fresh seed data
 
-## Project Structure
+## Seed Users
 
-```text
-safar/
-├── apps/
-│   ├── backend/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── routes/
-│   │   ├── database/
-│   │   ├── .env
-│   │   └── server.js
-│   └── frontend/
-│       ├── src/
-│       ├── img/
-│       ├── Images/
-│       ├── index.html
-│       └── package.json
-├── package.json
-└── README.md
-```
-
-## Common Issues
-
-### `EADDRINUSE: 5500` or `5000`
-
-Another process is already using the port.
-
-Close previous terminal sessions or stop the existing process, then run `npm run dev` again.
-
-### `'C:\Program' is not recognized`
-
-This is fixed in current scripts. Pull latest changes and run `npm install` again.
-
-### MySQL `ibdata1 must be writable`
-
-It usually means MySQL is already running and locking files.
-
-In this case, do not run `npm run db:start`; run only `npm run dev`.
+- Rider: `seed.rider@safar.app` / `rider123`
+- Driver: `seed.driver@safar.app` / `driver123`
+- Admin: `seed.admin@safar.app` / `admin123`
+- Rider: `seed.rider2@safar.app` / `rider123`
+- Driver: `seed.driver2@safar.app` / `driver123`
+- Admin: `seed.admin2@safar.app` / `admin123`
 
 ## Tech Stack
 
-- Backend: Node.js, Express, MySQL
+- Backend: Node.js, Express, SQLite
 - Frontend: HTML, Tailwind CSS, JavaScript
-
-## Contact
-
-- Email: israqq2120@gmail.com

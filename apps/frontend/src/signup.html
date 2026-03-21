@@ -33,7 +33,7 @@
             <label class="sr-only" for="fullname">Full Name</label>
             <div class="flex items-center border rounded-xl px-4 py-3 input-group">
               <img src="../img/sign-up-login/user.png" class="h-4" alt="" />
-              <input type="text" id="fullname" placeholder="Full Name"
+              <input type="text" id="fullname" name="fullname" placeholder="Full Name" autocomplete="name"
                 class="w-full bg-transparent outline-none text-gray-900 px-3" required />
             </div>
           </div>
@@ -78,7 +78,7 @@
             <label class="sr-only" for="email">Email</label>
             <div class="flex items-center border rounded-xl px-4 py-3 input-group">
               <img src="../img/sign-up-login/email.png" class="h-4" alt="" />
-              <input type="email" id="email" placeholder="Email"
+              <input type="email" id="email" name="email" placeholder="Email" autocomplete="email"
                 class="w-full bg-transparent outline-none text-gray-900 px-3" required />
             </div>
           </div>
@@ -87,7 +87,7 @@
             <label class="sr-only" for="phone">Phone Number</label>
             <div class="flex items-center border rounded-xl px-4 py-3 input-group">
               <img src="../img/sign-up-login/phone.png" class="h-4" alt="" />
-              <input type="tel" id="phone" placeholder="Phone Number"
+              <input type="tel" id="phone" name="phone" placeholder="Phone Number" autocomplete="tel"
                 class="w-full bg-transparent outline-none text-gray-900 px-3" required />
             </div>
           </div>
@@ -96,7 +96,7 @@
             <label class="sr-only" for="password">Password</label>
             <div class="flex items-center border rounded-xl px-4 py-3 input-group">
               <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
-              <input type="password" id="password" placeholder="Password"
+              <input type="password" id="password" name="password" placeholder="Password" autocomplete="new-password"
                 class="w-full px-3 bg-transparent outline-none text-gray-900" required />
               <img src="../img/sign-up-login/eye.png" id="togglePassword"
                 class="h-5 cursor-pointer hover:opacity-70 transition-opacity" alt="Toggle password visibility" />
@@ -107,7 +107,7 @@
             <label class="sr-only" for="confirmPassword">Confirm Password</label>
             <div class="flex items-center border rounded-xl px-4 py-3 input-group">
               <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
-              <input type="password" id="confirmPassword" placeholder="Confirm Password"
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password"
                 class="w-full px-3 bg-transparent outline-none text-gray-900" required />
               <img src="../img/sign-up-login/eye.png" id="toggleConfirmPassword"
                 class="h-5 cursor-pointer hover:opacity-70 transition-opacity" alt="Toggle password visibility" />

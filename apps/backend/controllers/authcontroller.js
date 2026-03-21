@@ -74,10 +74,14 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+        const { email, password, userType } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+        if (!email || !password || !userType) {
+            return res.status(400).json({ message: "Email, password and role are required" });
+        }
+
+        if (!['Admin', 'Rider', 'Driver'].includes(userType)) {
+            return res.status(400).json({ message: 'Invalid user role selection' });
     }
 
     const [results] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
@@ -92,6 +96,10 @@ exports.login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
+
+        if (user.UserType !== userType) {
+            return res.status(403).json({ message: 'Selected role does not match this account' });
+        }
 
     // Remove password before sending
     delete user.password;

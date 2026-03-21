@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Payments | Safar</title>
+  <link rel="stylesheet" href="src/css/output.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+  <header class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+      </a>
+
+      <div class="flex items-center gap-3">
+        <span id="adminWelcome" class="hidden md:block text-sm text-gray-600">Welcome, Admin</span>
+        <button id="quickLogout" class="bg-gray-100 text-gray-700 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-200 text-sm font-medium">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-6 space-y-6">
+    <section class="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl shadow-lg p-8">
+      <h1 class="text-3xl font-bold">Admin Payments</h1>
+      <p class="text-purple-100 mt-2">Monitor platform revenue, payout flow, and transaction health.</p>
+    </section>
+
+    <section class="grid md:grid-cols-4 gap-4">
+      <div class="bg-white rounded-xl shadow p-5">
+        <p class="text-sm text-gray-500">Today Revenue</p>
+        <p class="text-2xl font-bold mt-2">৳126,420</p>
+      </div>
+      <div class="bg-white rounded-xl shadow p-5">
+        <p class="text-sm text-gray-500">Pending Payouts</p>
+        <p class="text-2xl font-bold mt-2">৳18,700</p>
+      </div>
+      <div class="bg-white rounded-xl shadow p-5">
+        <p class="text-sm text-gray-500">Successful Txn</p>
+        <p class="text-2xl font-bold mt-2">97.8%</p>
+      </div>
+      <div class="bg-white rounded-xl shadow p-5">
+        <p class="text-sm text-gray-500">Chargebacks</p>
+        <p class="text-2xl font-bold mt-2">0.6%</p>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-xl shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Recent Platform Transactions</h2>
+        <a href="admin-dashboard.html" class="bg-purple-100 text-purple-800 px-4 py-2 rounded-lg hover:bg-purple-200 text-sm font-medium">Back to Admin Dashboard</a>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="text-left text-sm text-gray-500 border-b">
+              <th class="py-2">Date</th>
+              <th class="py-2">Txn ID</th>
+              <th class="py-2">Channel</th>
+              <th class="py-2">Amount</th>
+              <th class="py-2">Status</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm">
+            <tr class="border-b">
+              <td class="py-3">2026-03-21</td>
+              <td class="py-3">ADM-TXN-4492</td>
+              <td class="py-3">Wallet</td>
+              <td class="py-3">৳12,300</td>
+              <td class="py-3 text-purple-700 font-medium">Completed</td>
+            </tr>
+            <tr class="border-b">
+              <td class="py-3">2026-03-21</td>
+              <td class="py-3">ADM-TXN-4491</td>
+              <td class="py-3">Bkash</td>
+              <td class="py-3">৳8,750</td>
+              <td class="py-3 text-purple-700 font-medium">Completed</td>
+            </tr>
+            <tr>
+              <td class="py-3">2026-03-20</td>
+              <td class="py-3">ADM-TXN-4479</td>
+              <td class="py-3">Card</td>
+              <td class="py-3">৳5,240</td>
+              <td class="py-3 text-amber-700 font-medium">Under Review</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const userData = JSON.parse(localStorage.getItem('safarUser') || '{}');
+    const role = userData.userType || userData.UserType;
+
+    if (!role) {
+      window.location.href = './src/login.html?v=role-login-v2';
+    } else if (role !== 'Admin') {
+      if (role === 'Driver') {
+        window.location.href = './driver-dashboard.html';
+      } else {
+        window.location.href = './rider-dashboard.html';
+      }
+    }
+
+    const adminName = userData.name || 'Admin';
+    document.getElementById('adminWelcome').textContent = `Welcome, ${adminName}`;
+
+    function logoutUser() {
+      localStorage.removeItem('safarUser');
+      window.location.href = './src/login.html?v=role-login-v2';
+    }
+
+    document.getElementById('quickLogout').addEventListener('click', logoutUser);
+  </script>
+</body>
+</html>

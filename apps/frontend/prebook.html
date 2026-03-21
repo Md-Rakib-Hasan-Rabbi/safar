@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prebook a Ride | Safar</title>
+  <link rel="stylesheet" href="src/css/output.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+  <header class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+      </a>
+      <button id="quickLogout" class="bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-lg hover:bg-red-100 text-sm font-medium">Logout</button>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-6">
+    <div class="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl shadow-lg p-8 mb-8">
+      <h1 class="text-3xl font-bold">Prebook Your Ride</h1>
+      <p class="text-purple-100 mt-2">Schedule a ride in advance for maximum convenience.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <section class="lg:col-span-2 bg-white rounded-xl shadow p-8">
+        <h2 class="text-2xl font-semibold mb-6">Schedule Your Ride</h2>
+        
+        <form class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Pickup Location</label>
+              <input type="text" placeholder="Enter pickup location" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Destination</label>
+              <input type="text" placeholder="Enter destination" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Date</label>
+              <input type="date" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Time</label>
+              <input type="time" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2">Vehicle Type</label>
+            <select class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <option>Select vehicle type</option>
+              <option>🏍️ Bike</option>
+              <option>🚗 Car</option>
+              <option>🚙 CNG</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="womenOnly" class="w-4 h-4" />
+            <label for="womenOnly" class="text-sm font-medium">👩 Women-Only Ride (Female driver preferred)</label>
+          </div>
+
+          <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 font-semibold text-lg">Schedule Ride</button>
+        </form>
+      </section>
+
+      <aside class="bg-white rounded-xl shadow p-6">
+        <h3 class="text-lg font-semibold mb-4">ℹ️ About Prebooking</h3>
+        <div class="space-y-4 text-sm text-gray-600">
+          <p><strong>✅ Guaranteed Availability</strong><br/>Reserve your ride up to 7 days in advance.</p>
+          <p><strong>💰 Fixed Pricing</strong><br/>Price locked when you schedule.</p>
+          <p><strong>🔔 Reminders</strong><br/>Get notified 1 hour before your ride.</p>
+          <p><strong>👮 Safety First</strong><br/>All drivers verified and rated.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="bg-gray-100 py-10 mt-12 mb-0">
+    <div class="text-center text-xs text-gray-500">© 2025 Safar. All rights reserved.</div>
+  </footer>
+
+  <script src="./src/js/navbar.js"></script>
+  <script>
+    // Handle logout button
+    const quickLogoutBtn = document.getElementById('quickLogout');
+    if (quickLogoutBtn) {
+      quickLogoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('safarUser');
+        window.location.href = './src/login.html';
+      });
+    }
+  </script>
+</body>
+</html>

@@ -11,6 +11,24 @@ function getCurrentUser() {
   return userData ? JSON.parse(userData) : null;
 }
 
+function getRoleDashboardPath() {
+  const user = getCurrentUser();
+  const role = user?.userType || user?.UserType;
+
+  if (role === "Admin") return "./admin-dashboard.html";
+  if (role === "Driver") return "./driver-dashboard.html";
+  return "./rider-dashboard.html";
+}
+
+function updateDashboardLinks() {
+  const dashboardPath = getRoleDashboardPath();
+  const dashboardLinks = document.querySelectorAll('a[href$="dashboard.html"]');
+
+  dashboardLinks.forEach((link) => {
+    link.setAttribute("href", dashboardPath);
+  });
+}
+
 // Function to render navbar based on login status
 function renderNavbarUser() {
   const authButtons = document.getElementById("authButtons");
@@ -118,6 +136,7 @@ function closeDropdownOutside(e) {
 // Initialize navbar functionality
 function initializeNavbar() {
   renderNavbarUser();
+  updateDashboardLinks();
   // setupProfileDropdown is now called from renderNavbarUser when logged in
 }
 

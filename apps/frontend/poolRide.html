@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pool a Ride | Safar</title>
+  <link rel="stylesheet" href="src/css/output.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+  <header class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+      </a>
+      <button id="quickLogout" class="bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-lg hover:bg-red-100 text-sm font-medium">Logout</button>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-6">
+    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl shadow-lg p-8 mb-8">
+      <h1 class="text-3xl font-bold">Share Your Ride, Save Money</h1>
+      <p class="text-blue-100 mt-2">Pool rides with other passengers and reduce your travel costs.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <section class="lg:col-span-2 bg-white rounded-xl shadow p-8">
+        <h2 class="text-2xl font-semibold mb-6">Find a Pooled Ride</h2>
+        
+        <form class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Pickup Location</label>
+              <input type="text" placeholder="Enter pickup location" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Destination</label>
+              <input type="text" placeholder="Enter destination" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2">Date & Time</label>
+            <input type="datetime-local" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-3">Number of Passengers</label>
+            <div class="flex gap-2">
+              <button type="button" class="flex-1 py-2 border-2 border-blue-300 rounded-lg hover:bg-blue-50">1 Person</button>
+              <button type="button" class="flex-1 py-2 border-2 border-blue-500 bg-blue-100 rounded-lg font-semibold">2 People</button>
+              <button type="button" class="flex-1 py-2 border-2 border-blue-300 rounded-lg hover:bg-blue-50">3 People</button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="womenOnly" class="w-4 h-4" />
+            <label for="womenOnly" class="text-sm font-medium">👩 Women-Only Pool (Preferred)</label>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-semibold text-lg">Find Pool Rides</button>
+        </form>
+
+        <div class="mt-8 pt-8 border-t">
+          <h3 class="text-xl font-semibold mb-4">💰 Available Pool Rides</h3>
+          <div class="space-y-4">
+            <div class="border rounded-lg p-4 hover:shadow-lg transition">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="font-semibold">Dhanmondi → Gulshan</p>
+                  <p class="text-sm text-gray-600">⏰ Departs in 12 minutes</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-xl font-bold text-green-600">৳150 <span class="text-xs text-gray-500 line-through">৳280</span></p>
+                  <p class="text-xs text-green-600">Save ৳130 (46%)</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-600 mt-2">👤 2 passengers already joined</p>
+              <button class="mt-2 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 text-sm font-medium">Join Pool</button>
+            </div>
+
+            <div class="border rounded-lg p-4 hover:shadow-lg transition">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="font-semibold">Banani → Mirpur</p>
+                  <p class="text-sm text-gray-600">⏰ Departs in 25 minutes</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-xl font-bold text-green-600">৳140 <span class="text-xs text-gray-500 line-through">৳320</span></p>
+                  <p class="text-xs text-green-600">Save ৳180 (56%)</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-600 mt-2">👤 1 passenger already joined</p>
+              <button class="mt-2 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 text-sm font-medium">Join Pool</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="bg-white rounded-xl shadow p-6 h-fit">
+        <h3 class="text-lg font-semibold mb-4">🎉 Why Pool a Ride?</h3>
+        <div class="space-y-4 text-sm text-gray-600">
+          <p><strong>💰 Save Up to 50%</strong><br/>Share costs with other riders going the same way.</p>
+          <p><strong>🌍 Eco-Friendly</strong><br/>Reduce carbon footprint by sharing rides.</p>
+          <p><strong>👥 Meet People</strong><br/>Connect with other Safar users.</p>
+          <p><strong>✅ Safe & Secure</strong><br/>All pooled rides are verified and rated.</p>
+        </div>
+
+        <div class="mt-6 pt-6 border-t">
+          <p class="text-xs font-semibold text-gray-500 mb-3">YOUR SAVINGS THIS MONTH</p>
+          <p class="text-2xl font-bold text-green-600">৳1,240</p>
+          <p class="text-xs text-gray-500">From {x} pooled rides</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="bg-gray-100 py-10 mt-12 mb-0">
+    <div class="text-center text-xs text-gray-500">© 2025 Safar. All rights reserved.</div>
+  </footer>
+
+  <script src="./src/js/navbar.js"></script>
+  <script>
+    // Handle logout button
+    const quickLogoutBtn = document.getElementById('quickLogout');
+    if (quickLogoutBtn) {
+      quickLogoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('safarUser');
+        window.location.href = './src/login.html';
+      });
+    }
+  </script>
+</body>
+</html>

@@ -23,7 +23,7 @@ app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
 (async () => {
   try {
     const connection = await db.getConnection();
-    console.log('MySQL Connected!');
+    console.log('SQLite ready!');
     connection.release();
   } catch (err) {
     console.error('Database connection failed:', err);

@@ -92,12 +92,6 @@
           <img src="./Images/pngegg (6) 1.png" class="w-6 h-6" />
           <span>Book a Ride</span>
         </a>
-        <a href="payment&Trans.html"
-          class="flex items-center space-x-3 bg-white hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
-          <img src="./Images/pngegg (2) 1.png" class="w-6 h-6" />
-          <span>Payment & Transactions</span>
-        </a>
-
         <a href="loyalty&Offers.html"
           class="flex items-center space-x-3 bg-[#c7e3b6] hover:bg-[#d1f2c3] px-4 py-2 rounded-xl shadow transition-all duration-200">
           <img src="./Images/pngegg (7) 1.png" class="w-6 h-6" />
@@ -251,6 +245,14 @@
     </div>
     <div class="text-center text-xs text-gray-500 mt-8">© 2025 Safar. All rights reserved.</div>
   </footer>
+  <script>
+    const safarUser = JSON.parse(localStorage.getItem('safarUser') || '{}');
+    const safarRole = safarUser.userType || safarUser.UserType;
+
+    if (safarRole === 'Admin') {
+      window.location.href = './admin-dashboard.html';
+    }
+  </script>
   <script src="./src/js/navbar.js"></script>
 </body>
 
