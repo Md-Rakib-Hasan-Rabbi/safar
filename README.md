@@ -1,87 +1,90 @@
-# 🚗 Safar - Ride Sharing Web Application
+# Safar - Ride Sharing Web Application
 
-> **"Ride Till Death"** - Your ultimate companion for safe, reliable, and convenient transportation in Bangladesh.
+Safar is a full-stack ride-sharing web app with a Node.js + Express backend and a static frontend powered by Tailwind CSS.
 
-## 📋 Table of Contents
+## Quick Start (for GitHub users)
 
-- [About](#about)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Pages Overview](#pages-overview)
-- [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+### 1) Clone and install
 
-## 🎯 About
+```bash
+git clone https://github.com/Md-Rakib-Hasan-Rabbi/safar.git
+cd safar
+npm install
+npm --prefix ./apps/frontend install
+```
 
-Safar is a modern ride-sharing platform designed specifically for the Bangladeshi market. Our web application connects riders with drivers, offering a seamless transportation experience with features like real-time tracking, cashless payments through Bkash integration, and women-only ride options for enhanced safety.
+### 2) Set up backend environment
 
-### 🌟 Mission
+Create this file:
 
-To revolutionize urban transportation in Bangladesh by providing safe, affordable, and reliable ride-sharing services that connect communities and empower both riders and drivers.
+`apps/backend/.env`
 
-## ✨ Features
+Use this content:
 
-### 🚘 Core Services
+```env
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=safar
+PORT=5000
+```
 
-- **Book a Ride** - Instant ride booking with multiple vehicle options
-- **Send a Parcel** - Parcel delivery service for quick shipments
-- **Prebook** - Schedule rides in advance
-- **Pool a Ride** - Share rides to reduce costs and environmental impact
+### 3) Import database
 
-### 🔒 Safety & Security
+Import SQL dump from:
 
-- **Women-Only Option** - Dedicated women-only rides for enhanced safety
-- **Real-Time Tracking** - Live GPS tracking for all rides
-- **Safe Rides** - Verified drivers and secure ride experiences
-- **Instant Notifications** - Real-time updates and communication
+`apps/backend/database/edU5Fsu.sql`
 
-### 💳 Payment & Convenience
+You can import using MySQL Workbench or CLI.
 
-- **Bkash Integration** - Seamless mobile payments
-- **Cashless Transactions** - Multiple digital payment options
-- **Transparent Pricing** - Clear fare structure with no hidden costs
+CLI example:
 
-### 📱 User Experience
+```bash
+mysql -u root -p safar < apps/backend/database/edU5Fsu.sql
+```
 
-- **Responsive Design** - Works perfectly on all devices
-- **Modern UI/UX** - Clean, intuitive interface with smooth animations
-- **Multi-language Support** - Designed for Bengali and English speakers
+If `safar` database does not exist yet:
 
-## 🛠️ Technologies Used
+```sql
+CREATE DATABASE safar;
+```
 
-### Frontend
+### 4) Run the project
 
-- **HTML5** - Semantic markup structure
-- **CSS3** - Modern styling with custom animations
-- **Tailwind CSS** - Utility-first CSS framework
-- **JavaScript** - Interactive functionality
-- **AOS (Animate On Scroll)** - Smooth scroll animations
+If MySQL is already running:
 
-### Design & Animation
+```bash
+npm run dev
+```
 
-- **Custom CSS Animations** - Smooth transitions and hover effects
-- **Google Fonts (Poppins)** - Modern typography
-- **Responsive Design** - Mobile-first approach
+If MySQL is not running:
 
-### Tools & Libraries
+Terminal 1:
 
-- **QuickChart.io** - Chart generation for dashboard
-- **Font Awesome** - Icon library
+```bash
+npm run db:start
+```
 
-## 🚀 Getting Started
+Terminal 2:
 
-### Prerequisites
+```bash
+npm run dev
+```
 
-- Web browser (Chrome, Firefox, Safari, Edge)
-- Text editor (VS Code, Sublime Text, etc.)
-- Node.js
-- MySQL 8+
+### 5) Open in browser
 
-## 🗂️ Project Structure
+- Frontend: http://127.0.0.1:5500/index.html
+- Backend health: http://localhost:5000/
+
+## Available Scripts
+
+- `npm run dev` → Starts backend + frontend static server + Tailwind watcher (quiet mode)
+- `npm run dev:verbose` → Same as above with full logs
+- `npm run start` → Starts backend only
+- `npm run db:start` → Starts local MySQL server (Windows path configured)
+
+## Project Structure
 
 ```text
 safar/
@@ -99,152 +102,33 @@ safar/
 │       ├── Images/
 │       ├── index.html
 │       └── package.json
-├── screenshots/
 ├── package.json
 └── README.md
 ```
 
-### Installation
+## Common Issues
 
-1. **Clone the repository**
+### `EADDRINUSE: 5500` or `5000`
 
-   ```bash
-   git clone https://github.com/fatin-israq/safar.git
-   cd safar
-   ```
+Another process is already using the port.
 
-2. **Install dependencies (root + frontend)**
+Close previous terminal sessions or stop the existing process, then run `npm run dev` again.
 
-   ```bash
-   npm install
-   npm --prefix ./apps/frontend install
-   ```
+### `'C:\Program' is not recognized`
 
-3. **Run MySQL**
+This is fixed in current scripts. Pull latest changes and run `npm install` again.
 
-   ```bash
-   npm run db:start
-   ```
+### MySQL `ibdata1 must be writable`
 
-4. **Run backend + frontend together**
+It usually means MySQL is already running and locking files.
 
-   ```bash
-   npm run dev
-   ```
+In this case, do not run `npm run db:start`; run only `npm run dev`.
 
-5. **(Optional) Frontend-only Tailwind compile**
+## Tech Stack
 
-   ```bash
-   npm --prefix ./apps/frontend run dev
-   ```
+- Backend: Node.js, Express, MySQL
+- Frontend: HTML, Tailwind CSS, JavaScript
 
-6. **Open the application**
+## Contact
 
-   ```bash
-   # Frontend
-   http://127.0.0.1:5500/index.html
-
-   # Backend health
-   http://localhost:5000/
-
-   ```
-
-## 📄 Pages Overview
-
-| Page                                                | Description                    | Key Features                            |
-| --------------------------------------------------- | ------------------------------ | --------------------------------------- |
-| **Homepage** (`apps/frontend/index.html`)                         | Landing page with hero section | Service cards, animations, testimonials |
-| **Dashboard** (`apps/frontend/dashboard.html`)                    | Admin/Driver control panel     | Statistics, charts, ride management     |
-| **Login** (`apps/frontend/src/login.html`)                        | User authentication            | Animated form, responsive design        |
-| **Sign Up** (`apps/frontend/src/signup.html`)                     | User registration              | Multi-step form, validation             |
-| **Terms & Conditions** (`apps/frontend/src/termsNcondition.html`) | Legal terms                    | Comprehensive legal framework           |
-| **Privacy Policy** (`apps/frontend/src/privacy.html`)             | Data protection policy         | GDPR-compliant privacy information      |
-
-## 📱 Screenshots
-
-### 🏠 Homepage
-
-_Modern landing page with intuitive ride booking interface_
-
-![Homepage](./screenshots/Safar-home-page.jpeg)
-
-- **Hero Section**: Eye-catching banner with instant ride booking
-- **Service Cards**: Interactive cards for ride booking, parcel delivery, and more
-- **How Safar Works**: Step-by-step guide with beautiful icons
-- **Responsive Design**: Perfect adaptation across all device sizes
-
-### 📊 Selecting Route
-
-![Dashboard](./screenshots/Select%20Route%20_%20Safar.jpeg)
-
-### 🔐 Payment
-
-_Secure and elegant payment system_
-
-![Login Page](./screenshots/Payment%20_%20Safar.jpeg)
-
-### 📞 Customer Support
-
-_Dedicated support system with modern design_
-
-![Customer Support](./screenshots/Customer%20Support.jpeg)
-
-- **Multi-channel Support**: Phone, email, and chat options
-- **FAQ Section**: Comprehensive help resources
-- **Contact Forms**: Easy-to-use support request forms
-- **Professional Layout**: Clean and organized interface
-
-## 🎨 Design Features
-
-### Color Scheme
-
-- **Primary Green**: `#012B09`, `#75BF7A` - Trust and nature
-- **Accent Amber**: `#FCD34D`, `#F59E0B` - Energy and warmth
-- **Neutral Grays**: Various shades for text and backgrounds
-
-### Typography
-
-- **Primary Font**: Poppins - Modern, clean, and highly readable
-- **Font Weights**: 100-900 for flexible design hierarchy
-
-### Animations
-
-- **Page Load**: Fade-in and slide-up animations
-- **Hover Effects**: Scale transforms and color transitions
-- **Scroll Animations**: AOS library for smooth reveals
-- **Interactive Elements**: Button hovers and input focus states
-
-## 🤝 Contributing
-
-We welcome contributions to improve Safar! Here's how you can help:
-
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/AmazingFeature`)
-3. **Commit your changes** (`git commit -m 'Add some AmazingFeature'`)
-4. **Push to the branch** (`git push origin feature/AmazingFeature`)
-5. **Open a Pull Request**
-
-### Contribution Guidelines
-
-- Follow existing code style and structure
-- Test your changes across different browsers
-- Update documentation as needed
-- Ensure responsive design principles
-
-## 📞 Contact
-
-**Safar Developer Team**
-
-- **Email**: israqq2120@gmail.com
-- **Address**: Bhatara, Dhaka, Bangladesh
-
----
-
-<p align="center">
-  <strong>Trying for a better solution</strong><br>
-  <em>Connecting people, one ride at a time</em>
-</p>
-
----
-
-⭐ **If you found this project helpful, please give it a star!** ⭐
+- Email: israqq2120@gmail.com

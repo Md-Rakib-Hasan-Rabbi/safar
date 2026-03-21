@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node apps/backend/server.js",
-    "dev": "echo Frontend: http://127.0.0.1:5500/index.html && echo Backend: http://localhost:5000 && concurrently \"npm start\" \"npm --prefix ./apps/frontend run dev\" \"http-server ./apps/frontend -p 5500 -o /index.html\"",
+    "dev": "echo Frontend: http://127.0.0.1:5500/index.html && echo Backend: http://localhost:5000 && concurrently --names \"API,CSS,WEB\" --hide \"CSS\" \"npm start\" \"npm --prefix ./apps/frontend run dev\" \"http-server ./apps/frontend -p 5500 -o /index.html\"",
+    "dev:verbose": "echo Frontend: http://127.0.0.1:5500/index.html && echo Backend: http://localhost:5000 && concurrently \"npm start\" \"npm --prefix ./apps/frontend run dev\" \"http-server ./apps/frontend -p 5500 -o /index.html\"",
     "db:start": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"& 'C:\\Program Files\\MySQL\\MySQL Server 8.4\\bin\\mysqld.exe' --console --basedir='C:\\Program Files\\MySQL\\MySQL Server 8.4' --datadir='C:\\ProgramData\\MySQL\\MySQL Server 8.4\\Data' --port=3306 --bind-address=127.0.0.1\""
   },
   "keywords": [],
