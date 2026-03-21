@@ -78,7 +78,31 @@ To revolutionize urban transportation in Bangladesh by providing safe, affordabl
 
 - Web browser (Chrome, Firefox, Safari, Edge)
 - Text editor (VS Code, Sublime Text, etc.)
-- Node.js (for Tailwind CSS compilation)
+- Node.js
+- MySQL 8+
+
+## 🗂️ Project Structure
+
+```text
+safar/
+├── apps/
+│   ├── backend/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   ├── database/
+│   │   ├── .env
+│   │   └── server.js
+│   └── frontend/
+│       ├── src/
+│       ├── img/
+│       ├── Images/
+│       ├── index.html
+│       └── package.json
+├── screenshots/
+├── package.json
+└── README.md
+```
 
 ### Installation
 
@@ -89,39 +113,52 @@ To revolutionize urban transportation in Bangladesh by providing safe, affordabl
    cd safar
    ```
 
-2. **Install Tailwind CSS (if making changes)**
+2. **Install dependencies (root + frontend)**
 
    ```bash
-   npm install -D tailwindcss
-   npx tailwindcss init
+   npm install
+   npm --prefix ./apps/frontend install
    ```
 
-3. **Compile Tailwind CSS**
+3. **Run MySQL**
 
    ```bash
-   npx tailwindcss -i ./src/css/input.css -o ./src/css/output.css --watch
+   npm run db:start
    ```
 
-4. **Open the application**
+4. **Run backend + frontend together**
 
    ```bash
-   # Simply open index.html in your browser or use a local server
-
+   npm run dev
    ```
 
-5. **Visit the application**
-   Open your browser and navigate to `http://127.0.0.1:5500/`
+5. **(Optional) Frontend-only Tailwind compile**
+
+   ```bash
+   npm --prefix ./apps/frontend run dev
+   ```
+
+6. **Open the application**
+
+   ```bash
+   # Frontend
+   http://127.0.0.1:5500/index.html
+
+   # Backend health
+   http://localhost:5000/
+
+   ```
 
 ## 📄 Pages Overview
 
 | Page                                                | Description                    | Key Features                            |
 | --------------------------------------------------- | ------------------------------ | --------------------------------------- |
-| **Homepage** (`index.html`)                         | Landing page with hero section | Service cards, animations, testimonials |
-| **Dashboard** (`dashboard.html`)                    | Admin/Driver control panel     | Statistics, charts, ride management     |
-| **Login** (`src/login.html`)                        | User authentication            | Animated form, responsive design        |
-| **Sign Up** (`src/signup.html`)                     | User registration              | Multi-step form, validation             |
-| **Terms & Conditions** (`src/termsNcondition.html`) | Legal terms                    | Comprehensive legal framework           |
-| **Privacy Policy** (`src/privacy.html`)             | Data protection policy         | GDPR-compliant privacy information      |
+| **Homepage** (`apps/frontend/index.html`)                         | Landing page with hero section | Service cards, animations, testimonials |
+| **Dashboard** (`apps/frontend/dashboard.html`)                    | Admin/Driver control panel     | Statistics, charts, ride management     |
+| **Login** (`apps/frontend/src/login.html`)                        | User authentication            | Animated form, responsive design        |
+| **Sign Up** (`apps/frontend/src/signup.html`)                     | User registration              | Multi-step form, validation             |
+| **Terms & Conditions** (`apps/frontend/src/termsNcondition.html`) | Legal terms                    | Comprehensive legal framework           |
+| **Privacy Policy** (`apps/frontend/src/privacy.html`)             | Data protection policy         | GDPR-compliant privacy information      |
 
 ## 📱 Screenshots
 
