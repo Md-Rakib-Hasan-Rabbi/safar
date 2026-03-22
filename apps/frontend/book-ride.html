@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Ride | Safar</title>
+    <link rel="stylesheet" href="src/css/output.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <style>
+        * {
+            transition: all 0.3s ease;
+        }
+
+        #rideMap {
+            width: 100%;
+            height: 500px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .booking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .booking-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .location-input-group {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .location-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .ride-type-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .ride-option {
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .ride-option:hover {
+            border-color: #6366f1;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .ride-option.selected {
+            border-color: #6366f1;
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .ride-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .ride-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .ride-capacity {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .ride-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #10b981;
+            margin-top: 4px;
+        }
+
+        .available-rides-section {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ride-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ride-item:hover {
+            border-color: #6366f1;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+            transform: translateX(4px);
+        }
+
+        .ride-item.selected {
+            border-color: #4f46e5;
+            background: #eef2ff;
+            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.2);
+        }
+
+        .ride-item-info {
+            flex: 1;
+        }
+
+        .driver-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .driver-rating {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .vehicle-info {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .ride-item-price {
+            text-align: right;
+        }
+
+        .estimated-fare {
+            font-size: 20px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 4px;
+        }
+
+        .estimated-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #6366f1;
+            border: 2px solid #6366f1;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #f3f4f6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 32px 16px;
+            color: #6b7280;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .info-banner {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border-left: 4px solid #0284c7;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #0c4a6e;
+        }
+
+        .route-info {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 16px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .route-location {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .route-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #6366f1;
+        }
+
+        .route-dot.destination {
+            background: #ef4444;
+        }
+
+        .route-text {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .route-label {
+            font-weight: 600;
+            color: #1f2937;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .current-location-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        .current-location-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .leaflet-control-geocoder {
+            min-width: 250px;
+            border-radius: 8px;
+        }
+
+        .leaflet-control-zoom {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .map-select-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .map-target-btn {
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            color: #374151;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .map-target-btn.active {
+            border-color: #6366f1;
+            color: #4338ca;
+            background: #eef2ff;
+        }
+
+        .location-input-wrapper {
+            position: relative;
+        }
+
+        .suggestion-list {
+            position: absolute;
+            top: calc(100% - 8px);
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            z-index: 30;
+            max-height: 220px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item:hover {
+            background: #f8fafc;
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-slate-100 text-gray-800 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
+                <span class="font-bold text-slate-900">Safar</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <button id="backBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg font-semibold transition-colors">
+                    ← Back
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="booking-container py-8">
+        <div class="mb-6">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">🗺️ Book Your Ride</h1>
+            <p class="text-gray-600 text-lg">Select your pickup and destination locations, choose a ride type, and we'll find the best drivers for you.</p>
+        </div>
+
+        <!-- Info Banner -->
+        <div class="info-banner">
+            <strong>💡 Tip:</strong> Click on the map to set your pickup and destination, or use the input fields to search by location name.
+        </div>
+
+        <div class="booking-grid">
+            <!-- Left Column: Map & Location Inputs -->
+            <div>
+                <div class="map-select-toolbar">
+                    <button type="button" id="pickupMapTargetBtn" class="map-target-btn active">📍 Map sets Pickup</button>
+                    <button type="button" id="destinationMapTargetBtn" class="map-target-btn">🎯 Map sets Destination</button>
+                </div>
+                <!-- Map -->
+                <div id="rideMap"></div>
+
+                <!-- Location Inputs -->
+                <div class="location-input-group">
+                    <div>
+                        <div class="location-label">
+                            📍 Pickup Location
+                        </div>
+                        <div class="location-input-wrapper">
+                            <input type="text" id="pickupInput" class="input-field" placeholder="Type to search pickup or click map..." autocomplete="off">
+                            <div id="pickupSuggestions" class="suggestion-list"></div>
+                        </div>
+                        <button class="current-location-btn" id="useCurrentLocBtn">
+                            📍 Use My Current Location
+                        </button>
+                        <div class="helper-text">Tip: Focus this field, then click map to place pickup exactly.</div>
+                        <div id="pickupDisplay" style="font-size: 12px; color: #6b7280; margin-top: 8px;"></div>
+                    </div>
+
+                    <div style="margin-top: 16px;">
+                        <div class="location-label">
+                            🎯 Destination
+                        </div>
+                        <div class="location-input-wrapper">
+                            <input type="text" id="destinationInput" class="input-field" placeholder="Type to search destination or click map..." autocomplete="off">
+                            <div id="destinationSuggestions" class="suggestion-list"></div>
+                        </div>
+                        <div class="helper-text">Tip: Focus this field, then click map to place destination exactly.</div>
+                        <div id="destinationDisplay" style="font-size: 12px; color: #6b7280; margin-top: 8px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Ride Type & Info -->
+            <div>
+                <!-- Route Summary -->
+                <div id="routeSummary" style="display: none;">
+                    <div class="route-info">
+                        <div style="grid-column: 1 / -1;">
+                            <div class="route-location">
+                                <div class="route-dot"></div>
+                                <div>
+                                    <span class="route-label">From</span>
+                                    <span class="route-text" id="routeFromText">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <div class="route-location">
+                                <div class="route-dot destination"></div>
+                                <div>
+                                    <span class="route-label">To</span>
+                                    <span class="route-text" id="routeToText">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="grid-column: 1 / -1; text-align: center; padding-top: 8px;">
+                            <span style="font-size: 13px; color: #6b7280;">Distance: <strong id="distanceText">-</strong> | Time: <strong id="timeText">-</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ride Type Selection -->
+                <div class="location-input-group">
+                    <div class="location-label">🚗 Select Ride Type</div>
+                    <div class="ride-type-selector">
+                        <div class="ride-option" data-type="Bike">
+                            <div class="ride-icon">🏍️</div>
+                            <div class="ride-name">Bike</div>
+                            <div class="ride-capacity">1 Seat</div>
+                            <div class="ride-price">৳99/km</div>
+                        </div>
+                        <div class="ride-option" data-type="Car">
+                            <div class="ride-icon">🚗</div>
+                            <div class="ride-name">Car</div>
+                            <div class="ride-capacity">4 Seats</div>
+                            <div class="ride-price">৳149/km</div>
+                        </div>
+                        <div class="ride-option" data-type="SUV">
+                            <div class="ride-icon">🚙</div>
+                            <div class="ride-name">SUV</div>
+                            <div class="ride-capacity">7 Seats</div>
+                            <div class="ride-price">৳199/km</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="selectedRideType" value="">
+                </div>
+
+                <!-- Special Options -->
+                <div class="location-input-group" style="margin-top: 20px;">
+                    <div class="location-label">✅ Special Options</div>
+                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
+                        <input type="checkbox" id="womenOnlyCheckbox" style="width: 18px; height: 18px;">
+                        <span>👩 Women-Only Driver</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="shareRideCheckbox" style="width: 18px; height: 18px;">
+                        <span>👥 Share Ride (Save ৳20-50)</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Rides Section -->
+        <div class="available-rides-section" id="availableRidesSection" style="display: none;">
+            <div class="section-title">🚕 Available Rides</div>
+            <div id="availableRidesList"></div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="available-rides-section">
+            <div class="empty-state">
+                <div class="empty-icon">🗺️</div>
+                <p><strong>Select pickup and destination</strong></p>
+                <p style="font-size: 14px; margin-top: 8px;">Enter or click on the map to set your locations to see available rides.</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
+            <button class="btn btn-primary" id="bookRideBtn" disabled>
+                Request Ride
+            </button>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+    <script>
+        // Initialize map variables
+        let map;
+        let pickupMarker, destinationMarker;
+        let routingControl = null;
+        let currentLocation = { lat: null, lng: null };
+        let pickupLocation = { lat: null, lng: null, name: '' };
+        let destinationLocation = { lat: null, lng: null, name: '' };
+        let selectedRideType = 'Car';
+        let selectedDriverOffer = null;
+        let activeMapTarget = 'pickup';
+        const debounceTimers = { pickup: null, destination: null };
+
+        // Dhaka, Bangladesh center
+        const DHAKA_CENTER = { lat: 23.8103, lng: 90.4125 };
+
+        function getApiCandidates() {
+            return ['http://localhost:5000/api', '/api'];
+        }
+
+        async function apiFetch(path, options = {}) {
+            const candidates = getApiCandidates();
+            let lastError = null;
+
+            for (const base of candidates) {
+                try {
+                    const response = await fetch(`${base}${path}`, options);
+                    const contentType = (response.headers.get('content-type') || '').toLowerCase();
+                    const isJson = contentType.includes('application/json');
+
+                    if (isJson) {
+                        return response;
+                    }
+
+                    lastError = new Error(`Request failed with status ${response.status}`);
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+
+            throw lastError || new Error('API request failed');
+        }
+
+        // Initialize map
+        function initMap() {
+            map = L.map('rideMap').setView([DHAKA_CENTER.lat, DHAKA_CENTER.lng], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add click event to map for location selection
+            map.on('click', function(e) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
+
+                if (activeMapTarget === 'pickup') {
+                    setPickupLocation(lat, lng);
+                    if (!destinationLocation.lat) {
+                        setActiveMapTarget('destination');
+                    }
+                } else {
+                    setDestinationLocation(lat, lng);
+                }
+            });
+
+            // Add zoom control
+            L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+            // Get user's current location
+            getUserLocation();
+        }
+
+        // Get user's current location
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        currentLocation.lat = position.coords.latitude;
+                        currentLocation.lng = position.coords.longitude;
+
+                        // Center map on user location
+                        map.setView([currentLocation.lat, currentLocation.lng], 15);
+                    },
+                    function(error) {
+                        console.log('Could not get location:', error);
+                        // Use Dhaka center as fallback
+                        map.setView([DHAKA_CENTER.lat, DHAKA_CENTER.lng], 13);
+                    }
+                );
+            }
+        }
+
+        function setActiveMapTarget(target) {
+            activeMapTarget = target;
+            document.getElementById('pickupMapTargetBtn').classList.toggle('active', target === 'pickup');
+            document.getElementById('destinationMapTargetBtn').classList.toggle('active', target === 'destination');
+        }
+
+        // Set pickup location
+        function setPickupLocation(lat, lng, name = '') {
+            pickupLocation = { lat, lng, name };
+
+            if (pickupMarker) {
+                map.removeLayer(pickupMarker);
+            }
+
+            pickupMarker = L.marker([lat, lng], {
+                icon: L.icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                })
+            }).addTo(map);
+
+            pickupMarker.bindPopup('Pickup Location').openPopup();
+
+            if (!name) {
+                getAddressFromCoordinates(lat, lng, 'pickup');
+            }
+
+            // Update input field
+            document.getElementById('pickupInput').value = name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            document.getElementById('pickupDisplay').textContent = `📍 ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+            hideSuggestions('pickup');
+
+            updateRoute();
+        }
+
+        // Set destination location
+        function setDestinationLocation(lat, lng, name = '') {
+            destinationLocation = { lat, lng, name };
+
+            if (destinationMarker) {
+                map.removeLayer(destinationMarker);
+            }
+
+            destinationMarker = L.marker([lat, lng], {
+                icon: L.icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                })
+            }).addTo(map);
+
+            destinationMarker.bindPopup('Destination').openPopup();
+
+            if (!name) {
+                getAddressFromCoordinates(lat, lng, 'destination');
+            }
+
+            // Update input field
+            document.getElementById('destinationInput').value = name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            document.getElementById('destinationDisplay').textContent = `🎯 ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+            hideSuggestions('destination');
+
+            updateRoute();
+        }
+
+        // Get address from coordinates using reverse geocoding
+        function getAddressFromCoordinates(lat, lng, type) {
+            // Simple implementation - in production, use a proper geocoding API
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                .then(response => response.json())
+                .then(data => {
+                    const address = data.address?.road || data.address?.suburb || data.address?.city || 'Location';
+                    if (type === 'pickup') {
+                        pickupLocation.name = address;
+                        document.getElementById('pickupInput').value = address;
+                    } else {
+                        destinationLocation.name = address;
+                        document.getElementById('destinationInput').value = address;
+                    }
+                })
+                .catch(error => console.log('Geocoding error:', error));
+        }
+
+        function renderSuggestions(type, suggestions) {
+            const container = document.getElementById(type === 'pickup' ? 'pickupSuggestions' : 'destinationSuggestions');
+
+            if (!suggestions.length) {
+                container.innerHTML = '<div class="suggestion-item">No locations found</div>';
+                container.style.display = 'block';
+                return;
+            }
+
+            container.innerHTML = suggestions.map((item, index) => `
+                <div class="suggestion-item" data-type="${type}" data-index="${index}">
+                    ${item.display_name}
+                </div>
+            `).join('');
+
+            container.style.display = 'block';
+
+            container.querySelectorAll('.suggestion-item').forEach((node) => {
+                node.addEventListener('click', function() {
+                    const selected = suggestions[Number(this.dataset.index)];
+                    const lat = parseFloat(selected.lat);
+                    const lng = parseFloat(selected.lon);
+                    const label = selected.display_name.split(',').slice(0, 2).join(',').trim();
+
+                    if (type === 'pickup') {
+                        setPickupLocation(lat, lng, label || 'Pickup Location');
+                        setActiveMapTarget('destination');
+                    } else {
+                        setDestinationLocation(lat, lng, label || 'Destination');
+                    }
+
+                    map.setView([lat, lng], 15);
+                });
+            });
+        }
+
+        function hideSuggestions(type) {
+            const container = document.getElementById(type === 'pickup' ? 'pickupSuggestions' : 'destinationSuggestions');
+            container.style.display = 'none';
+            container.innerHTML = '';
+        }
+
+        function searchLocation(query, type) {
+            if (!query || query.trim().length < 3) {
+                hideSuggestions(type);
+                return;
+            }
+
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=bd&limit=5&q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderSuggestions(type, data || []);
+                })
+                .catch(error => {
+                    console.log('Search error:', error);
+                    hideSuggestions(type);
+                });
+        }
+
+        function setupAutocomplete(inputId, type) {
+            const input = document.getElementById(inputId);
+
+            input.addEventListener('focus', function() {
+                setActiveMapTarget(type);
+                if (this.value.trim().length >= 3) {
+                    searchLocation(this.value, type);
+                }
+            });
+
+            input.addEventListener('input', function() {
+                const value = this.value;
+
+                clearTimeout(debounceTimers[type]);
+                debounceTimers[type] = setTimeout(() => {
+                    searchLocation(value, type);
+                }, 300);
+            });
+
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    const container = document.getElementById(type === 'pickup' ? 'pickupSuggestions' : 'destinationSuggestions');
+                    const first = container.querySelector('.suggestion-item[data-index="0"]');
+                    if (first) {
+                        first.click();
+                    }
+                }
+            });
+
+            input.addEventListener('blur', function() {
+                setTimeout(() => hideSuggestions(type), 180);
+            });
+        }
+
+        // Update route on map
+        function updateRoute() {
+            if (pickupLocation.lat && destinationLocation.lat) {
+                // Remove existing route
+                if (routingControl) {
+                    map.removeControl(routingControl);
+                }
+
+                // Add new route
+                routingControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(pickupLocation.lat, pickupLocation.lng),
+                        L.latLng(destinationLocation.lat, destinationLocation.lng)
+                    ],
+                    routeWhileDragging: true,
+                    lineOptions: {
+                        styles: [{ color: '#6366f1', opacity: 0.8, weight: 4 }]
+                    },
+                    createMarker: () => null,
+                    fitSelectedRoutes: true
+                }).addTo(map);
+
+                // Update route summary
+                showRouteSummary();
+
+                // Fetch available rides
+                fetchAvailableRides();
+            }
+        }
+
+        // Show route summary
+        function showRouteSummary() {
+            document.getElementById('routeSummary').style.display = 'block';
+            document.getElementById('routeFromText').textContent = pickupLocation.name || `${pickupLocation.lat.toFixed(4)}, ${pickupLocation.lng.toFixed(4)}`;
+            document.getElementById('routeToText').textContent = destinationLocation.name || `${destinationLocation.lat.toFixed(4)}, ${destinationLocation.lng.toFixed(4)}`;
+
+            // Calculate distance
+            const distance = calculateDistance(pickupLocation.lat, pickupLocation.lng, destinationLocation.lat, destinationLocation.lng);
+            document.getElementById('distanceText').textContent = `${distance.toFixed(2)} km`;
+            
+            // Estimate time (approximately 25 km/hr average speed in Dhaka)
+            const estimatedTime = Math.ceil((distance / 25) * 60);
+            document.getElementById('timeText').textContent = `${estimatedTime} min`;
+        }
+
+        // Calculate distance between two coordinates using Haversine formula
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        // Fetch available rides from server
+        function fetchAvailableRides() {
+            if (!selectedRideType) {
+                alert('Please select a ride type first!');
+                return;
+            }
+
+            selectedDriverOffer = null;
+            document.getElementById('bookRideBtn').disabled = true;
+
+            const distance = calculateDistance(pickupLocation.lat, pickupLocation.lng, destinationLocation.lat, destinationLocation.lng);
+
+            // Get available rides for the selected vehicle type
+            apiFetch(`/available-rides?vehicleType=${selectedRideType}`)
+                .then(async (response) => {
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.message || `Request failed (${response.status})`);
+                    }
+                    return data;
+                })
+                .then(data => {
+                    if (data.success && data.rides.length > 0) {
+                        displayAvailableRides(data.rides, distance);
+                    } else {
+                        showNoAvailableRides();
+                    }
+                })
+                .catch(error => {
+                    console.log('Error fetching rides:', error);
+                    showNoAvailableRides('Could not connect to server. Please make sure backend is running on port 5000.');
+                });
+        }
+
+        // Display available rides
+        function displayAvailableRides(rides, distance) {
+            document.getElementById('availableRidesSection').style.display = 'block';
+            document.getElementById('emptyState').style.display = 'none';
+            selectedDriverOffer = null;
+
+            const ridesList = document.getElementById('availableRidesList');
+            ridesList.innerHTML = '';
+
+            rides.forEach(ride => {
+                const rideElement = document.createElement('div');
+                rideElement.className = 'ride-item';
+                rideElement.innerHTML = `
+                    <div class="ride-item-info">
+                        <div class="driver-name">👤 ${ride.driverName}</div>
+                        <div class="driver-rating">⭐ ${ride.rating} rating • ${Math.floor(Math.random() * 100) + 50} rides</div>
+                        <div class="vehicle-info">🚗 ${ride.vehicle}</div>
+                    </div>
+                    <div class="ride-item-price">
+                        <div class="estimated-fare">৳${ride.fare}</div>
+                        <div class="estimated-time">⏱️ ${ride.eta} min away</div>
+                        <div class="estimated-time" style="margin-top: 4px; color: #4338ca; font-weight: 600;">Tap to select</div>
+                    </div>
+                `;
+                rideElement.addEventListener('click', () => {
+                    document.querySelectorAll('.ride-item').forEach(item => item.classList.remove('selected'));
+                    rideElement.classList.add('selected');
+                    selectedDriverOffer = ride;
+                    document.getElementById('bookRideBtn').disabled = false;
+                });
+                ridesList.appendChild(rideElement);
+            });
+
+            // Keep disabled until user selects a driver
+            document.getElementById('bookRideBtn').disabled = true;
+        }
+
+        // Show no available rides message
+        function showNoAvailableRides(message = 'Try selecting a different area or ride type.') {
+            document.getElementById('availableRidesSection').style.display = 'block';
+            document.getElementById('emptyState').style.display = 'none';
+
+            const ridesList = document.getElementById('availableRidesList');
+            ridesList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">😢</div>
+                    <p><strong>No drivers available</strong></p>
+                    <p style="font-size: 14px; margin-top: 8px;">${message}</p>
+                </div>
+            `;
+
+            selectedDriverOffer = null;
+            document.getElementById('bookRideBtn').disabled = true;
+        }
+
+        // Confirm and request ride
+        function confirmRide(ride, distance) {
+            const safarUser = JSON.parse(localStorage.getItem('safarUser') || '{}');
+            const userId = safarUser.user_id || safarUser.id;
+
+            if (!userId) {
+                alert('Please log in first!');
+                window.location.href = './src/login.html';
+                return;
+            }
+
+            const bookingData = {
+                userId: userId,
+                pickupLat: pickupLocation.lat,
+                pickupLng: pickupLocation.lng,
+                pickupName: pickupLocation.name,
+                destinationLat: destinationLocation.lat,
+                destinationLng: destinationLocation.lng,
+                destinationName: destinationLocation.name,
+                vehicleType: selectedRideType,
+                driverId: ride.driverId,
+                fare: ride.fare,
+                distance: distance.toFixed(2),
+                womenOnly: document.getElementById('womenOnlyCheckbox').checked,
+                shareRide: document.getElementById('shareRideCheckbox').checked,
+                riderNotifiedStatus: null,
+            };
+
+            // Save to localStorage for verification
+            localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+
+            // Send to backend
+            apiFetch('/ride', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId,
+                    start: { lat: pickupLocation.lat, lng: pickupLocation.lng },
+                    destination: { lat: destinationLocation.lat, lng: destinationLocation.lng },
+                    vehicle: selectedRideType,
+                    driverId: ride.driverId,
+                    fare: Number(ride.fare),
+                })
+            })
+            .then(async (response) => {
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.message || `Request failed (${response.status})`);
+                }
+                return data;
+            })
+            .then(data => {
+                if (data.message && data.message.includes('successfully')) {
+                    const updatedBooking = {
+                        ...bookingData,
+                        rideId: data.rideId,
+                        status: data.status || 'Requested',
+                        requestedAt: Date.now(),
+                        riderNotifiedStatus: null,
+                    };
+                    localStorage.setItem('currentBooking', JSON.stringify(updatedBooking));
+
+                    alert('Ride request sent to selected driver. Waiting for driver response...');
+                    // Redirect to booking confirmation page or dashboard
+                    setTimeout(() => {
+                        window.location.href = 'rider-dashboard.html';
+                    }, 2000);
+                } else {
+                    alert('Error: ' + (data.message || 'Could not request ride'));
+                }
+            })
+            .catch(error => {
+                console.error('Booking error:', error);
+                alert(error.message || 'Could not send ride request right now. Please try again.');
+            });
+        }
+
+        // Handle ride type selection
+        document.querySelectorAll('.ride-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.ride-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedRideType = this.dataset.type;
+                document.getElementById('selectedRideType').value = selectedRideType;
+
+                // Fetch available rides when type is selected
+                if (pickupLocation.lat && destinationLocation.lat) {
+                    fetchAvailableRides();
+                }
+            });
+        });
+
+        // Use current location button
+        document.getElementById('useCurrentLocBtn').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                this.style.opacity = '0.6';
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        setPickupLocation(position.coords.latitude, position.coords.longitude);
+                        document.getElementById('useCurrentLocBtn').style.opacity = '1';
+                    },
+                    function(error) {
+                        alert('Could not get your location: ' + error.message);
+                        document.getElementById('useCurrentLocBtn').style.opacity = '1';
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+
+        // Book ride button
+        document.getElementById('bookRideBtn').addEventListener('click', function() {
+            if (!pickupLocation.lat || !destinationLocation.lat) {
+                alert('Please select both pickup and destination locations!');
+                return;
+            }
+            if (!selectedRideType) {
+                alert('Please select a ride type!');
+                return;
+            }
+
+            if (!selectedDriverOffer) {
+                alert('Please select a driver from available rides first!');
+                return;
+            }
+
+            const distance = calculateDistance(pickupLocation.lat, pickupLocation.lng, destinationLocation.lat, destinationLocation.lng);
+            confirmRide(selectedDriverOffer, distance);
+        });
+
+        // Back button
+        document.getElementById('backBtn').addEventListener('click', function() {
+            window.history.back();
+        });
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ book-ride.html page LOADED successfully!');
+            console.log('📍 Current URL:', window.location.href);
+            
+            // Check if user is logged in
+            const safarUser = JSON.parse(localStorage.getItem('safarUser') || '{}');
+            if (!safarUser.user_id && !safarUser.id) {
+                console.warn('⚠️ User not logged in, but continuing (login redirect commented out)');
+                // Optionally redirect to login
+                // window.location.href = './src/login.html';
+            }
+
+            console.log('🗺️ Initializing map...');
+            initMap();
+
+            document.getElementById('pickupMapTargetBtn').addEventListener('click', function() {
+                setActiveMapTarget('pickup');
+                document.getElementById('pickupInput').focus();
+            });
+
+            document.getElementById('destinationMapTargetBtn').addEventListener('click', function() {
+                setActiveMapTarget('destination');
+                document.getElementById('destinationInput').focus();
+            });
+
+            setupAutocomplete('pickupInput', 'pickup');
+            setupAutocomplete('destinationInput', 'destination');
+
+            const defaultRideOption = document.querySelector('.ride-option[data-type="Car"]');
+            if (defaultRideOption) {
+                defaultRideOption.classList.add('selected');
+                document.getElementById('selectedRideType').value = 'Car';
+            }
+        });
+    </script>
+</body>
+</html>

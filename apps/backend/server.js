@@ -33,12 +33,11 @@ app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
 
 // ✅ Import your route
 const authRoutes = require('./routes/authroutes');
+const rideRoutes = require('./routes/rideRoutes');
 
-// ✅ Register the route
+// ✅ Register the routes
 app.use('/api', authRoutes); // <-- This makes /api/signup available
-
-// Your other routes
-app.use('/api/rides', require('./routes/rideRoutes'));
+app.use('/api', rideRoutes); // <-- This makes /api/ride and /api/available-rides available
 
 // Start Server
 const server = app.listen(PORT, () => {

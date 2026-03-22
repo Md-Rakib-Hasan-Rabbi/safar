@@ -8,7 +8,8 @@
     "dev": "echo Frontend: http://127.0.0.1:5500/index.html && echo Backend: http://localhost:5000 && concurrently --names \"API,CSS,WEB\" --hide \"CSS\" \"npm start\" \"npm --prefix ./apps/frontend run dev\" \"http-server ./apps/frontend -p 5500 -o /index.html\"",
     "dev:verbose": "echo Frontend: http://127.0.0.1:5500/index.html && echo Backend: http://localhost:5000 && concurrently \"npm start\" \"npm --prefix ./apps/frontend run dev\" \"http-server ./apps/frontend -p 5500 -o /index.html\"",
     "db:setup": "node ./scripts/setup-db.js",
-    "db:update": "node ./scripts/db-update.js"
+    "db:update": "node ./scripts/db-update.js",
+    "db:view": "node ./scripts/view-seed-data.js"
   },
   "keywords": [],
   "author": "",

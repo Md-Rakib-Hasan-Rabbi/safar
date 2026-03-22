@@ -167,67 +167,7 @@
             <p class="text-sm text-gray-500 mt-1">Go online to start accepting rides</p>
           </div>
 
-          <div id="incomingRideCards" class="space-y-4" style="display:none;">
-            <!-- Ride Request 1 -->
-            <div class="ride-card border-l-blue-500 hover:border-l-blue-600">
-              <div class="flex items-start justify-between mb-4">
-                <div class="flex items-center gap-3">
-                  <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">S</div>
-                  <div>
-                    <p class="font-bold text-gray-900">Sophia Khan</p>
-                    <p class="text-sm text-gray-600">⭐ 4.9 (128 rides)</p>
-                  </div>
-                </div>
-                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">⏱️ 2 min</span>
-              </div>
-              <div class="bg-slate-50 rounded-lg p-4 mb-4 space-y-3">
-                <div class="flex items-center gap-2 text-gray-700">
-                  <span>📍 Gulshan 2</span>
-                  <span class="text-gray-400">→</span>
-                  <span>🏁 Banani Park</span>
-                </div>
-                <div class="flex justify-between text-sm text-gray-600">
-                  <span>📏 6.2 km</span>
-                  <span class="font-bold text-green-600">৳245</span>
-                  <span>Standard</span>
-                </div>
-              </div>
-              <div class="flex gap-3">
-                <button class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">✅ ACCEPT</button>
-                <button class="flex-1 bg-red-100 hover:bg-red-200 text-red-600 font-bold py-3 rounded-lg transition">❌ DECLINE</button>
-              </div>
-            </div>
-
-            <!-- Ride Request 2 -->
-            <div class="ride-card border-l-pink-500 hover:border-l-pink-600">
-              <div class="flex items-start justify-between mb-4">
-                <div class="flex items-center gap-3">
-                  <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-rose-600 rounded-full flex items-center justify-center text-white font-bold">R</div>
-                  <div>
-                    <p class="font-bold text-gray-900">Riya Sharma</p>
-                    <p class="text-sm text-gray-600">⭐ 4.7 (95 rides)</p>
-                  </div>
-                </div>
-                <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-bold">⏱️ 5 min</span>
-              </div>
-              <div class="bg-slate-50 rounded-lg p-4 mb-4 space-y-3">
-                <div class="flex items-center gap-2 text-gray-700">
-                  <span>📍 Mirpur 10</span>
-                  <span class="text-gray-400">→</span>
-                  <span>🏁 Shahbag</span>
-                </div>
-                <div class="flex justify-between text-sm text-gray-600">
-                  <span>📏 8.5 km</span>
-                  <span class="font-bold text-green-600">৳320</span>
-                  <span class="font-bold text-pink-600">👩 Women-Only</span>
-                </div>
-              </div>
-              <div class="flex gap-3">
-                <button class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">✅ ACCEPT</button>
-                <button class="flex-1 bg-red-100 hover:bg-red-200 text-red-600 font-bold py-3 rounded-lg transition">❌ DECLINE</button>
-              </div>
-            </div>
-          </div>
+          <div id="incomingRideCards" class="space-y-4" style="display:none;"></div>
         </section>
 
         <!-- Active Ride Display -->
@@ -557,27 +497,185 @@
       window.location.href = './src/login.html';
     });
 
-    // GO ONLINE/OFFLINE Toggle
+    // Driver request workflow
+    const driverId = safarUser.user_id || safarUser.id || safarUser.userId || safarUser.UserID;
     let isOnline = false;
-    document.getElementById('goOnlineBtn').addEventListener('click', function() {
-      isOnline = !isOnline;
-      const btn = this;
+    let requestPollingTimer = null;
+
+    function getApiCandidates() {
+      return ['http://localhost:5000/api', '/api'];
+    }
+
+    async function apiFetch(path, options = {}) {
+      const candidates = getApiCandidates();
+      let lastError = null;
+
+      for (const base of candidates) {
+        try {
+          const response = await fetch(`${base}${path}`, options);
+          const contentType = (response.headers.get('content-type') || '').toLowerCase();
+          const isJson = contentType.includes('application/json');
+
+          if (isJson) {
+            return response;
+          }
+
+          lastError = new Error(`Request failed with status ${response.status}`);
+        } catch (error) {
+          lastError = error;
+        }
+      }
+
+      throw lastError || new Error('API request failed');
+    }
+
+    function setOnlineState(enabled) {
+      isOnline = enabled;
+      const btn = document.getElementById('goOnlineBtn');
       const status = document.getElementById('onlineStatus');
-      
-      if (isOnline) {
+
+      if (enabled) {
         btn.classList.remove('from-green-600', 'to-emerald-600', 'hover:from-green-700', 'hover:to-emerald-700');
         btn.classList.add('from-red-600', 'to-red-700', 'hover:from-red-700', 'hover:to-red-800');
         btn.textContent = '🔴 GO OFFLINE';
         status.textContent = 'Status: Online (Accept rides now)';
-        document.getElementById('noIncomingRide').style.display = 'none';
-        document.getElementById('incomingRideCards').style.display = 'block';
       } else {
         btn.classList.remove('from-red-600', 'to-red-700', 'hover:from-red-700', 'hover:to-red-800');
         btn.classList.add('from-green-600', 'to-emerald-600', 'hover:from-green-700', 'hover:to-emerald-700');
         btn.textContent = '🟢 GO ONLINE';
         status.textContent = 'Status: Offline';
+      }
+    }
+
+    function renderIncomingRequests(requests) {
+      const noIncomingRide = document.getElementById('noIncomingRide');
+      const incomingRideCards = document.getElementById('incomingRideCards');
+
+      if (!requests.length) {
+        noIncomingRide.style.display = 'block';
+        incomingRideCards.style.display = 'none';
+        incomingRideCards.innerHTML = '';
+        return;
+      }
+
+      noIncomingRide.style.display = 'none';
+      incomingRideCards.style.display = 'block';
+
+      incomingRideCards.innerHTML = requests.map((request) => {
+        const riderName = request.rider_name || 'Rider';
+        const riderInitial = riderName.charAt(0).toUpperCase();
+        const fare = Number(request.fare || 0).toFixed(0);
+
+        return `
+          <div class="ride-card border-l-blue-500 hover:border-l-blue-600" data-ride-id="${request.ride_id}">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">${riderInitial}</div>
+                <div>
+                  <p class="font-bold text-gray-900">${riderName}</p>
+                  <p class="text-sm text-gray-600">Ride #${request.ride_id}</p>
+                </div>
+              </div>
+              <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">Pending</span>
+            </div>
+            <div class="bg-slate-50 rounded-lg p-4 mb-4 space-y-3">
+              <div class="flex items-center gap-2 text-gray-700">
+                <span>📍 ${request.pickup_location}</span>
+                <span class="text-gray-400">→</span>
+                <span>🏁 ${request.dropoff_location}</span>
+              </div>
+              <div class="flex justify-between text-sm text-gray-600">
+                <span>Driver request</span>
+                <span class="font-bold text-green-600">৳${fare}</span>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <button data-action="accept" data-ride-id="${request.ride_id}" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">✅ ACCEPT</button>
+              <button data-action="reject" data-ride-id="${request.ride_id}" class="flex-1 bg-red-100 hover:bg-red-200 text-red-600 font-bold py-3 rounded-lg transition">❌ DECLINE</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      incomingRideCards.querySelectorAll('button[data-action]').forEach((button) => {
+        button.addEventListener('click', async function() {
+          const rideId = this.dataset.rideId;
+          const action = this.dataset.action;
+          const nextStatus = action === 'accept' ? 'Accepted' : 'Cancelled';
+          await updateRideStatus(rideId, nextStatus);
+        });
+      });
+    }
+
+    async function loadIncomingRequests() {
+      if (!isOnline || !driverId) {
+        return;
+      }
+
+      try {
+        const response = await apiFetch(`/driver/requests?driverId=${driverId}`);
+        const data = await response.json();
+
+        if (data.success) {
+          renderIncomingRequests(data.requests || []);
+        }
+      } catch (error) {
+        console.error('Failed to load incoming requests:', error);
+      }
+    }
+
+    async function updateRideStatus(rideId, status) {
+      try {
+        const response = await apiFetch(`/ride/${rideId}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            driverId,
+            status,
+          }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          alert(data.message || 'Could not update ride status.');
+          return;
+        }
+
+        if (status === 'Accepted') {
+          document.getElementById('activeRideSection').style.display = 'block';
+          alert('Ride accepted. Ride is now confirmed.');
+        } else {
+          alert('Ride cancelled. Rider has been notified.');
+        }
+
+        await loadIncomingRequests();
+      } catch (error) {
+        console.error('Update status error:', error);
+        alert('Could not update ride status right now.');
+      }
+    }
+
+    document.getElementById('goOnlineBtn').addEventListener('click', async function() {
+      setOnlineState(!isOnline);
+
+      if (isOnline) {
+        await loadIncomingRequests();
+
+        if (requestPollingTimer) {
+          clearInterval(requestPollingTimer);
+        }
+        requestPollingTimer = setInterval(loadIncomingRequests, 10000);
+      } else {
+        if (requestPollingTimer) {
+          clearInterval(requestPollingTimer);
+          requestPollingTimer = null;
+        }
+
         document.getElementById('noIncomingRide').style.display = 'block';
         document.getElementById('incomingRideCards').style.display = 'none';
+        document.getElementById('incomingRideCards').innerHTML = '';
       }
     });
 

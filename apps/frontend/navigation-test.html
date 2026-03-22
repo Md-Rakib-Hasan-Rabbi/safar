@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Test - Safar</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        .info { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 12px; margin: 10px 0; border-radius: 4px; }
+        .debug { background: #f5f5f5; border: 1px solid #ccc; padding: 12px; border-radius: 4px; font-family: monospace; white-space: pre-wrap; word-break: break-all; margin: 15px 0; overflow-x: auto; }
+        button { background: #6366f1; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        button:hover { background: #4f46e5; }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Navigation Test - Book a Ride</h1>
+        
+        <div class="info">
+            <strong>📍 Current Location:</strong><br>
+            <div id="currentUrl" class="debug" style="margin-top: 8px;"></div>
+        </div>
+
+        <div class="info">
+            <strong>📁 File Detection:</strong><br>
+            <ul>
+                <li id="bookRideCheck">⏳ Checking for book-ride.html...</li>
+                <li id="dashboardCheck">⏳ Checking for rider-dashboard.html...</li>
+                <li id="indexCheck">⏳ Checking for index.html...</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <strong>🧪 Test Navigation:</strong><br>
+            <button onclick="testNavigation('book-ride.html')">Try Navigate to: book-ride.html</button>
+            <button onclick="testNavigation('rider-dashboard.html')">Try Navigate to: rider-dashboard.html</button>
+            <button onclick="testNavigation('index.html')">Try Navigate to: index.html</button>
+        </div>
+
+        <div class="info">
+            <strong>🔙 Browser Info:</strong><br>
+            <div id="browserInfo" class="debug"></div>
+        </div>
+
+        <div class="info">
+            <strong>💾 LocalStorage Check:</strong><br>
+            <div id="storageInfo" class="debug"></div>
+        </div>
+
+        <div class="info">
+            <button onclick="console.log('Check browser console (F12) for detailed logs'); alert('Open console with F12 to see detailed logs');">📋 Open Browser Console</button>
+        </div>
+    </div>
+
+    <script>
+        // Log current URL
+        console.log('=== NAVIGATION DIAGNOSTIC ===');
+        console.log('Current URL:', window.location.href);
+        console.log('Pathname:', window.location.pathname);
+        console.log('Hostname:', window.location.hostname);
+        console.log('Port:', window.location.port);
+        
+        document.getElementById('currentUrl').textContent = window.location.href;
+
+        // Get current directory
+        const currentDir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+        console.log('Current Directory:', currentDir);
+
+        // Test file availability
+        async function checkFileAvailable(filename) {
+            try {
+                const dir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+                const response = await fetch(dir + filename, { method: 'HEAD' });
+                return response.ok;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // Check files
+        Promise.all([
+            checkFileAvailable('book-ride.html'),
+            checkFileAvailable('rider-dashboard.html'),
+            checkFileAvailable('index.html')
+        ]).then(([bookRideExists, dashboardExists, indexExists]) => {
+            document.getElementById('bookRideCheck').innerHTML = bookRideExists 
+                ? '<span class="success">✅ book-ride.html FOUND</span>'
+                : '<span class="error">❌ book-ride.html NOT FOUND</span>';
+            
+            document.getElementById('dashboardCheck').innerHTML = dashboardExists 
+                ? '<span class="success">✅ rider-dashboard.html FOUND</span>'
+                : '<span class="error">❌ rider-dashboard.html NOT FOUND</span>';
+            
+            document.getElementById('indexCheck').innerHTML = indexExists 
+                ? '<span class="success">✅ index.html FOUND</span>'
+                : '<span class="error">❌ index.html NOT FOUND</span>';
+
+            console.log('File check results:', { bookRideExists, dashboardExists, indexExists });
+        });
+
+        // Browser info
+        const browserInfo = `User Agent: ${navigator.userAgent}
+Platform: ${navigator.platform}
+Language: ${navigator.language}
+Online: ${navigator.onLine}`;
+        document.getElementById('browserInfo').textContent = browserInfo;
+        console.log('Browser Info:', browserInfo);
+
+        // Storage info
+        const safarUser = JSON.parse(localStorage.getItem('safarUser') || '{}');
+        const storageInfo = `Logged In: ${Object.keys(safarUser).length > 0 ? 'Yes' : 'No'}
+User ID: ${safarUser.user_id || safarUser.id || 'N/A'}
+User Name: ${safarUser.name || 'N/A'}
+User Type: ${safarUser.UserType || safarUser.userType || 'N/A'}`;
+        document.getElementById('storageInfo').textContent = storageInfo;
+        console.log('Storage Info:', storageInfo);
+
+        // Navigation test function
+        function testNavigation(page) {
+            const currentDir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+            const targetUrl = currentDir + page;
+            console.log(`🚗 Attempting to navigate to: ${targetUrl}`);
+            alert(`Navigating to:\n${targetUrl}\n\nCheck the address bar after clicking OK`);
+            window.location.href = targetUrl;
+        }
+
+        // Navigation intercept
+        window.addEventListener('beforeunload', function() {
+            console.log('🚀 Page unloading, navigating to:', window.location.href);
+        });
+    </script>
+</body>
+</html>

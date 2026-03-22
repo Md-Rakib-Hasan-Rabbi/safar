@@ -53,6 +53,60 @@ const seedUsers = [
     password: '$2b$10$Mgpi9YVVHkB3rly.A8MBiODFMN3LvROAISUxAxAHmk8H2.zuxVpY.',
     UserType: 'Admin',
   },
+  {
+    user_id: 7,
+    name: 'Rafiq Hasan',
+    email: 'rafiq.driver@safar.app',
+    phone: '01900000007',
+    gender: 'Male',
+    password: '$2b$10$/wdUFU/wOIk9TaYc9uO4LOuZLhDxNuHN.DQF3TiKVSUA3ZzsjeiP.',
+    UserType: 'Driver',
+  },
+  {
+    user_id: 8,
+    name: 'Sharmin Akter',
+    email: 'sharmin.driver@safar.app',
+    phone: '01900000008',
+    gender: 'Female',
+    password: '$2b$10$/wdUFU/wOIk9TaYc9uO4LOuZLhDxNuHN.DQF3TiKVSUA3ZzsjeiP.',
+    UserType: 'Driver',
+  },
+  {
+    user_id: 9,
+    name: 'Mizanur Rahman',
+    email: 'mizan.driver@safar.app',
+    phone: '01900000009',
+    gender: 'Male',
+    password: '$2b$10$/wdUFU/wOIk9TaYc9uO4LOuZLhDxNuHN.DQF3TiKVSUA3ZzsjeiP.',
+    UserType: 'Driver',
+  },
+  {
+    user_id: 10,
+    name: 'Nusrat Jahan',
+    email: 'nusrat.driver@safar.app',
+    phone: '01900000010',
+    gender: 'Female',
+    password: '$2b$10$/wdUFU/wOIk9TaYc9uO4LOuZLhDxNuHN.DQF3TiKVSUA3ZzsjeiP.',
+    UserType: 'Driver',
+  },
+  {
+    user_id: 11,
+    name: 'Tanvir Ahmed',
+    email: 'tanvir.driver@safar.app',
+    phone: '01900000011',
+    gender: 'Male',
+    password: '$2b$10$/wdUFU/wOIk9TaYc9uO4LOuZLhDxNuHN.DQF3TiKVSUA3ZzsjeiP.',
+    UserType: 'Driver',
+  },
+  {
+    user_id: 12,
+    name: 'Sadia Islam',
+    email: 'sadia.driver@safar.app',
+    phone: '01900000012',
+    gender: 'Female',
+    password: '$2b$10$/wdUFU/wOIk9TaYc9uO4LOuZLhDxNuHN.DQF3TiKVSUA3ZzsjeiP.',
+    UserType: 'Driver',
+  },
 ];
 
 async function createSchema(db) {
@@ -156,6 +210,31 @@ async function createSchema(db) {
       FOREIGN KEY (ride_id) REFERENCES ride(ride_id)
     );
   `);
+
+  const rideColumns = await db.all(`PRAGMA table_info(ride)`);
+  const existingRideColumns = new Set(rideColumns.map((column) => column.name));
+
+  if (!existingRideColumns.has('pickup_lat')) {
+    await db.exec(`ALTER TABLE ride ADD COLUMN pickup_lat REAL`);
+  }
+  if (!existingRideColumns.has('pickup_lng')) {
+    await db.exec(`ALTER TABLE ride ADD COLUMN pickup_lng REAL`);
+  }
+  if (!existingRideColumns.has('dropoff_lat')) {
+    await db.exec(`ALTER TABLE ride ADD COLUMN dropoff_lat REAL`);
+  }
+  if (!existingRideColumns.has('dropoff_lng')) {
+    await db.exec(`ALTER TABLE ride ADD COLUMN dropoff_lng REAL`);
+  }
+  if (!existingRideColumns.has('status')) {
+    await db.exec(`ALTER TABLE ride ADD COLUMN status TEXT DEFAULT 'Completed'`);
+  }
+  if (!existingRideColumns.has('requested_at')) {
+    await db.exec(`ALTER TABLE ride ADD COLUMN requested_at TEXT`);
+  }
+
+  await db.exec(`UPDATE ride SET status = COALESCE(status, 'Completed')`);
+  await db.exec(`UPDATE ride SET requested_at = COALESCE(requested_at, start_time, CURRENT_TIMESTAMP)`);
 }
 
 async function seedData(db) {
@@ -178,6 +257,12 @@ async function seedData(db) {
   await db.run(`INSERT OR IGNORE INTO vehicle (vehicle_id, vehicle_type, model, capacity, driver_id) VALUES (?, ?, ?, ?, ?)`, [1, 'Car', 'Toyota Axio', 4, 2]);
   await db.run(`INSERT OR IGNORE INTO vehicle (vehicle_id, vehicle_type, model, capacity, driver_id) VALUES (?, ?, ?, ?, ?)`, [2, 'Bike', 'Yamaha FZS', 2, 2]);
   await db.run(`INSERT OR IGNORE INTO vehicle (vehicle_id, vehicle_type, model, capacity, driver_id) VALUES (?, ?, ?, ?, ?)`, [3, 'SUV', 'Toyota Noah', 6, 5]);
+  await db.run(`INSERT OR IGNORE INTO vehicle (vehicle_id, vehicle_type, model, capacity, driver_id) VALUES (?, ?, ?, ?, ?)`, [4, 'Car', 'Honda City', 4, 7]);
+  await db.run(`INSERT OR IGNORE INTO vehicle (vehicle_id, vehicle_type, model, capacity, driver_id) VALUES (?, ?, ?, ?, ?)`, [5, 'Bike', 'Honda Hornet', 1, 8]);
+  await db.run(`INSERT OR IGNORE INTO vehicle (vehicle_id, vehicle_type, model, capacity, driver_id) VALUES (?, ?, ?, ?, ?)`, [6, 'SUV', 'Mitsubishi Outlander', 7, 9]);
+  await db.run(`INSERT OR IGNORE INTO vehicle (vehicle_id, vehicle_type, model, capacity, driver_id) VALUES (?, ?, ?, ?, ?)`, [7, 'Car', 'Nissan Sunny', 4, 10]);
+  await db.run(`INSERT OR IGNORE INTO vehicle (vehicle_id, vehicle_type, model, capacity, driver_id) VALUES (?, ?, ?, ?, ?)`, [8, 'Bike', 'Suzuki Gixxer', 1, 11]);
+  await db.run(`INSERT OR IGNORE INTO vehicle (vehicle_id, vehicle_type, model, capacity, driver_id) VALUES (?, ?, ?, ?, ?)`, [9, 'SUV', 'Toyota Land Cruiser Prado', 7, 12]);
 
   await db.run(
     `INSERT OR IGNORE INTO ride (ride_id, pickup_location, dropoff_location, fare, driver_id, rider_id, start_time, end_time)
