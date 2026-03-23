@@ -1009,6 +1009,74 @@
             document.getElementById('bookRideBtn').disabled = true;
         }
 
+        function showRideNotification(title, message, type = 'success') {
+            const existing = document.getElementById('rideNotificationToast');
+            if (existing) {
+                existing.remove();
+            }
+
+            const palette = {
+                success: {
+                    ring: 'rgba(34, 197, 94, 0.35)',
+                    gradient: 'linear-gradient(135deg, #064e3b, #065f46 55%, #047857)',
+                    emoji: '✅'
+                },
+                info: {
+                    ring: 'rgba(59, 130, 246, 0.35)',
+                    gradient: 'linear-gradient(135deg, #1e3a8a, #1d4ed8 55%, #2563eb)',
+                    emoji: 'ℹ️'
+                },
+                error: {
+                    ring: 'rgba(239, 68, 68, 0.35)',
+                    gradient: 'linear-gradient(135deg, #7f1d1d, #b91c1c 55%, #dc2626)',
+                    emoji: '⚠️'
+                }
+            };
+
+            const selected = palette[type] || palette.info;
+            const toast = document.createElement('div');
+            toast.id = 'rideNotificationToast';
+            toast.style.cssText = `
+                position: fixed;
+                top: 24px;
+                right: 24px;
+                width: min(420px, calc(100vw - 32px));
+                border-radius: 18px;
+                padding: 18px 20px;
+                color: #ffffff;
+                z-index: 99999;
+                background: ${selected.gradient};
+                box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
+                border: 1px solid ${selected.ring};
+                backdrop-filter: blur(6px);
+                transform: translateY(-12px) scale(0.98);
+                opacity: 0;
+                transition: all 0.25s ease;
+            `;
+
+            toast.innerHTML = `
+                <div style="display:flex; gap:12px; align-items:flex-start;">
+                    <div style="font-size:20px; line-height:1.2;">${selected.emoji}</div>
+                    <div>
+                        <p style="margin:0; font-weight:700; font-size:16px;">${title}</p>
+                        <p style="margin:6px 0 0 0; font-size:14px; opacity:0.92;">${message}</p>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0) scale(1)';
+            });
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-8px) scale(0.98)';
+                setTimeout(() => toast.remove(), 220);
+            }, 2600);
+        }
+
         // Confirm and request ride
         function confirmRide(ride, distance) {
             const safarUser = JSON.parse(localStorage.getItem('safarUser') || '{}');
@@ -1016,7 +1084,7 @@
 
             if (!userId) {
                 alert('Please log in first!');
-                window.location.href = './src/login.html';
+                window.location.href = '/login';
                 return;
             }
 
@@ -1073,7 +1141,11 @@
                     };
                     localStorage.setItem('currentBooking', JSON.stringify(updatedBooking));
 
-                    alert('Ride request sent to selected driver. Waiting for driver response...');
+                    showRideNotification(
+                        'Ride Request Sent',
+                        'Your request has been sent to the selected driver. Waiting for response...',
+                        'success'
+                    );
                     // Redirect to booking confirmation page or dashboard
                     setTimeout(() => {
                         window.location.href = 'rider-dashboard.html';
@@ -1157,7 +1229,7 @@
             if (!safarUser.user_id && !safarUser.id) {
                 console.warn('⚠️ User not logged in, but continuing (login redirect commented out)');
                 // Optionally redirect to login
-                // window.location.href = './src/login.html';
+                // window.location.href = '/login';
             }
 
             console.log('🗺️ Initializing map...');

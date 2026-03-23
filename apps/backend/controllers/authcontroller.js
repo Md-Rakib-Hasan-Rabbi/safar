@@ -110,3 +110,61 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.updatePassword = async (req, res) => {
+    try {
+        const { userId, email, userType, currentPassword, newPassword, confirmPassword } = req.body;
+
+        if (!newPassword || !confirmPassword) {
+            return res.status(400).json({ message: 'New password and confirm password are required' });
+        }
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({ message: 'Passwords do not match' });
+        }
+
+        if (String(newPassword).length < 6) {
+            return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+        }
+
+        let user = null;
+
+        if (userId) {
+            const [rowsById] = await db.query('SELECT user_id, email, UserType, password FROM users WHERE user_id = ?', [userId]);
+            user = rowsById[0] || null;
+        }
+
+        if (!user && email) {
+            const [rowsByEmail] = await db.query('SELECT user_id, email, UserType, password FROM users WHERE email = ?', [email]);
+            user = rowsByEmail[0] || null;
+        }
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (userType && user.UserType !== userType) {
+            return res.status(403).json({ message: 'Role mismatch for this account' });
+        }
+
+        if (currentPassword) {
+            const isCurrentMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isCurrentMatch) {
+                return res.status(401).json({ message: 'Current password is incorrect' });
+            }
+        }
+
+        const isSameAsOld = await bcrypt.compare(newPassword, user.password);
+        if (isSameAsOld) {
+            return res.status(400).json({ message: 'New password must be different from current password' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await db.query('UPDATE users SET password = ? WHERE user_id = ?', [hashedPassword, user.user_id]);
+
+        return res.json({ success: true, message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Update password error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};

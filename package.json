@@ -5,8 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node apps/backend/server.js",
-    "dev": "echo Frontend: http://127.0.0.1:5500/index.html && echo Backend: http://localhost:5000 && concurrently --names \"API,CSS,WEB\" --hide \"CSS\" \"npm start\" \"npm --prefix ./apps/frontend run dev\" \"http-server ./apps/frontend -p 5500 -o /index.html\"",
-    "dev:verbose": "echo Frontend: http://127.0.0.1:5500/index.html && echo Backend: http://localhost:5000 && concurrently \"npm start\" \"npm --prefix ./apps/frontend run dev\" \"http-server ./apps/frontend -p 5500 -o /index.html\"",
+    "dev": "echo Frontend: http://localhost:5000 && echo Login: http://localhost:5000/login && concurrently --names \"API,CSS\" --hide \"CSS\" \"npm start\" \"npm --prefix ./apps/frontend run dev\"",
+    "dev:verbose": "echo Frontend: http://localhost:5000 && echo Login: http://localhost:5000/login && concurrently \"npm start\" \"npm --prefix ./apps/frontend run dev\"",
     "db:setup": "node ./scripts/setup-db.js",
     "db:update": "node ./scripts/db-update.js",
     "db:view": "node ./scripts/view-seed-data.js"

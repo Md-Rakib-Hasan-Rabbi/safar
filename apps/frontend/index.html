@@ -39,34 +39,40 @@
         <div id="authButtons" class="space-x-2">
           <button
             class="bg-gray-200 px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
-            <a href="./src/login.html?v=role-login-v2">LOG IN</a>
+            <a href="/login">LOG IN</a>
           </button>
           <button
             class="bg-[#012B09] text-white px-4 py-2 text-sm rounded-md hover:bg-[#203924] hover:cursor-pointer transition-transform transform hover:scale-105 duration-300">
-            <a href="./src/signup.html">SIGN UP</a>
+            <a href="/signup">SIGN UP</a>
           </button>
         </div>
 
         <!-- Profile section (shown when logged in) -->
-        <div id="profileSection" class="space-x-2 hidden">
-          <div class="flex items-center space-x-3">
-            <span id="userWelcome" class="text-sm text-gray-700">Welcome, User!</span>
+        <div id="profileSection" class="hidden">
+          <div class="flex items-center gap-3">
+            <div class="hidden lg:flex flex-col text-right leading-tight">
+              <span id="userWelcome" class="text-xs text-gray-500 font-medium">Signed in as</span>
+              <span id="userName" class="text-sm font-semibold text-gray-800">User</span>
+            </div>
+
             <div class="relative">
               <button id="profileButton"
-                class="bg-green-100 px-4 py-2 text-sm rounded-md hover:bg-green-200 hover:cursor-pointer transition-transform transform hover:scale-105 duration-300 flex items-center space-x-2">
-                <span id="userName">Profile</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="bg-white border border-green-200 pl-2 pr-3 py-1.5 rounded-lg hover:bg-green-50 hover:border-green-300 hover:cursor-pointer transition-colors duration-200 flex items-center gap-2 shadow-sm">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-teal-600 to-green-700 text-white flex items-center justify-center text-xs font-bold">
+                  <span id="userInitial">U</span>
+                </div>
+                <span class="text-sm font-semibold text-gray-800 hidden sm:inline">Account</span>
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
-              <!-- Dropdown menu -->
+
               <div id="profileDropdown"
-                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-[9999] hidden border border-gray-200">
-                <a href="./dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
-                <a href="./settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
-                <hr class="my-1">
-                <button id="logoutButton"
-                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg py-2 z-[9999] hidden border border-gray-200">
+                <a href="./dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Dashboard</a>
+                <a href="./settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Settings</a>
+                <hr class="my-1 border-gray-100">
+                <button id="logoutButton" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
                   Logout
                 </button>
               </div>

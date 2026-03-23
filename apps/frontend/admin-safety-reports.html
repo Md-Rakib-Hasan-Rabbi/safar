@@ -94,7 +94,7 @@
     const role = userData.userType || userData.UserType;
 
     if (!role) {
-      window.location.href = './src/login.html?v=role-login-v2';
+      window.location.href = '/login';
     } else if (role !== 'Admin') {
       if (role === 'Driver') {
         window.location.href = './driver-dashboard.html';
@@ -108,7 +108,7 @@
 
     function logoutUser() {
       localStorage.removeItem('safarUser');
-      window.location.href = './src/login.html?v=role-login-v2';
+      window.location.href = '/login';
     }
 
     document.getElementById('quickLogout').addEventListener('click', logoutUser);

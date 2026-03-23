@@ -35,6 +35,7 @@ function renderNavbarUser() {
   const profileSection = document.getElementById("profileSection");
   const userWelcome = document.getElementById("userWelcome");
   const userName = document.getElementById("userName");
+  const userInitial = document.getElementById("userInitial");
 
   if (isLoggedIn()) {
     const user = getCurrentUser();
@@ -45,11 +46,15 @@ function renderNavbarUser() {
 
     // Update user information
     if (user && user.name) {
-      if (userWelcome) userWelcome.textContent = `Welcome, ${user.name}!`;
-      if (userName) userName.textContent = "Profile"; // Always show "Profile" instead of username
+      const displayName = user.name.trim();
+      const firstName = displayName.split(" ")[0];
+      if (userWelcome) userWelcome.textContent = "Signed in as";
+      if (userName) userName.textContent = firstName;
+      if (userInitial) userInitial.textContent = firstName.charAt(0).toUpperCase();
     } else {
-      if (userWelcome) userWelcome.textContent = "Welcome, User!";
-      if (userName) userName.textContent = "Profile";
+      if (userWelcome) userWelcome.textContent = "Signed in as";
+      if (userName) userName.textContent = "User";
+      if (userInitial) userInitial.textContent = "U";
     }
 
     // Setup dropdown functionality after profile section is visible
@@ -67,22 +72,12 @@ function renderNavbarUser() {
 function logout() {
   // Clear user data from localStorage
   localStorage.removeItem("safarUser");
+  localStorage.removeItem("safarDevUser");
 
   // Re-render navbar
   renderNavbarUser();
 
-  // Redirect to home page - detect current page location
-  const currentPath = window.location.pathname;
-  if (currentPath.includes("/src/") || currentPath.includes("/safar/src/")) {
-    // If we're in a src subdirectory, go up two levels
-    window.location.href = "../index.html";
-  } else if (currentPath.includes("/safar/")) {
-    // If we're in the safar directory, go to index.html
-    window.location.href = "./index.html";
-  } else {
-    // Default case
-    window.location.href = "./index.html";
-  }
+  window.location.href = "/";
 }
 
 // Profile dropdown toggle functionality

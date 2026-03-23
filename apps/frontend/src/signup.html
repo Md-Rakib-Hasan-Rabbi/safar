@@ -4,205 +4,401 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./css/output.css" />
+  <link rel="stylesheet" href="/src/css/output.css" />
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
   </style>
-  <link rel="stylesheet" href="./css/custom-animation.css" />
+  <link rel="stylesheet" href="/src/css/custom-animation.css" />
   <title>Sign Up | Safar</title>
 </head>
 
 <body class="bg-amber-50 text-gray-800 min-h-screen flex flex-col">
-  <div class="min-h-screen flex items-center justify-center py-8">
-    <div class="bg-white p-10 rounded-2xl shadow-md w-full max-w-md text-center fade-in">
-      <!-- Logo -->
+  <div class="min-h-screen flex items-center justify-center py-8 px-4">
+    <div class="bg-white p-10 rounded-2xl shadow-md w-full max-w-3xl fade-in">
       <div class="flex items-center mb-6 justify-center float">
-        <a href="../index.html"><img src="../img/Safar-logo-2.png" alt="Car Icon" class="h-10" /></a>
+        <a href="../index.html"><img src="../img/Safar-logo-2.png" alt="Safar Logo" class="h-10" /></a>
         <h1 class="text-3xl font-bold text-green-800 mt-2">Safar</h1>
       </div>
 
-      <!-- Sign Up Form -->
-      <div class="slide-up">
+      <div class="slide-up text-center">
         <h2 class="text-2xl font-bold text-gray-900 mb-2">Create Account</h2>
-        <p class="text-gray-600 text-sm mb-6">
-          Join Safar today and start your journey with us.
-        </p>
-
-        <form class="space-y-3">
-          <div class="text-left">
-            <label class="sr-only" for="fullname">Full Name</label>
-            <div class="flex items-center border rounded-xl px-4 py-3 input-group">
-              <img src="../img/sign-up-login/user.png" class="h-4" alt="" />
-              <input type="text" id="fullname" name="fullname" placeholder="Full Name" autocomplete="name"
-                class="w-full bg-transparent outline-none text-gray-900 px-3" required />
-            </div>
-          </div>
-
-          <!-- Gender Field -->
-          <div class="text-left">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-            <div class="flex gap-4">
-              <label class="flex items-center">
-                <input type="radio" name="gender" value="Male" required class="mr-2" />
-                <span>Male</span>
-              </label>
-              <label class="flex items-center">
-                <input type="radio" name="gender" value="Female" class="mr-2" />
-                <span>Female</span>
-              </label>
-              <label class="flex items-center">
-                <input type="radio" name="gender" value="Other" class="mr-2" />
-                <span>Other</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- User Type Field -->
-          <div class="text-left">
-            <label for="userType" class="block text-sm font-medium text-gray-700 mb-1">Account Type</label>
-            <div class="flex items-center border rounded-xl px-4 py-3 input-group">
-              <img src="../img/sign-up-login/user.png" class="h-4" alt="" />
-              <select id="userType" name="userType" required
-                class="w-full bg-transparent outline-none text-gray-900 px-3 appearance-none">
-                <option value="" disabled selected>
-                  Select account type
-                </option>
-                <option value="Rider">Rider</option>
-                <option value="Driver">Driver</option>
-                <option value="Admin">Admin</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="text-left">
-            <label class="sr-only" for="email">Email</label>
-            <div class="flex items-center border rounded-xl px-4 py-3 input-group">
-              <img src="../img/sign-up-login/email.png" class="h-4" alt="" />
-              <input type="email" id="email" name="email" placeholder="Email" autocomplete="email"
-                class="w-full bg-transparent outline-none text-gray-900 px-3" required />
-            </div>
-          </div>
-
-          <div class="text-left">
-            <label class="sr-only" for="phone">Phone Number</label>
-            <div class="flex items-center border rounded-xl px-4 py-3 input-group">
-              <img src="../img/sign-up-login/phone.png" class="h-4" alt="" />
-              <input type="tel" id="phone" name="phone" placeholder="Phone Number" autocomplete="tel"
-                class="w-full bg-transparent outline-none text-gray-900 px-3" required />
-            </div>
-          </div>
-
-          <div class="text-left">
-            <label class="sr-only" for="password">Password</label>
-            <div class="flex items-center border rounded-xl px-4 py-3 input-group">
-              <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
-              <input type="password" id="password" name="password" placeholder="Password" autocomplete="new-password"
-                class="w-full px-3 bg-transparent outline-none text-gray-900" required />
-              <img src="../img/sign-up-login/eye.png" id="togglePassword"
-                class="h-5 cursor-pointer hover:opacity-70 transition-opacity" alt="Toggle password visibility" />
-            </div>
-          </div>
-
-          <div class="text-left">
-            <label class="sr-only" for="confirmPassword">Confirm Password</label>
-            <div class="flex items-center border rounded-xl px-4 py-3 input-group">
-              <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
-              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password"
-                class="w-full px-3 bg-transparent outline-none text-gray-900" required />
-              <img src="../img/sign-up-login/eye.png" id="toggleConfirmPassword"
-                class="h-5 cursor-pointer hover:opacity-70 transition-opacity" alt="Toggle password visibility" />
-            </div>
-          </div>
-
-          <!-- Terms and Conditions -->
-          <div class="flex items-start text-left text-sm text-gray-600 mt-4">
-            <input type="checkbox" id="terms" class="mt-1 mr-2" required />
-            <label for="terms">
-              I agree to the
-              <a href="./termsNcondition.html" class="text-green-800 font-semibold link-hover">Terms & Conditions</a>
-              and
-              <a href="./privacy.html" class="text-green-800 font-semibold link-hover">Privacy Policy</a>
-            </label>
-          </div>
-
-          <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold btn-login mt-4">
-            Create Account
-          </button>
-        </form>
-
-        <p class="text-sm text-gray-700 mt-6">
-          Already have an account?
-          <a href="login.html" class="text-green-800 font-semibold link-hover">Log in</a>
-        </p>
+        <p class="text-gray-600 text-sm mb-6">Choose your role, then complete the role-specific signup form.</p>
       </div>
+
+      <!-- Top Role Toggle -->
+      <div class="grid grid-cols-3 gap-2 bg-gray-100 rounded-xl p-2 mb-5" id="roleToggle">
+        <button type="button" data-role="Rider" class="role-toggle-btn bg-green-600 text-white py-2 rounded-lg font-semibold">Rider</button>
+        <button type="button" data-role="Driver" class="role-toggle-btn text-gray-700 py-2 rounded-lg font-semibold hover:bg-white">Driver</button>
+        <button type="button" data-role="Admin" class="role-toggle-btn text-gray-700 py-2 rounded-lg font-semibold hover:bg-white">Admin</button>
+      </div>
+
+      <!-- Role Cards -->
+      <div class="grid md:grid-cols-3 gap-4 mb-8" id="roleCards">
+        <button type="button" data-role="Rider" class="role-card text-left border-2 border-green-600 rounded-xl p-4 bg-green-50">
+          <p class="text-xl font-bold text-green-800 mb-1">Rider</p>
+          <p class="text-sm text-gray-600">Book rides and track your trips.</p>
+        </button>
+
+        <button type="button" data-role="Driver" class="role-card text-left border rounded-xl p-4 hover:border-green-600">
+          <p class="text-xl font-bold text-green-800 mb-1">Driver</p>
+          <p class="text-sm text-gray-600">Accept ride requests and earn.</p>
+        </button>
+
+        <button type="button" data-role="Admin" class="role-card text-left border rounded-xl p-4 hover:border-green-600">
+          <p class="text-xl font-bold text-green-800 mb-1">Admin</p>
+          <p class="text-sm text-gray-600">Manage platform operations.</p>
+        </button>
+      </div>
+
+      <!-- Rider Form -->
+      <form id="riderForm" class="role-form space-y-3">
+        <input type="hidden" name="userType" value="Rider" />
+
+        <div class="text-left">
+          <label class="sr-only" for="rider-fullname">Full Name</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/user.png" class="h-4" alt="" />
+            <input type="text" id="rider-fullname" name="fullname" placeholder="Full Name" autocomplete="name" class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+          <div class="flex gap-4">
+            <label class="flex items-center"><input type="radio" name="gender" value="Male" required class="mr-2" /><span>Male</span></label>
+            <label class="flex items-center"><input type="radio" name="gender" value="Female" class="mr-2" /><span>Female</span></label>
+            <label class="flex items-center"><input type="radio" name="gender" value="Other" class="mr-2" /><span>Other</span></label>
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="rider-email">Email</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/email.png" class="h-4" alt="" />
+            <input type="email" id="rider-email" name="email" placeholder="Email" autocomplete="email" class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="rider-phone">Phone Number</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/phone.png" class="h-4" alt="" />
+            <input type="tel" id="rider-phone" name="phone" placeholder="Phone Number" autocomplete="tel" class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="rider-home-area">Home Area</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <input type="text" id="rider-home-area" name="homeArea" placeholder="Home Area (Rider only)" class="w-full bg-transparent outline-none text-gray-900" />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="rider-password">Password</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
+            <input type="password" id="rider-password" name="password" placeholder="Password" autocomplete="new-password" class="w-full px-3 bg-transparent outline-none text-gray-900" required />
+            <img src="../img/sign-up-login/eye.png" class="h-5 cursor-pointer hover:opacity-70 transition-opacity toggle-password" alt="Toggle password visibility" />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="rider-confirmPassword">Confirm Password</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
+            <input type="password" id="rider-confirmPassword" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" class="w-full px-3 bg-transparent outline-none text-gray-900" required />
+            <img src="../img/sign-up-login/eye.png" class="h-5 cursor-pointer hover:opacity-70 transition-opacity toggle-password" alt="Toggle password visibility" />
+          </div>
+        </div>
+
+        <div class="flex items-start text-left text-sm text-gray-600 mt-4">
+          <input type="checkbox" id="rider-terms" class="mt-1 mr-2" required />
+          <label for="rider-terms">I agree to the <a href="/terms" class="text-green-800 font-semibold link-hover">Terms & Conditions</a> and <a href="/privacy" class="text-green-800 font-semibold link-hover">Privacy Policy</a></label>
+        </div>
+
+        <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold btn-login mt-4">Create Rider Account</button>
+      </form>
+
+      <!-- Driver Form -->
+      <form id="driverForm" class="role-form space-y-3 hidden">
+        <input type="hidden" name="userType" value="Driver" />
+
+        <div class="text-left">
+          <label class="sr-only" for="driver-fullname">Full Name</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/user.png" class="h-4" alt="" />
+            <input type="text" id="driver-fullname" name="fullname" placeholder="Full Name" autocomplete="name" class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+          <div class="flex gap-4">
+            <label class="flex items-center"><input type="radio" name="gender" value="Male" required class="mr-2" /><span>Male</span></label>
+            <label class="flex items-center"><input type="radio" name="gender" value="Female" class="mr-2" /><span>Female</span></label>
+            <label class="flex items-center"><input type="radio" name="gender" value="Other" class="mr-2" /><span>Other</span></label>
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="driver-license">License Number</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <input type="text" id="driver-license" name="licenseNumber" placeholder="Driving License Number" class="w-full bg-transparent outline-none text-gray-900" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="driver-vehicle">Vehicle Type</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <select id="driver-vehicle" name="vehicleType" class="w-full bg-transparent outline-none text-gray-900" required>
+              <option value="" disabled selected>Select Vehicle Type</option>
+              <option value="Car">Car</option>
+              <option value="Bike">Bike</option>
+              <option value="SUV">SUV</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="driver-email">Email</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/email.png" class="h-4" alt="" />
+            <input type="email" id="driver-email" name="email" placeholder="Email" autocomplete="email" class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="driver-phone">Phone Number</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/phone.png" class="h-4" alt="" />
+            <input type="tel" id="driver-phone" name="phone" placeholder="Phone Number" autocomplete="tel" class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="driver-password">Password</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
+            <input type="password" id="driver-password" name="password" placeholder="Password" autocomplete="new-password" class="w-full px-3 bg-transparent outline-none text-gray-900" required />
+            <img src="../img/sign-up-login/eye.png" class="h-5 cursor-pointer hover:opacity-70 transition-opacity toggle-password" alt="Toggle password visibility" />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="driver-confirmPassword">Confirm Password</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
+            <input type="password" id="driver-confirmPassword" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" class="w-full px-3 bg-transparent outline-none text-gray-900" required />
+            <img src="../img/sign-up-login/eye.png" class="h-5 cursor-pointer hover:opacity-70 transition-opacity toggle-password" alt="Toggle password visibility" />
+          </div>
+        </div>
+
+        <div class="flex items-start text-left text-sm text-gray-600 mt-4">
+          <input type="checkbox" id="driver-terms" class="mt-1 mr-2" required />
+          <label for="driver-terms">I agree to the <a href="/terms" class="text-green-800 font-semibold link-hover">Terms & Conditions</a> and <a href="/privacy" class="text-green-800 font-semibold link-hover">Privacy Policy</a></label>
+        </div>
+
+        <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold btn-login mt-4">Create Driver Account</button>
+      </form>
+
+      <!-- Admin Form -->
+      <form id="adminForm" class="role-form space-y-3 hidden">
+        <input type="hidden" name="userType" value="Admin" />
+
+        <div class="text-left">
+          <label class="sr-only" for="admin-fullname">Full Name</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/user.png" class="h-4" alt="" />
+            <input type="text" id="admin-fullname" name="fullname" placeholder="Full Name" autocomplete="name" class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+          <div class="flex gap-4">
+            <label class="flex items-center"><input type="radio" name="gender" value="Male" required class="mr-2" /><span>Male</span></label>
+            <label class="flex items-center"><input type="radio" name="gender" value="Female" class="mr-2" /><span>Female</span></label>
+            <label class="flex items-center"><input type="radio" name="gender" value="Other" class="mr-2" /><span>Other</span></label>
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="admin-employee">Employee ID</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <input type="text" id="admin-employee" name="employeeId" placeholder="Employee ID" class="w-full bg-transparent outline-none text-gray-900" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="admin-email">Email</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/email.png" class="h-4" alt="" />
+            <input type="email" id="admin-email" name="email" placeholder="Email" autocomplete="email" class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="admin-phone">Phone Number</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/phone.png" class="h-4" alt="" />
+            <input type="tel" id="admin-phone" name="phone" placeholder="Phone Number" autocomplete="tel" class="w-full bg-transparent outline-none text-gray-900 px-3" required />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="admin-password">Password</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
+            <input type="password" id="admin-password" name="password" placeholder="Password" autocomplete="new-password" class="w-full px-3 bg-transparent outline-none text-gray-900" required />
+            <img src="../img/sign-up-login/eye.png" class="h-5 cursor-pointer hover:opacity-70 transition-opacity toggle-password" alt="Toggle password visibility" />
+          </div>
+        </div>
+
+        <div class="text-left">
+          <label class="sr-only" for="admin-confirmPassword">Confirm Password</label>
+          <div class="flex items-center border rounded-xl px-4 py-3 input-group">
+            <img src="../img/sign-up-login/padlock.png" class="h-4" alt="" />
+            <input type="password" id="admin-confirmPassword" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" class="w-full px-3 bg-transparent outline-none text-gray-900" required />
+            <img src="../img/sign-up-login/eye.png" class="h-5 cursor-pointer hover:opacity-70 transition-opacity toggle-password" alt="Toggle password visibility" />
+          </div>
+        </div>
+
+        <div class="flex items-start text-left text-sm text-gray-600 mt-4">
+          <input type="checkbox" id="admin-terms" class="mt-1 mr-2" required />
+          <label for="admin-terms">I agree to the <a href="/terms" class="text-green-800 font-semibold link-hover">Terms & Conditions</a> and <a href="/privacy" class="text-green-800 font-semibold link-hover">Privacy Policy</a></label>
+        </div>
+
+        <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold btn-login mt-4">Create Admin Account</button>
+      </form>
+
+      <p class="text-sm text-gray-700 mt-6 text-center">
+        Already have an account?
+        <a href="/login" class="text-green-800 font-semibold link-hover">Log in</a>
+      </p>
     </div>
   </div>
-  <script>
-    document.querySelector("form").addEventListener("submit", async (e) => {
-      e.preventDefault();
 
+  <script>
+    const roleToggleButtons = document.querySelectorAll('.role-toggle-btn');
+    const roleCards = document.querySelectorAll('.role-card');
+    const roleForms = document.querySelectorAll('.role-form');
+
+    function setActiveRole(role) {
+      roleToggleButtons.forEach((button) => {
+        if (button.dataset.role === role) {
+          button.classList.add('bg-green-600', 'text-white');
+          button.classList.remove('text-gray-700');
+        } else {
+          button.classList.remove('bg-green-600', 'text-white');
+          button.classList.add('text-gray-700');
+        }
+      });
+
+      roleCards.forEach((card) => {
+        if (card.dataset.role === role) {
+          card.classList.add('border-2', 'border-green-600', 'bg-green-50');
+          card.classList.remove('border');
+        } else {
+          card.classList.remove('border-2', 'border-green-600', 'bg-green-50');
+          card.classList.add('border');
+        }
+      });
+
+      roleForms.forEach((form) => {
+        if (form.id.toLowerCase().startsWith(role.toLowerCase())) {
+          form.classList.remove('hidden');
+        } else {
+          form.classList.add('hidden');
+        }
+      });
+    }
+
+    roleToggleButtons.forEach((button) => {
+      button.addEventListener('click', () => setActiveRole(button.dataset.role));
+    });
+
+    roleCards.forEach((card) => {
+      card.addEventListener('click', () => setActiveRole(card.dataset.role));
+    });
+
+    function attachPasswordToggle(form) {
+      const passwordToggles = form.querySelectorAll('.toggle-password');
+      passwordToggles.forEach((toggle) => {
+        toggle.addEventListener('click', function () {
+          const input = this.previousElementSibling;
+          if (!input) return;
+          const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+          input.setAttribute('type', type);
+          this.style.opacity = type === 'text' ? '0.5' : '1';
+        });
+      });
+    }
+
+    async function submitSignupForm(event) {
+      event.preventDefault();
+      const form = event.target;
+
+      const password = form.querySelector('input[name="password"]').value;
+      const confirmPassword = form.querySelector('input[name="confirmPassword"]').value;
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+      }
+
+      const genderInput = form.querySelector('input[name="gender"]:checked');
+      if (!genderInput) {
+        alert('Please select your gender');
+        return;
+      }
+
+      const userType = form.querySelector('input[name="userType"]').value;
       const formData = {
-        name: document.getElementById("fullname").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        gender: document.querySelector('input[name="gender"]:checked').value,
-        userType: document.querySelector('select[name="userType"]').value,
-        password: document.getElementById("password").value,
-        confirmPassword: document.getElementById("confirmPassword").value,
+        name: form.querySelector('input[name="fullname"]').value,
+        email: form.querySelector('input[name="email"]').value,
+        phone: form.querySelector('input[name="phone"]').value,
+        gender: genderInput.value,
+        userType,
+        password,
+        confirmPassword,
       };
 
-      console.log("Form Data:", formData);
+      if (userType === 'Rider') {
+        formData.homeArea = form.querySelector('input[name="homeArea"]').value;
+      } else if (userType === 'Driver') {
+        formData.licenseNumber = form.querySelector('input[name="licenseNumber"]').value;
+        formData.vehicleType = form.querySelector('select[name="vehicleType"]').value;
+      } else if (userType === 'Admin') {
+        formData.employeeId = form.querySelector('input[name="employeeId"]').value;
+      }
 
       try {
-        const response = await fetch("http://localhost:5000/api/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+        const response = await fetch('http://localhost:5000/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
 
         const data = await response.json();
-
         if (response.ok) {
-          alert("Signup successful!");
-          window.location.href = "login.html";
+          alert(`${userType} signup successful!`);
+          window.location.href = '/login';
         } else {
-          alert(data.message || "Signup failed");
+          alert(data.message || 'Signup failed');
         }
       } catch (error) {
-        console.error("Error:", error);
-        alert("An error occurred during signup");
+        console.error('Signup error:', error);
+        alert('An error occurred during signup');
       }
+    }
+
+    roleForms.forEach((form) => {
+      form.addEventListener('submit', submitSignupForm);
+      attachPasswordToggle(form);
     });
 
-    // Toggle password visibility
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordField = document.getElementById('password');
-    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-    const confirmPasswordField = document.getElementById('confirmPassword');
-
-    if (togglePassword && passwordField) {
-      togglePassword.addEventListener('click', function () {
-        // Toggle the type attribute
-        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordField.setAttribute('type', type);
-
-        // Toggle the opacity to show visual feedback
-        this.style.opacity = type === 'text' ? '0.5' : '1';
-      });
-    }
-
-    if (toggleConfirmPassword && confirmPasswordField) {
-      toggleConfirmPassword.addEventListener('click', function () {
-        // Toggle the type attribute
-        const type = confirmPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
-        confirmPasswordField.setAttribute('type', type);
-
-        // Toggle the opacity to show visual feedback
-        this.style.opacity = type === 'text' ? '0.5' : '1';
-      });
-    }
+    setActiveRole('Rider');
   </script>
 </body>
 

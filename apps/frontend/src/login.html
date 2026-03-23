@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./css/output.css" />
+  <link rel="stylesheet" href="/src/css/output.css" />
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
   </style>
-  <link rel="stylesheet" href="./css/custom-animation.css" />
+  <link rel="stylesheet" href="/src/css/custom-animation.css" />
   <title>Login | Safar</title>
 </head>
 
@@ -73,7 +73,7 @@
 
         <p class="text-sm text-gray-700 mt-6">
           Don't have an account?
-          <a href="./signup.html" class="text-green-800 font-semibold link-hover">Sign up</a>
+          <a href="/signup" class="text-green-800 font-semibold link-hover">Sign up</a>
         </p>
       </div>
     </div>
@@ -118,20 +118,23 @@
         if (!response.ok) {
           console.error("Login failed:", data); // Add this line
           alert(data.message || "Login failed!");
-          localStorage.clear(); // Clear localStorage on failed login
           return;
 
         }
 
         localStorage.setItem("safarUser", JSON.stringify(data.user));
+        localStorage.setItem('safarPersistentUser', JSON.stringify(data.user));
+        if (['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+          localStorage.setItem('safarDevUser', JSON.stringify(data.user));
+        }
 
         const normalizedRole = data.user.userType || data.user.UserType;
         if (normalizedRole === "Admin") {
-          window.location.href = "../admin-dashboard.html";
+          window.location.href = "/admin-dashboard";
         } else if (normalizedRole === "Driver") {
-          window.location.href = "../driver-dashboard.html";
+          window.location.href = "/driver-dashboard";
         } else {
-          window.location.href = "../rider-dashboard.html";
+          window.location.href = "/rider-dashboard";
         }
 
       } catch (error) {

@@ -1,6 +1,7 @@
 require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const db = require('./config/db');
 
 const app = express();
@@ -12,11 +13,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Safar backend is running' });
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
   res.status(204).end();
+});
+
+const frontendRoot = path.join(__dirname, '../frontend');
+app.use(express.static(frontendRoot));
+
+const frontendRoutes = {
+  '/home': 'index.html',
+  '/login': 'src/login.html',
+  '/signup': 'src/signup.html',
+  '/privacy': 'src/privacy.html',
+  '/terms': 'src/termsNcondition.html',
+  '/rider-dashboard': 'rider-dashboard.html',
+  '/driver-dashboard': 'driver-dashboard.html',
+  '/admin-dashboard': 'admin-dashboard.html',
+};
+
+Object.entries(frontendRoutes).forEach(([route, file]) => {
+  app.get(route, (req, res) => {
+    res.sendFile(path.join(frontendRoot, file));
+  });
 });
 
 // Database Connection

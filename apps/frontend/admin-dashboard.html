@@ -5,14 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard | Safar</title>
   <link rel="stylesheet" href="src/css/output.css" />
+  <style>
+    .admin-landing-theme .bg-gray-900 { background-color: #f8fafc !important; }
+    .admin-landing-theme .bg-gray-800 { background-color: #ffffff !important; }
+    .admin-landing-theme .bg-gray-700 { background-color: #f8fafc !important; }
+    .admin-landing-theme .border-gray-700,
+    .admin-landing-theme .border-gray-600 { border-color: #d1d5db !important; }
+    .admin-landing-theme .text-gray-100,
+    .admin-landing-theme .text-white { color: #111827 !important; }
+    .admin-landing-theme .text-gray-400,
+    .admin-landing-theme .text-gray-500,
+    .admin-landing-theme .text-gray-300 { color: #4b5563 !important; }
+    .admin-landing-theme .hover\:bg-gray-700:hover,
+    .admin-landing-theme .hover\:bg-gray-100:hover,
+    .admin-landing-theme .hover\:bg-gray-50:hover { background-color: #fef3c7 !important; }
+    .admin-landing-theme .hover\:text-gray-200:hover,
+    .admin-landing-theme .hover\:text-white:hover { color: #047857 !important; }
+  </style>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen">
+<body class="admin-landing-theme bg-white text-gray-800 min-h-screen">
   <!-- Header -->
-  <header class="bg-gray-800 shadow-lg border-b border-gray-700 sticky top-0 z-40">
-    <div class="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
+  <header class="sticky top-0 z-40">
+    <div class="bg-amber-100 max-w-full md:max-w-7xl mx-auto px-5 py-3 flex items-center justify-between shadow-md md:rounded-md md:mt-2">
       <div class="flex items-center gap-3">
         <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
-        <span class="text-lg font-bold text-white">Admin Panel</span>
+        <span class="text-lg font-bold text-gray-900">Admin Panel</span>
       </div>
       <div class="flex items-center gap-6">
         <button id="alertBell" class="relative p-2 bg-red-600 rounded-full hover:bg-red-700">
@@ -20,18 +37,18 @@
           <span id="alertCount" class="absolute top-1 right-1 bg-yellow-400 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">3</span>
         </button>
         <div class="flex items-center gap-2">
-          <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">A</div>
-          <button id="profileDropdown" class="text-gray-300 hover:text-white text-lg">▼</button>
+          <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center text-white font-bold">A</div>
+          <button id="profileDropdown" class="text-gray-700 hover:text-green-700 text-lg">▼</button>
         </div>
       </div>
     </div>
     <!-- Dropdown Menu -->
-    <div id="dropdownMenu" class="hidden absolute right-6 top-16 bg-gray-800 border border-gray-700 rounded-lg shadow-lg w-48 z-50">
+    <div id="dropdownMenu" class="hidden absolute right-6 top-16 bg-white border border-gray-200 rounded-lg shadow-lg w-48 z-50">
       <div class="p-4 border-b border-gray-700">
-        <p id="userName" class="font-semibold text-white">Admin User</p>
+        <p id="userName" class="font-semibold text-gray-900">Admin User</p>
         <p id="userEmail" class="text-sm text-gray-400">admin@safar.com</p>
       </div>
-      <a href="settings.html" class="block px-4 py-2 hover:bg-gray-700 text-gray-300">⚙️ Settings</a>
+      <a href="settings.html" class="block px-4 py-2 hover:bg-gray-100 text-gray-700">⚙️ Settings</a>
       <button id="logoutBtn" class="w-full text-left px-4 py-2 hover:bg-red-900 text-red-400">🚪 Logout</button>
     </div>
   </header>
@@ -440,7 +457,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 border-t border-gray-700 mt-12">
+  <footer class="bg-white border-t border-amber-200 mt-12">
     <div class="max-w-full mx-auto px-6 py-8">
       <div class="grid md:grid-cols-4 gap-8 mb-8">
         <div>
@@ -475,13 +492,53 @@
   </footer>
 
   <script>
-    // Get user data from localStorage
-    const safarUser = JSON.parse(localStorage.getItem('safarUser') || '{}');
-    
-    // Redirect if not logged in or not an admin
-    const userRole = safarUser.userType || safarUser.UserType;
-    if (!userRole || (userRole !== 'Admin' && userRole !== 'admin')) {
-      window.location.href = './src/login.html';
+    const isLocalDev = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+    function parseStoredUser(key) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) {
+          return null;
+        }
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0 ? parsed : null;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function getSessionUser(requiredRole) {
+      let user = parseStoredUser('safarUser');
+
+      if (!user) {
+        user = parseStoredUser('safarPersistentUser');
+      }
+
+      if (!user && isLocalDev) {
+        user = parseStoredUser('safarDevUser');
+      }
+
+      if (user) {
+        localStorage.setItem('safarUser', JSON.stringify(user));
+        localStorage.setItem('safarPersistentUser', JSON.stringify(user));
+      }
+
+      const role = user?.userType || user?.UserType;
+      if (!role || role.toLowerCase() !== requiredRole.toLowerCase()) {
+        window.location.href = '/login';
+        return null;
+      }
+
+      if (isLocalDev) {
+        localStorage.setItem('safarDevUser', JSON.stringify(user));
+      }
+
+      return user;
+    }
+
+    const safarUser = getSessionUser('Admin');
+    if (!safarUser) {
+      throw new Error('User session not available');
     }
 
     // Set user info in UI
@@ -509,7 +566,9 @@
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', function() {
       localStorage.removeItem('safarUser');
-      window.location.href = './src/login.html';
+      localStorage.removeItem('safarPersistentUser');
+      localStorage.removeItem('safarDevUser');
+      window.location.href = '/login';
     });
 
     // Alert bell click

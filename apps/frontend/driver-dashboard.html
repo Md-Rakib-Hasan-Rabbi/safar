@@ -33,21 +33,21 @@
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-slate-100 text-gray-800 min-h-screen">
+<body class="bg-white text-gray-800 min-h-screen">
   <!-- Header -->
-  <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-40 relative">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+  <header class="sticky top-0 z-40">
+    <div class="bg-amber-100 max-w-full md:max-w-7xl mx-auto flex items-center justify-between px-5 py-3 shadow-md md:rounded-md md:mt-2">
       <a href="index.html" class="flex items-center gap-2">
         <img src="./img/Safar-logo.png" alt="Safar Logo" class="h-8" />
-        <span class="font-bold text-slate-900">Safar Driver</span>
+        <span class="font-bold text-slate-900">Driver</span>
       </a>
       <div class="flex items-center gap-4">
-        <button id="notificationBell" class="relative p-2 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg text-blue-600 font-semibold">
+        <button id="notificationBell" class="relative p-2 bg-gradient-to-br from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 rounded-lg text-green-700 font-semibold">
           🔔
           <span id="notifBadge" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" style="display:none;">2</span>
         </button>
         <button id="profileDropdown" class="relative">
-          <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md cursor-pointer hover:from-blue-500 hover:to-blue-700">
+          <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-lg flex items-center justify-center text-white font-bold shadow-md cursor-pointer hover:from-green-600 hover:to-green-800">
             <span id="profileInitial">D</span>
           </div>
         </button>
@@ -56,14 +56,14 @@
     <!-- Dropdown Menu -->
     <div id="dropdownMenu" class="hidden absolute right-6 top-20 bg-white border border-slate-200 rounded-xl shadow-2xl w-80 z-50 overflow-hidden">
       <!-- Profile Section -->
-      <div class="bg-gradient-to-r from-blue-600 to-cyan-600 p-6 text-white">
+      <div class="bg-gradient-to-r from-green-700 to-emerald-700 p-6 text-white">
         <div class="flex items-center gap-4 mb-4">
-          <div class="w-14 h-14 bg-white rounded-lg flex items-center justify-center text-2xl font-bold text-blue-600 shadow-md">
+          <div class="w-14 h-14 bg-white rounded-lg flex items-center justify-center text-2xl font-bold text-green-700 shadow-md">
             <span id="profileAvatarLarge">D</span>
           </div>
           <div class="flex-1">
             <p id="userNameDropdown" class="font-bold text-lg">Driver Name</p>
-            <p id="userEmailDropdown" class="text-sm text-blue-100">driver@safar.com</p>
+            <p id="userEmailDropdown" class="text-sm text-green-100">driver@safar.com</p>
           </div>
         </div>
         <div class="bg-white/20 rounded-lg px-3 py-2 text-sm font-semibold text-center">
@@ -73,18 +73,11 @@
 
       <!-- Menu Items -->
       <nav class="py-2">
-        <a href="settings.html" class="flex items-center gap-3 px-5 py-3 hover:bg-blue-50 text-gray-700 font-medium transition-colors border-l-4 border-transparent hover:border-blue-600">
+        <a href="settings.html" class="flex items-center gap-3 px-5 py-3 hover:bg-green-50 text-gray-700 font-medium transition-colors border-l-4 border-transparent hover:border-green-600">
           <span class="text-xl">⚙️</span>
           <div>
             <p class="font-semibold text-gray-900">Settings</p>
             <p class="text-xs text-gray-500">Manage account</p>
-          </div>
-        </a>
-        <a href="Safety&Reports.html" class="flex items-center gap-3 px-5 py-3 hover:bg-amber-50 text-gray-700 font-medium transition-colors border-l-4 border-transparent hover:border-amber-600">
-          <span class="text-xl">📋</span>
-          <div>
-            <p class="font-semibold text-gray-900">Documents</p>
-            <p class="text-xs text-gray-500">Licenses & compliance</p>
           </div>
         </a>
         <a href="#" class="flex items-center gap-3 px-5 py-3 hover:bg-green-50 text-gray-700 font-medium transition-colors border-l-4 border-transparent hover:border-green-600">
@@ -121,7 +114,7 @@
     <div class="mb-12">
       <div class="flex items-center justify-between mb-6">
         <div>
-          <h1 class="text-4xl font-bold text-gray-900 mb-2">Welcome, <span id="greetingName" class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">Driver</span>! 🚗</h1>
+          <h1 class="text-4xl font-bold text-gray-900 mb-2">Welcome, <span id="greetingName" class="text-transparent bg-clip-text bg-gradient-to-r from-green-700 to-emerald-700">Driver</span>! 🚗</h1>
           <p class="text-gray-600 text-lg">Manage your rides and grow your earnings</p>
         </div>
         <button id="goOnlineBtn" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-4 px-8 rounded-xl text-lg shadow-lg transform hover:scale-105 active:scale-95">
@@ -134,7 +127,7 @@
     <!-- Smart Layout: Stats & Quick Status -->
     <div class="grid lg:grid-cols-4 gap-4 mb-8">
       <div class="card text-center">
-        <p class="text-4xl font-bold text-blue-600 mb-1">4.8</p>
+        <p class="text-4xl font-bold text-green-700 mb-1">4.8</p>
         <p class="text-sm text-gray-600 font-medium">Your Rating</p>
       </div>
       <div class="card text-center">
@@ -217,9 +210,9 @@
               <p class="text-2xl font-bold text-green-600">৳1,240</p>
               <p class="text-xs text-gray-600 mt-1">5 rides</p>
             </div>
-            <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg p-4 border border-blue-200">
+            <div class="bg-gradient-to-br from-amber-50 to-green-50 rounded-lg p-4 border border-green-200">
               <p class="text-xs text-gray-600 font-semibold mb-1">Cash Collected</p>
-              <p class="text-2xl font-bold text-blue-600">৳650</p>
+              <p class="text-2xl font-bold text-green-700">৳650</p>
               <p class="text-xs text-gray-600 mt-1">3 rides</p>
             </div>
             <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
@@ -301,7 +294,7 @@
       <!-- Right Column: Sidebar -->
       <aside class="space-y-6">
         <!-- Performance Stats -->
-        <section class="card bg-gradient-to-br from-blue-50 to-cyan-50 border-l-4 border-blue-500">
+        <section class="card bg-gradient-to-br from-amber-50 to-green-50 border-l-4 border-green-500">
           <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
             <span class="text-2xl">⭐</span> Performance
           </h3>
@@ -318,42 +311,10 @@
               </div>
               <div class="bg-white rounded-lg p-3 text-center">
                 <p class="text-xs text-gray-600 font-semibold mb-1">Acceptance</p>
-                <p class="text-xl font-bold text-blue-600">92%</p>
+                <p class="text-xl font-bold text-green-700">92%</p>
               </div>
             </div>
           </div>
-        </section>
-
-        <!-- Documents & Compliance -->
-        <section class="card bg-gradient-to-br from-amber-50 to-yellow-50 border-l-4 border-amber-500">
-          <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <span class="text-2xl">📋</span> Documents
-          </h3>
-          <div class="space-y-2">
-            <div class="flex items-center justify-between p-2 bg-white rounded-lg">
-              <span class="text-sm font-medium">License</span>
-              <span class="text-lg">✅</span>
-            </div>
-            <div class="flex items-center justify-between p-2 bg-white rounded-lg">
-              <span class="text-sm font-medium">Insurance</span>
-              <span class="text-lg">✅</span>
-            </div>
-            <div class="flex items-center justify-between p-2 bg-white rounded-lg">
-              <span class="text-sm font-medium">Background Check</span>
-              <span class="text-lg">✅</span>
-            </div>
-            <div class="flex items-center justify-between p-2 bg-white rounded-lg">
-              <span class="text-sm font-medium">Vehicle Reg</span>
-              <span class="text-lg">✅</span>
-            </div>
-            <div class="flex items-center justify-between p-2 bg-white rounded-lg border-2 border-orange-300">
-              <span class="text-sm font-bold">⚠️ License Expiry</span>
-              <span class="text-xs font-bold text-orange-600">30 days</span>
-            </div>
-          </div>
-          <button class="w-full mt-4 bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-lg transition">
-            Manage Documents
-          </button>
         </section>
 
         <!-- Vehicle Info -->
@@ -423,30 +384,24 @@
   <!-- Footer -->
   <footer class="bg-white border-t border-slate-200 mt-16">
     <div class="max-w-7xl mx-auto px-6 py-10">
-      <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div class="grid md:grid-cols-3 gap-8 mb-8">
         <div>
           <h4 class="font-bold text-gray-900 mb-3">Earnings</h4>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block mb-2">Payment Methods</a>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block mb-2">Payouts</a>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block">Tax Reports</a>
-        </div>
-        <div>
-          <h4 class="font-bold text-gray-900 mb-3">Documents</h4>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block mb-2">License</a>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block mb-2">Insurance</a>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block">Vehicle</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-green-700 block mb-2">Payment Methods</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-green-700 block mb-2">Payouts</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-green-700 block">Tax Reports</a>
         </div>
         <div>
           <h4 class="font-bold text-gray-900 mb-3">Support</h4>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block mb-2">Help Center</a>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block mb-2">Contact Us</a>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block">Report Issue</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-green-700 block mb-2">Help Center</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-green-700 block mb-2">Contact Us</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-green-700 block">Report Issue</a>
         </div>
         <div>
           <h4 class="font-bold text-gray-900 mb-3">Legal</h4>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block mb-2">Terms</a>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block mb-2">Privacy</a>
-          <a href="#" class="text-sm text-gray-600 hover:text-blue-600 block">Cookies</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-green-700 block mb-2">Terms</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-green-700 block mb-2">Privacy</a>
+          <a href="#" class="text-sm text-gray-600 hover:text-green-700 block">Cookies</a>
         </div>
       </div>
       <div class="border-t border-slate-200 pt-8 text-center text-sm text-gray-600">
@@ -456,13 +411,53 @@
   </footer>
 
   <script>
-    // Get user data from localStorage
-    const safarUser = JSON.parse(localStorage.getItem('safarUser') || '{}');
-    
-    // Redirect if not logged in or not a driver
-    const userRole = safarUser.userType || safarUser.UserType;
-    if (!userRole || (userRole !== 'Driver' && userRole !== 'driver')) {
-      window.location.href = './src/login.html';
+    const isLocalDev = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+    function parseStoredUser(key) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) {
+          return null;
+        }
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0 ? parsed : null;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function getSessionUser(requiredRole) {
+      let user = parseStoredUser('safarUser');
+
+      if (!user) {
+        user = parseStoredUser('safarPersistentUser');
+      }
+
+      if (!user && isLocalDev) {
+        user = parseStoredUser('safarDevUser');
+      }
+
+      if (user) {
+        localStorage.setItem('safarUser', JSON.stringify(user));
+        localStorage.setItem('safarPersistentUser', JSON.stringify(user));
+      }
+
+      const role = user?.userType || user?.UserType;
+      if (!role || role.toLowerCase() !== requiredRole.toLowerCase()) {
+        window.location.href = '/login';
+        return null;
+      }
+
+      if (isLocalDev) {
+        localStorage.setItem('safarDevUser', JSON.stringify(user));
+      }
+
+      return user;
+    }
+
+    const safarUser = getSessionUser('Driver');
+    if (!safarUser) {
+      throw new Error('User session not available');
     }
 
     // Set user info in UI
@@ -494,7 +489,9 @@
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', function() {
       localStorage.removeItem('safarUser');
-      window.location.href = './src/login.html';
+      localStorage.removeItem('safarPersistentUser');
+      localStorage.removeItem('safarDevUser');
+      window.location.href = '/login';
     });
 
     // Driver request workflow
@@ -625,6 +622,74 @@
     }
 
     async function updateRideStatus(rideId, status) {
+      function showDriverNotification(title, message, type = 'success') {
+        const existing = document.getElementById('driverNotificationToast');
+        if (existing) {
+          existing.remove();
+        }
+
+        const palette = {
+          success: {
+            ring: 'rgba(34, 197, 94, 0.35)',
+            gradient: 'linear-gradient(135deg, #064e3b, #065f46 55%, #047857)',
+            emoji: '✅'
+          },
+          info: {
+            ring: 'rgba(59, 130, 246, 0.35)',
+            gradient: 'linear-gradient(135deg, #1e3a8a, #1d4ed8 55%, #2563eb)',
+            emoji: 'ℹ️'
+          },
+          error: {
+            ring: 'rgba(239, 68, 68, 0.35)',
+            gradient: 'linear-gradient(135deg, #7f1d1d, #b91c1c 55%, #dc2626)',
+            emoji: '⚠️'
+          }
+        };
+
+        const selected = palette[type] || palette.info;
+        const toast = document.createElement('div');
+        toast.id = 'driverNotificationToast';
+        toast.style.cssText = `
+          position: fixed;
+          top: 24px;
+          right: 24px;
+          width: min(420px, calc(100vw - 32px));
+          border-radius: 18px;
+          padding: 18px 20px;
+          color: #ffffff;
+          z-index: 99999;
+          background: ${selected.gradient};
+          box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
+          border: 1px solid ${selected.ring};
+          backdrop-filter: blur(6px);
+          transform: translateY(-12px) scale(0.98);
+          opacity: 0;
+          transition: all 0.25s ease;
+        `;
+
+        toast.innerHTML = `
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div style="font-size:20px; line-height:1.2;">${selected.emoji}</div>
+            <div>
+              <p style="margin:0; font-weight:700; font-size:16px;">${title}</p>
+              <p style="margin:6px 0 0 0; font-size:14px; opacity:0.92;">${message}</p>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => {
+          toast.style.opacity = '1';
+          toast.style.transform = 'translateY(0) scale(1)';
+        });
+
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(-8px) scale(0.98)';
+          setTimeout(() => toast.remove(), 220);
+        }, 2600);
+      }
+
       try {
         const response = await apiFetch(`/ride/${rideId}/status`, {
           method: 'PATCH',
@@ -639,21 +704,21 @@
 
         const data = await response.json();
         if (!response.ok) {
-          alert(data.message || 'Could not update ride status.');
+          showDriverNotification('Update Failed', data.message || 'Could not update ride status.', 'error');
           return;
         }
 
         if (status === 'Accepted') {
           document.getElementById('activeRideSection').style.display = 'block';
-          alert('Ride accepted. Ride is now confirmed.');
+          showDriverNotification('Ride Accepted', 'Ride is now confirmed.', 'success');
         } else {
-          alert('Ride cancelled. Rider has been notified.');
+          showDriverNotification('Ride Cancelled', 'Rider has been notified.', 'info');
         }
 
         await loadIncomingRequests();
       } catch (error) {
         console.error('Update status error:', error);
-        alert('Could not update ride status right now.');
+        showDriverNotification('Update Failed', 'Could not update ride status right now.', 'error');
       }
     }
 
@@ -681,7 +746,52 @@
 
     // Notification bell
     document.getElementById('notificationBell').addEventListener('click', function() {
-      alert('You have 2 new notifications:\n\n1. 📞 New ride request from Sophia Khan\n2. ⭐ Passenger left you 5 stars on your last ride');
+      const existing = document.getElementById('driverNotificationToast');
+      if (existing) {
+        existing.remove();
+      }
+
+      const toast = document.createElement('div');
+      toast.id = 'driverNotificationToast';
+      toast.style.cssText = `
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        width: min(420px, calc(100vw - 32px));
+        border-radius: 18px;
+        padding: 18px 20px;
+        color: #ffffff;
+        z-index: 99999;
+        background: linear-gradient(135deg, #1e3a8a, #1d4ed8 55%, #2563eb);
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
+        border: 1px solid rgba(59, 130, 246, 0.35);
+        backdrop-filter: blur(6px);
+        transform: translateY(-12px) scale(0.98);
+        opacity: 0;
+        transition: all 0.25s ease;
+      `;
+
+      toast.innerHTML = `
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="font-size:20px; line-height:1.2;">🔔</div>
+          <div>
+            <p style="margin:0; font-weight:700; font-size:16px;">New Notifications</p>
+            <p style="margin:6px 0 0 0; font-size:14px; opacity:0.92;">📞 New ride request from Sophia Khan<br>⭐ Passenger left you 5 stars on your last ride</p>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0) scale(1)';
+      });
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-8px) scale(0.98)';
+        setTimeout(() => toast.remove(), 220);
+      }, 3000);
     });
   </script>
 </body>
