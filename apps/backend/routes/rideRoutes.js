@@ -7,6 +7,8 @@ const {
 	getDriverRequests,
 	updateRideStatus,
 	cancelRide,
+	getRiderHistorySummary,
+	getDriverHistorySummary,
 } = require('../controllers/rideController');
 
 // Book a ride
@@ -23,6 +25,10 @@ router.get('/driver/requests', getDriverRequests);
 
 // Driver accept/reject request
 router.patch('/ride/:rideId/status', updateRideStatus);
+
+// Ride history summaries
+router.get('/rider/history', getRiderHistorySummary);
+router.get('/driver/history', getDriverHistorySummary);
 
 // Cancel ride
 router.delete('/ride/:rideId', cancelRide);

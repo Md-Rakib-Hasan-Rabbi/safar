@@ -15,10 +15,11 @@
 
         #rideMap {
             width: 100%;
-            height: 500px;
+            height: 460px;
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .booking-container {
@@ -60,8 +61,8 @@
 
         .input-field:focus {
             outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
         }
 
         .location-label {
@@ -91,15 +92,15 @@
         }
 
         .ride-option:hover {
-            border-color: #6366f1;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+            border-color: #059669;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
             transform: translateY(-2px);
         }
 
         .ride-option.selected {
-            border-color: #6366f1;
-            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            border-color: #047857;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.24);
         }
 
         .ride-icon {
@@ -157,15 +158,15 @@
         }
 
         .ride-item:hover {
-            border-color: #6366f1;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+            border-color: #059669;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
             transform: translateX(4px);
         }
 
         .ride-item.selected {
-            border-color: #4f46e5;
-            background: #eef2ff;
-            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.2);
+            border-color: #047857;
+            background: #ecfdf5;
+            box-shadow: 0 6px 14px rgba(5, 150, 105, 0.24);
         }
 
         .ride-item-info {
@@ -222,14 +223,14 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            background: linear-gradient(135deg, #047857 0%, #059669 100%);
             color: white;
             flex: 1;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 16px rgba(5, 150, 105, 0.3);
         }
 
         .btn-primary:disabled {
@@ -240,8 +241,8 @@
 
         .btn-secondary {
             background: white;
-            color: #6366f1;
-            border: 2px solid #6366f1;
+            color: #047857;
+            border: 2px solid #047857;
             flex: 1;
         }
 
@@ -370,9 +371,9 @@
         }
 
         .map-target-btn.active {
-            border-color: #6366f1;
-            color: #4338ca;
-            background: #eef2ff;
+            border-color: #047857;
+            color: #065f46;
+            background: #ecfdf5;
         }
 
         .location-input-wrapper {
@@ -402,6 +403,20 @@
             color: #374151;
         }
 
+        .suggestion-title {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .suggestion-subtitle {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .suggestion-item:last-child {
             border-bottom: none;
         }
@@ -414,6 +429,17 @@
             font-size: 12px;
             color: #6b7280;
             margin-top: 6px;
+        }
+
+        .map-feedback {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #4b5563;
+            min-height: 18px;
+        }
+
+        .leaflet-routing-container {
+            display: none !important;
         }
     </style>
 </head>
@@ -465,6 +491,7 @@
                             <input type="text" id="pickupInput" class="input-field" placeholder="Type to search pickup or click map..." autocomplete="off">
                             <div id="pickupSuggestions" class="suggestion-list"></div>
                         </div>
+                        <div id="pickupSearchStatus" class="map-feedback"></div>
                         <button class="current-location-btn" id="useCurrentLocBtn">
                             📍 Use My Current Location
                         </button>
@@ -480,6 +507,7 @@
                             <input type="text" id="destinationInput" class="input-field" placeholder="Type to search destination or click map..." autocomplete="off">
                             <div id="destinationSuggestions" class="suggestion-list"></div>
                         </div>
+                        <div id="destinationSearchStatus" class="map-feedback"></div>
                         <div class="helper-text">Tip: Focus this field, then click map to place destination exactly.</div>
                         <div id="destinationDisplay" style="font-size: 12px; color: #6b7280; margin-top: 8px;"></div>
                     </div>
@@ -519,23 +547,23 @@
                 <div class="location-input-group">
                     <div class="location-label">🚗 Select Ride Type</div>
                     <div class="ride-type-selector">
-                        <div class="ride-option" data-type="Bike">
+                        <div class="ride-option" data-type="Bike" data-rate="99">
                             <div class="ride-icon">🏍️</div>
                             <div class="ride-name">Bike</div>
                             <div class="ride-capacity">1 Seat</div>
-                            <div class="ride-price">৳99/km</div>
+                            <div class="ride-price" id="bikeFarePreview">৳99/km</div>
                         </div>
-                        <div class="ride-option" data-type="Car">
+                        <div class="ride-option" data-type="Car" data-rate="149">
                             <div class="ride-icon">🚗</div>
                             <div class="ride-name">Car</div>
                             <div class="ride-capacity">4 Seats</div>
-                            <div class="ride-price">৳149/km</div>
+                            <div class="ride-price" id="carFarePreview">৳149/km</div>
                         </div>
-                        <div class="ride-option" data-type="SUV">
+                        <div class="ride-option" data-type="SUV" data-rate="199">
                             <div class="ride-icon">🚙</div>
                             <div class="ride-name">SUV</div>
                             <div class="ride-capacity">7 Seats</div>
-                            <div class="ride-price">৳199/km</div>
+                            <div class="ride-price" id="suvFarePreview">৳199/km</div>
                         </div>
                     </div>
                     <input type="hidden" id="selectedRideType" value="">
@@ -597,12 +625,44 @@
         let selectedDriverOffer = null;
         let activeMapTarget = 'pickup';
         const debounceTimers = { pickup: null, destination: null };
+        const VEHICLE_RATE_PER_KM = {
+            Bike: 99,
+            Car: 149,
+            SUV: 199,
+        };
 
         // Dhaka, Bangladesh center
         const DHAKA_CENTER = { lat: 23.8103, lng: 90.4125 };
 
         function getApiCandidates() {
             return ['http://localhost:5000/api', '/api'];
+        }
+
+        function calculateEstimatedFare(ratePerKm, distanceKm) {
+            const distance = Number(distanceKm);
+            if (!Number.isFinite(distance) || distance <= 0) {
+                return 0;
+            }
+
+            return Math.round(ratePerKm * distance);
+        }
+
+        function updateRideTypeFarePreviews(distanceKm = null) {
+            const bikePreview = document.getElementById('bikeFarePreview');
+            const carPreview = document.getElementById('carFarePreview');
+            const suvPreview = document.getElementById('suvFarePreview');
+
+            if (!Number.isFinite(Number(distanceKm)) || Number(distanceKm) <= 0) {
+                bikePreview.textContent = `৳${VEHICLE_RATE_PER_KM.Bike}/km`;
+                carPreview.textContent = `৳${VEHICLE_RATE_PER_KM.Car}/km`;
+                suvPreview.textContent = `৳${VEHICLE_RATE_PER_KM.SUV}/km`;
+                return;
+            }
+
+            const roundedDistance = Number(distanceKm).toFixed(2);
+            bikePreview.textContent = `৳${calculateEstimatedFare(VEHICLE_RATE_PER_KM.Bike, distanceKm)} • ${roundedDistance} km`;
+            carPreview.textContent = `৳${calculateEstimatedFare(VEHICLE_RATE_PER_KM.Car, distanceKm)} • ${roundedDistance} km`;
+            suvPreview.textContent = `৳${calculateEstimatedFare(VEHICLE_RATE_PER_KM.SUV, distanceKm)} • ${roundedDistance} km`;
         }
 
         async function apiFetch(path, options = {}) {
@@ -711,8 +771,9 @@
             }
 
             // Update input field
+            const pickupLabel = name ? getCompactLocationName(name) : 'Pinned pickup location';
             document.getElementById('pickupInput').value = name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-            document.getElementById('pickupDisplay').textContent = `📍 ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+            document.getElementById('pickupDisplay').textContent = `📍 ${pickupLabel}`;
             hideSuggestions('pickup');
 
             updateRoute();
@@ -744,8 +805,9 @@
             }
 
             // Update input field
+            const destinationLabel = name ? getCompactLocationName(name) : 'Pinned destination location';
             document.getElementById('destinationInput').value = name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-            document.getElementById('destinationDisplay').textContent = `🎯 ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+            document.getElementById('destinationDisplay').textContent = `🎯 ${destinationLabel}`;
             hideSuggestions('destination');
 
             updateRoute();
@@ -761,9 +823,11 @@
                     if (type === 'pickup') {
                         pickupLocation.name = address;
                         document.getElementById('pickupInput').value = address;
+                        document.getElementById('pickupDisplay').textContent = `📍 ${getCompactLocationName(address)}`;
                     } else {
                         destinationLocation.name = address;
                         document.getElementById('destinationInput').value = address;
+                        document.getElementById('destinationDisplay').textContent = `🎯 ${getCompactLocationName(address)}`;
                     }
                 })
                 .catch(error => console.log('Geocoding error:', error));
@@ -771,20 +835,24 @@
 
         function renderSuggestions(type, suggestions) {
             const container = document.getElementById(type === 'pickup' ? 'pickupSuggestions' : 'destinationSuggestions');
+            const statusNode = document.getElementById(type === 'pickup' ? 'pickupSearchStatus' : 'destinationSearchStatus');
 
             if (!suggestions.length) {
-                container.innerHTML = '<div class="suggestion-item">No locations found</div>';
+                container.innerHTML = '<div class="suggestion-item"><div class="suggestion-title">No locations found</div></div>';
                 container.style.display = 'block';
+                statusNode.textContent = 'No results found. Try a nearby landmark.';
                 return;
             }
 
             container.innerHTML = suggestions.map((item, index) => `
                 <div class="suggestion-item" data-type="${type}" data-index="${index}">
-                    ${item.display_name}
+                    <div class="suggestion-title">${getCompactLocationName(item.display_name)}</div>
+                    <div class="suggestion-subtitle">${item.display_name}</div>
                 </div>
             `).join('');
 
             container.style.display = 'block';
+            statusNode.textContent = `${suggestions.length} result${suggestions.length > 1 ? 's' : ''} found`;
 
             container.querySelectorAll('.suggestion-item').forEach((node) => {
                 node.addEventListener('click', function() {
@@ -805,26 +873,44 @@
             });
         }
 
-        function hideSuggestions(type) {
+        function hideSuggestions(type, keepStatus = false) {
             const container = document.getElementById(type === 'pickup' ? 'pickupSuggestions' : 'destinationSuggestions');
+            const statusNode = document.getElementById(type === 'pickup' ? 'pickupSearchStatus' : 'destinationSearchStatus');
             container.style.display = 'none';
             container.innerHTML = '';
+            if (!keepStatus) {
+                statusNode.textContent = '';
+            }
+        }
+
+        function getCompactLocationName(value) {
+            if (!value) {
+                return 'Location';
+            }
+
+            const parts = value.split(',').map((entry) => entry.trim()).filter(Boolean);
+            return parts.slice(0, 2).join(', ') || value;
         }
 
         function searchLocation(query, type) {
+            const statusNode = document.getElementById(type === 'pickup' ? 'pickupSearchStatus' : 'destinationSearchStatus');
+
             if (!query || query.trim().length < 3) {
                 hideSuggestions(type);
                 return;
             }
 
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=bd&limit=5&q=${encodeURIComponent(query)}`)
+            statusNode.textContent = 'Searching...';
+
+            fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&countrycodes=bd&limit=6&accept-language=en&viewbox=90.30,23.92,90.54,23.70&bounded=1&q=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     renderSuggestions(type, data || []);
                 })
                 .catch(error => {
                     console.log('Search error:', error);
-                    hideSuggestions(type);
+                    statusNode.textContent = 'Search unavailable right now.';
+                    hideSuggestions(type, true);
                 });
         }
 
@@ -844,7 +930,7 @@
                 clearTimeout(debounceTimers[type]);
                 debounceTimers[type] = setTimeout(() => {
                     searchLocation(value, type);
-                }, 300);
+                }, 380);
             });
 
             input.addEventListener('keydown', function(event) {
@@ -877,9 +963,12 @@
                         L.latLng(pickupLocation.lat, pickupLocation.lng),
                         L.latLng(destinationLocation.lat, destinationLocation.lng)
                     ],
-                    routeWhileDragging: true,
+                    routeWhileDragging: false,
+                    addWaypoints: false,
+                    draggableWaypoints: false,
+                    show: false,
                     lineOptions: {
-                        styles: [{ color: '#6366f1', opacity: 0.8, weight: 4 }]
+                        styles: [{ color: '#059669', opacity: 0.85, weight: 5 }]
                     },
                     createMarker: () => null,
                     fitSelectedRoutes: true
@@ -888,16 +977,21 @@
                 // Update route summary
                 showRouteSummary();
 
+                const distance = calculateDistance(pickupLocation.lat, pickupLocation.lng, destinationLocation.lat, destinationLocation.lng);
+                updateRideTypeFarePreviews(distance);
+
                 // Fetch available rides
                 fetchAvailableRides();
+            } else {
+                updateRideTypeFarePreviews(null);
             }
         }
 
         // Show route summary
         function showRouteSummary() {
             document.getElementById('routeSummary').style.display = 'block';
-            document.getElementById('routeFromText').textContent = pickupLocation.name || `${pickupLocation.lat.toFixed(4)}, ${pickupLocation.lng.toFixed(4)}`;
-            document.getElementById('routeToText').textContent = destinationLocation.name || `${destinationLocation.lat.toFixed(4)}, ${destinationLocation.lng.toFixed(4)}`;
+            document.getElementById('routeFromText').textContent = getCompactLocationName(pickupLocation.name) || 'Pinned pickup location';
+            document.getElementById('routeToText').textContent = getCompactLocationName(destinationLocation.name) || 'Pinned destination location';
 
             // Calculate distance
             const distance = calculateDistance(pickupLocation.lat, pickupLocation.lng, destinationLocation.lat, destinationLocation.lng);
@@ -933,7 +1027,7 @@
             const distance = calculateDistance(pickupLocation.lat, pickupLocation.lng, destinationLocation.lat, destinationLocation.lng);
 
             // Get available rides for the selected vehicle type
-            apiFetch(`/available-rides?vehicleType=${selectedRideType}`)
+            apiFetch(`/available-rides?vehicleType=${selectedRideType}&distanceKm=${distance.toFixed(2)}`)
                 .then(async (response) => {
                     const data = await response.json();
                     if (!response.ok) {
@@ -1116,11 +1210,12 @@
                 },
                 body: JSON.stringify({
                     userId,
-                    start: { lat: pickupLocation.lat, lng: pickupLocation.lng },
-                    destination: { lat: destinationLocation.lat, lng: destinationLocation.lng },
+                    start: { lat: pickupLocation.lat, lng: pickupLocation.lng, location: pickupLocation.name || getCompactLocationName(document.getElementById('pickupInput').value) },
+                    destination: { lat: destinationLocation.lat, lng: destinationLocation.lng, location: destinationLocation.name || getCompactLocationName(document.getElementById('destinationInput').value) },
                     vehicle: selectedRideType,
                     driverId: ride.driverId,
                     fare: Number(ride.fare),
+                    distanceKm: Number(distance.toFixed(2)),
                 })
             })
             .then(async (response) => {
@@ -1253,6 +1348,8 @@
                 defaultRideOption.classList.add('selected');
                 document.getElementById('selectedRideType').value = 'Car';
             }
+
+            updateRideTypeFarePreviews(null);
         });
     </script>
 </body>
