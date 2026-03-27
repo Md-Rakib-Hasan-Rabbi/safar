@@ -20,6 +20,14 @@ app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
   res.status(204).end();
 });
 
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 const frontendRoot = path.join(__dirname, '../frontend');
 app.use(express.static(frontendRoot));
 

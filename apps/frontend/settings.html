@@ -131,6 +131,7 @@
 
   <script>
     const isLocalDev = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    let serverHeartbeatFailures = 0;
 
     function parseStoredUser(key) {
       try {
@@ -196,6 +197,51 @@
       }
 
       return user;
+    }
+
+    async function isServerReachable() {
+      const candidates = ['http://localhost:5000/api/health', '/api/health'];
+
+      for (const endpoint of candidates) {
+        try {
+          const response = await fetch(endpoint, { cache: 'no-store' });
+          if (!response.ok) {
+            continue;
+          }
+
+          const payload = await response.json();
+          if (payload?.success === true) {
+            return true;
+          }
+        } catch (_) {
+        }
+      }
+
+      return false;
+    }
+
+    async function enforceServerSession() {
+      const hasStoredSession = Boolean(
+        parseStoredUser('safarUser') || parseStoredUser('safarPersistentUser') || parseStoredUser('safarDevUser')
+      );
+
+      if (!hasStoredSession) {
+        serverHeartbeatFailures = 0;
+        return;
+      }
+
+      const reachable = await isServerReachable();
+      if (reachable) {
+        serverHeartbeatFailures = 0;
+        return;
+      }
+
+      serverHeartbeatFailures += 1;
+      if (serverHeartbeatFailures < 2) {
+        return;
+      }
+
+      logoutUser();
     }
 
     function getDashboardByRole(currentRole) {
@@ -298,6 +344,8 @@
 
     document.getElementById('quickLogout').addEventListener('click', logoutUser);
     document.getElementById('mobileLogout').addEventListener('click', logoutUser);
+    enforceServerSession();
+    setInterval(enforceServerSession, 10000);
 
     document.getElementById('saveAccount').addEventListener('click', () => {
       const updatedUser = {

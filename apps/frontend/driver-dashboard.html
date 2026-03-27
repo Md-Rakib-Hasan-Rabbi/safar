@@ -397,6 +397,7 @@
 
   <script>
     const isLocalDev = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    let serverHeartbeatFailures = 0;
 
     function parseStoredUser(key) {
       try {
@@ -440,6 +441,61 @@
       return user;
     }
 
+    function clearStoredSession(shouldRedirect = true) {
+      localStorage.removeItem('safarUser');
+      localStorage.removeItem('safarPersistentUser');
+      localStorage.removeItem('safarDevUser');
+
+      if (shouldRedirect) {
+        window.location.href = '/login';
+      }
+    }
+
+    async function isServerReachable() {
+      const candidates = ['http://localhost:5000/api/health', '/api/health'];
+
+      for (const endpoint of candidates) {
+        try {
+          const response = await fetch(endpoint, { cache: 'no-store' });
+          if (!response.ok) {
+            continue;
+          }
+
+          const payload = await response.json();
+          if (payload?.success === true) {
+            return true;
+          }
+        } catch (_) {
+        }
+      }
+
+      return false;
+    }
+
+    async function enforceServerSession() {
+      const hasStoredSession = Boolean(
+        parseStoredUser('safarUser') || parseStoredUser('safarPersistentUser') || parseStoredUser('safarDevUser')
+      );
+
+      if (!hasStoredSession) {
+        serverHeartbeatFailures = 0;
+        return;
+      }
+
+      const reachable = await isServerReachable();
+      if (reachable) {
+        serverHeartbeatFailures = 0;
+        return;
+      }
+
+      serverHeartbeatFailures += 1;
+      if (serverHeartbeatFailures < 2) {
+        return;
+      }
+
+      clearStoredSession(true);
+    }
+
     const safarUser = getSessionUser('Driver');
     if (!safarUser) {
       throw new Error('User session not available');
@@ -473,10 +529,7 @@
 
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', function() {
-      localStorage.removeItem('safarUser');
-      localStorage.removeItem('safarPersistentUser');
-      localStorage.removeItem('safarDevUser');
-      window.location.href = '/login';
+      clearStoredSession(true);
     });
 
     // Driver request workflow
@@ -1042,6 +1095,8 @@
     });
 
     loadDriverHistorySummary();
+    enforceServerSession();
+    setInterval(enforceServerSession, 10000);
 
     // Notification bell
     document.getElementById('notificationBell').addEventListener('click', function() {

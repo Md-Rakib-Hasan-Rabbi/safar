@@ -1025,6 +1025,10 @@
             document.getElementById('bookRideBtn').disabled = true;
 
             const distance = calculateDistance(pickupLocation.lat, pickupLocation.lng, destinationLocation.lat, destinationLocation.lng);
+            if (!Number.isFinite(distance) || distance <= 0) {
+                showNoAvailableRides('Unable to calculate route distance. Please select pickup and destination again.');
+                return;
+            }
 
             // Get available rides for the selected vehicle type
             apiFetch(`/available-rides?vehicleType=${selectedRideType}&distanceKm=${distance.toFixed(2)}`)
@@ -1058,6 +1062,10 @@
             ridesList.innerHTML = '';
 
             rides.forEach(ride => {
+                const normalizedDistance = Number(ride.distanceKm || distance || 0);
+                const normalizedRate = Number(ride.ratePerKm || VEHICLE_RATE_PER_KM[selectedRideType] || 0);
+                const safeFare = Number(ride.fare || 0);
+
                 const rideElement = document.createElement('div');
                 rideElement.className = 'ride-item';
                 rideElement.innerHTML = `
@@ -1067,8 +1075,9 @@
                         <div class="vehicle-info">🚗 ${ride.vehicle}</div>
                     </div>
                     <div class="ride-item-price">
-                        <div class="estimated-fare">৳${ride.fare}</div>
+                        <div class="estimated-fare">৳${safeFare}</div>
                         <div class="estimated-time">⏱️ ${ride.eta} min away</div>
+                        <div class="estimated-time" style="margin-top: 4px; color: #475569;">${normalizedDistance.toFixed(2)} km × ৳${normalizedRate}/km</div>
                         <div class="estimated-time" style="margin-top: 4px; color: #4338ca; font-weight: 600;">Tap to select</div>
                     </div>
                 `;

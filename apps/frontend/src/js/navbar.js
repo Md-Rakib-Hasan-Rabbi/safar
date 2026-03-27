@@ -2,13 +2,85 @@
 
 // Function to check if user is logged in
 function isLoggedIn() {
-  return localStorage.getItem("safarUser") !== null;
+  return (
+    localStorage.getItem("safarUser") !== null ||
+    localStorage.getItem("safarPersistentUser") !== null ||
+    localStorage.getItem("safarDevUser") !== null
+  );
 }
 
 // Function to get current user data
 function getCurrentUser() {
-  const userData = localStorage.getItem("safarUser");
-  return userData ? JSON.parse(userData) : null;
+  const candidates = ["safarUser", "safarPersistentUser", "safarDevUser"];
+
+  for (const key of candidates) {
+    const userData = localStorage.getItem(key);
+    if (!userData) {
+      continue;
+    }
+
+    try {
+      const parsed = JSON.parse(userData);
+      if (parsed && typeof parsed === "object") {
+        localStorage.setItem("safarUser", JSON.stringify(parsed));
+        localStorage.setItem("safarPersistentUser", JSON.stringify(parsed));
+        return parsed;
+      }
+    } catch (_) {
+    }
+  }
+
+  return null;
+}
+
+function clearStoredSession() {
+  localStorage.removeItem("safarUser");
+  localStorage.removeItem("safarPersistentUser");
+  localStorage.removeItem("safarDevUser");
+}
+
+async function isServerReachable() {
+  const endpoints = ["http://localhost:5000/api/health", "/api/health"];
+
+  for (const endpoint of endpoints) {
+    try {
+      const response = await fetch(endpoint, { cache: "no-store" });
+      if (!response.ok) {
+        continue;
+      }
+
+      const payload = await response.json();
+      if (payload?.success === true) {
+        return true;
+      }
+    } catch (_) {
+    }
+  }
+
+  return false;
+}
+
+let serverHeartbeatFailures = 0;
+
+async function enforceServerSession() {
+  if (!isLoggedIn()) {
+    serverHeartbeatFailures = 0;
+    return;
+  }
+
+  const reachable = await isServerReachable();
+  if (reachable) {
+    serverHeartbeatFailures = 0;
+    return;
+  }
+
+  serverHeartbeatFailures += 1;
+  if (serverHeartbeatFailures < 2) {
+    return;
+  }
+
+  clearStoredSession();
+  renderNavbarUser();
 }
 
 function getRoleDashboardPath() {
@@ -71,8 +143,7 @@ function renderNavbarUser() {
 // Function to handle logout
 function logout() {
   // Clear user data from localStorage
-  localStorage.removeItem("safarUser");
-  localStorage.removeItem("safarDevUser");
+  clearStoredSession();
 
   // Re-render navbar
   renderNavbarUser();
@@ -132,6 +203,8 @@ function closeDropdownOutside(e) {
 function initializeNavbar() {
   renderNavbarUser();
   updateDashboardLinks();
+  enforceServerSession();
+  setInterval(enforceServerSession, 10000);
   // setupProfileDropdown is now called from renderNavbarUser when logged in
 }
 

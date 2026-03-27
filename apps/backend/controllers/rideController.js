@@ -1,6 +1,6 @@
 const db = require('../config/db');
 
-const VEHICLE_BASE_FARE = {
+const VEHICLE_RATE_PER_KM = {
   Bike: 99,
   Car: 149,
   SUV: 199,
@@ -64,12 +64,12 @@ exports.requestRide = async (req, res) => {
 
     const pickupName = start.location || `${start.lat.toFixed(6)}, ${start.lng.toFixed(6)}`;
     const destinationName = destination.location || `${destination.lat.toFixed(6)}, ${destination.lng.toFixed(6)}`;
-    const fallbackRate = VEHICLE_BASE_FARE[vehicle] || 149;
+    const fallbackRate = VEHICLE_RATE_PER_KM[vehicle] || 149;
     const requestDistanceKm = Number(req.body.distanceKm);
     const computedDistanceKm = calculateDistanceKm(start.lat, start.lng, destination.lat, destination.lng);
     const distanceKm = requestDistanceKm > 0 ? requestDistanceKm : computedDistanceKm;
-    const billableDistanceKm = Math.max(distanceKm, 1);
-    const fare = Math.round(fallbackRate * billableDistanceKm);
+    const normalizedDistanceKm = Number.isFinite(distanceKm) && distanceKm > 0 ? distanceKm : 0;
+    const fare = Math.round(fallbackRate * normalizedDistanceKm);
 
     // Insert ride with coordinates + status for driver approval workflow
     const [result] = await db.execute(
@@ -121,9 +121,12 @@ exports.getAvailableRides = async (req, res) => {
     );
 
     const parsedDistanceKm = Number(distanceKm);
-    const billableDistanceKm = parsedDistanceKm > 0 ? Math.max(parsedDistanceKm, 1) : 1;
-    const ratePerKm = VEHICLE_BASE_FARE[vehicleType] || 149;
-    const calculatedFare = Math.round(ratePerKm * billableDistanceKm);
+    if (!Number.isFinite(parsedDistanceKm) || parsedDistanceKm <= 0) {
+      return res.status(400).json({ message: 'Valid distance is required.' });
+    }
+
+    const ratePerKm = VEHICLE_RATE_PER_KM[vehicleType] || 149;
+    const calculatedFare = Math.round(ratePerKm * parsedDistanceKm);
 
     res.status(200).json({
       success: true,
@@ -134,7 +137,9 @@ exports.getAvailableRides = async (req, res) => {
         gender: driver.gender,
         rating: 4.5 + Math.random() * 0.5, // Mock rating
         eta: Math.floor(Math.random() * 10) + 3,
-        fare: calculatedFare
+        fare: calculatedFare,
+        distanceKm: Number(parsedDistanceKm.toFixed(2)),
+        ratePerKm
       }))
     });
   } catch (error) {
